@@ -9,10 +9,6 @@
     <name>parent-root</name>
     <description>maven根项目</description>
 
-    <modules>
-        <module>parent-study</module>
-    </modules>
-
     <properties>
         <!-- 使用jdk1.8 -->
         <maven.compiler.source>1.8</maven.compiler.source>
