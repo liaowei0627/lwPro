@@ -16,10 +16,10 @@
     default-autowire="byName">
 
     <description>Spring公共配置 </description>
-    
+
     <!-- 定义受环境影响易变的变量 -->
     <context:property-placeholder ignore-unresolvable="true" local-override="true" location="classpath*:**/*.properties" />
-    
+
     <!-- 使用annotation 自动注册bean,并保证@Required,@Autowired的属性被注入 -->
     <context:component-scan base-package="com.liaowei.study">
         <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller" />
@@ -39,7 +39,7 @@
         <property name="maxWaitMillis" value="${dbcp.maxWait}"/>
         <property name="poolPreparedStatements" value="${dbcp.poolPreparedStatements}" />
         <property name="validationQuery" value="select 1 from dual" />
-        
+
         <property name="timeBetweenEvictionRunsMillis" value="${dbcp.timeBetweenEvictionRunsMillis}"/>
         <property name="minEvictableIdleTimeMillis" value="${dbcp.minEvictableIdleTimeMillis}"/>
     </bean>
@@ -52,8 +52,8 @@
                 <value>com.liaowei.study</value>
             </list>
         </property>
-        <property name="implicitNamingStrategy">
-            <bean class="org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl" />
+        <property name="physicalNamingStrategy">
+            <bean class="org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy" />
         </property>
         <property name="hibernateProperties">
             <props>
@@ -96,6 +96,6 @@
 
     <!-- 启用@AspectJ 支持 -->
     <bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />
-    
+
     <aop:aspectj-autoproxy/>
 </beans>

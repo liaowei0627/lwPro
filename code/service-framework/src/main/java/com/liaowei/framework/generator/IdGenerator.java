@@ -1,4 +1,4 @@
-package com.liaowei.study.utils;
+package com.liaowei.framework.generator;
 
 import java.io.Serializable;
 
