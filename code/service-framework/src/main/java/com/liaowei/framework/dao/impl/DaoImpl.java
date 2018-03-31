@@ -11,15 +11,19 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
+import org.hibernate.query.criteria.internal.OrderImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.CaseFormat;
-import com.google.common.base.Strings;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.liaowei.framework.dao.IDao;
 import com.liaowei.framework.entity.IdEntity;
@@ -28,8 +32,12 @@ import com.liaowei.framework.page.Pagination;
 
 public abstract class DaoImpl<T extends IdEntity, PK extends Serializable> implements IDao<T, PK> {
 
+    protected final Logger LOGGER = LoggerFactory.getLogger(getClassName());
+
     @Resource(name = "sessionFactory")
     protected SessionFactory sessionFactory;
+
+    protected abstract String getClassName();
     
     protected abstract Class<T> getEntityClass();
 
@@ -61,27 +69,19 @@ public abstract class DaoImpl<T extends IdEntity, PK extends Serializable> imple
         criteria.select(root);
         List<Predicate> predicateList = Lists.newArrayList();
         if (IdEntity.class.isAssignableFrom(entityClass)) {
-            Method[] declaredMethods = entityClass.getDeclaredMethods();
+            Method[] declaredMethods = entityClass.getMethods();
             Class<?> returnType;
             Object returnData;
-            String data;
             String fieldName;
             try {
                 for (Method method : declaredMethods) {
                     String methodName = method.getName();
-                    if (methodName.startsWith("get")) {
+                    if (methodName.startsWith("get") && !Objects.equal("getClass", methodName)) {
                         returnType = method.getReturnType();
                         returnData = method.invoke(entity);
                         fieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, methodName.replace("get", ""));
-                        if ("java.lang.String".equals(returnType.getName())) {
-                            data = String.valueOf(returnData);
-                            if (!Strings.isNullOrEmpty(data)) {
-                                predicateList.add(criteriaBuilder.equal(root.get(fieldName), data));
-                            }
-                        } else {
-                            if (null != returnData) {
-                                predicateList.add(criteriaBuilder.equal(root.get(fieldName), returnType.cast(returnData)));
-                            }
+                        if (null != returnData) {
+                            predicateList.add(criteriaBuilder.equal(root.get(fieldName), returnType.cast(returnData)));
                         }
                     }
                 }
@@ -92,7 +92,7 @@ public abstract class DaoImpl<T extends IdEntity, PK extends Serializable> imple
         if (predicateList.isEmpty()) {
             resultList = Lists.newArrayList();
         } else {
-            criteria.where(criteriaBuilder.and((Predicate[]) predicateList.toArray()));
+            criteria.where(criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()])));
             resultList = session.createQuery(criteria).getResultList();
         }
         return resultList;
@@ -113,29 +113,20 @@ public abstract class DaoImpl<T extends IdEntity, PK extends Serializable> imple
         List<Predicate> predicateList = Lists.newArrayList();
         List<Predicate> countPredicateList = Lists.newArrayList();
         if (IdEntity.class.isAssignableFrom(entityClass)) {
-            Method[] declaredMethods = entityClass.getDeclaredMethods();
+            Method[] declaredMethods = entityClass.getMethods();
             Class<?> returnType;
             Object returnData;
-            String data;
             String fieldName;
             try {
                 for (Method method : declaredMethods) {
                     String methodName = method.getName();
-                    if (methodName.startsWith("get")) {
+                    if (methodName.startsWith("get") && !Objects.equal("getClass", methodName)) {
                         returnType = method.getReturnType();
                         returnData = method.invoke(entity);
                         fieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, methodName.replace("get", ""));
-                        if ("java.lang.String".equals(returnType.getName())) {
-                            data = String.valueOf(returnData);
-                            if (!Strings.isNullOrEmpty(data)) {
-                                predicateList.add(criteriaBuilder.equal(root.get(fieldName), data));
-                                countPredicateList.add(criteriaBuilder.equal(countRoot.get(fieldName), data));
-                            }
-                        } else {
-                            if (null != returnData) {
-                                predicateList.add(criteriaBuilder.equal(root.get(fieldName), returnType.cast(returnData)));
-                                countPredicateList.add(criteriaBuilder.equal(countRoot.get(fieldName), returnType.cast(returnData)));
-                            }
+                        if (null != returnData) {
+                            predicateList.add(criteriaBuilder.equal(root.get(fieldName), returnType.cast(returnData)));
+                            countPredicateList.add(criteriaBuilder.equal(countRoot.get(fieldName), returnType.cast(returnData)));
                         }
                     }
                 }
@@ -143,11 +134,13 @@ public abstract class DaoImpl<T extends IdEntity, PK extends Serializable> imple
                 throw new ServiceException(e);
             }
         }
-        countCriteria.where(criteriaBuilder.and((Predicate[]) countPredicateList.toArray()));
+        countCriteria.where(criteriaBuilder.and(countPredicateList.toArray(new Predicate[countPredicateList.size()])));
         Tuple tuple = session.createQuery(countCriteria).getSingleResult();
         if (null != tuple && null != tuple.get(0)) {
             page.setTotal(Integer.valueOf(String.valueOf(tuple.get(0))));
-            criteria.where(criteriaBuilder.and((Predicate[]) predicateList.toArray()));
+            criteria.where(criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()])));
+            Order order = new OrderImpl(root.get("modifyTime"), true);
+            criteria.orderBy(order);
             Query<T> query = session.createQuery(criteria);
             query.setFirstResult(page.getStartPosition());
             query.setMaxResults(page.getPageSize());

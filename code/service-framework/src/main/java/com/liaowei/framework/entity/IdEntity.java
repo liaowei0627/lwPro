@@ -1,5 +1,6 @@
 package com.liaowei.framework.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -9,8 +10,15 @@ import javax.persistence.MappedSuperclass;
 
 import org.hibernate.annotations.GenericGenerator;
 
+/**
+ * hibernate实体类的超类
+ * 
+ * @author liaowei
+ *
+ */
+@SuppressWarnings("serial")
 @MappedSuperclass
-public class IdEntity {
+public class IdEntity implements Serializable {
 
     // 主键
     @Id
@@ -101,6 +109,9 @@ public class IdEntity {
         return modifyTime;
     }
 
+    /**
+     * @param modifyTime
+     */
     public void setModifyTime(LocalDateTime modifyTime) {
         this.modifyTime = modifyTime;
     }

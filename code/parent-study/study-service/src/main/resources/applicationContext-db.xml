@@ -89,7 +89,7 @@
     <!-- 定义AOP配置 -->
     <aop:config>
         <!-- 定义一个切入点 -->
-        <aop:pointcut id="services" expression="execution (* com.liaowei.study.service.impl.*.*(..))" />
+        <aop:pointcut id="services" expression="execution (* com.liaowei.*.service.impl.*.*(..))" />
         <!-- 对切入点和事务的通知，进行适配 -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="services" />
     </aop:config>

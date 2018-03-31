@@ -7,6 +7,7 @@ import javax.persistence.Table;
 
 import com.liaowei.framework.entity.IdEntity;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "SYS_USERS")
 public class SysUser extends IdEntity {

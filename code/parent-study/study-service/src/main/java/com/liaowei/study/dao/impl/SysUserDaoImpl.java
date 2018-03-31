@@ -19,4 +19,8 @@ public class SysUserDaoImpl extends DaoImpl<SysUser, String> implements ISysUser
         return SysUser.class;
     }
 
+    @Override
+    protected String getClassName() {
+        return SysUserDaoImpl.class.getName();
+    }
 }

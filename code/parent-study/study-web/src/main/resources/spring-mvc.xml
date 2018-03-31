@@ -35,13 +35,16 @@
 	<mvc:default-servlet-handler/>
 	<mvc:annotation-driven  content-negotiation-manager="contentNegotiationManager" >
 		<mvc:message-converters>
-	         	<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">  
-                	<property name="supportedMediaTypes">  
+	         	<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                	<property name="supportedMediaTypes">
 	                    <list>
                         	<value>application/json;charset=UTF-8</value>
                         	<value>text/html;charset=UTF-8</value>
-	                    </list>  
-                	</property>  
+	                    </list>
+                	</property>
+                    <property name="objectMapper">
+                        <bean class="com.liaowei.framework.jackson.CustomOM" />
+                    </property>
             	</bean>
 		</mvc:message-converters>
 	</mvc:annotation-driven>

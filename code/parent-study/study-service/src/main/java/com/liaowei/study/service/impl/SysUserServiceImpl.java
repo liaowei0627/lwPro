@@ -20,4 +20,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUser, String> implements 
 	protected IDao<SysUser, String> getDao() {
 	    return sysUserDao;
 	}
+
+	@Override
+	protected String getClassName() {
+	    return SysUserServiceImpl.class.getName();
+	}
 }
