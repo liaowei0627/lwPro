@@ -5,12 +5,12 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.liaowei.framework.entity.IdEntity;
+import com.liaowei.framework.entity.SpringBaseEntity;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "SYS_USERS")
-public class SysUser extends IdEntity {
+public class SysUser extends SpringBaseEntity {
 
     /**
      * 用户名
@@ -32,18 +32,30 @@ public class SysUser extends IdEntity {
         this.password = password;
     }
 
+    /**
+     * 用户名
+     */
     public String getUserName() {
         return userName;
     }
 
+    /**
+     * 用户名
+     */
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
+    /**
+     * 密码
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * 密码
+     */
     public void setPassword(String password) {
         this.password = password;
     }
