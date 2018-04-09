@@ -4,6 +4,7 @@
  */
 package com.liaowei.framework.page;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -11,11 +12,13 @@ import java.util.List;
  *
  * 分页查询对象
  *
- * @author liaowei
- * @date 创建时间：2018年3月31日 下午11:07:30 
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-08 21:25:25
+ * @see java.io.Serializable
  * @since jdk1.8
  */
-public class Pagination<T> {
+@SuppressWarnings("serial")
+public class Pagination<T> implements Serializable {
 
     /**
      * 总条数，没有数据为0
@@ -50,26 +53,44 @@ public class Pagination<T> {
         this.data = data;
     }
 
+    /**
+     * 总条数，没有数据为0
+     */
     public int getTotal() {
         return total;
     }
 
+    /**
+     * 总条数，没有数据为0
+     */
     public void setTotal(int total) {
         this.total = total;
     }
 
+    /**
+     * 每页条数
+     */
     public int getPageSize() {
         return pageSize;
     }
 
+    /**
+     * 每页条数
+     */
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
     }
 
+    /**
+     * 页号从1开始
+     */
     public int getPageNumber() {
         return pageNumber;
     }
 
+    /**
+     * 页号从1开始
+     */
     public void setPageNumber(int pageNumber) {
         this.pageNumber = pageNumber;
     }
@@ -84,10 +105,16 @@ public class Pagination<T> {
         return startPosition;
     }
 
+    /**
+     * 数据
+     */
     public List<T> getData() {
         return data;
     }
 
+    /**
+     * 数据
+     */
     public void setData(List<T> data) {
         this.data = data;
     }

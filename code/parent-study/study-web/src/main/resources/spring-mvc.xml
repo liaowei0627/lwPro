@@ -8,8 +8,8 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-	<mvc:view-controller path="/" view-name="redirect:/index"/>
-    <mvc:resources mapping="/static/**" location="/static/"/>
+	<mvc:view-controller path="/" view-name="forward:/index.htm" />
+    <mvc:resources location="/static/" mapping="/static/**" />
     
     <!-- 定义受环境影响易变的变量 -->
 	<context:property-placeholder
@@ -43,7 +43,7 @@
 	                    </list>
                 	</property>
                     <property name="objectMapper">
-                        <bean class="com.liaowei.framework.jackson.CustomOM" />
+                        <bean class="com.liaowei.framework.core.jackson.CustomOM" />
                     </property>
             	</bean>
 		</mvc:message-converters>

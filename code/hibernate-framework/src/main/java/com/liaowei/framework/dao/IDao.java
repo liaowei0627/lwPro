@@ -6,17 +6,18 @@ package com.liaowei.framework.dao;
 
 import java.io.Serializable;
 
-import com.liaowei.framework.core.dao.IBaseDao;
-import com.liaowei.framework.entity.SpringBaseEntity;
+import com.liaowei.framework.core.dao.IBasisDao;
+import com.liaowei.framework.entity.BaseEntity;
 
 /**
  * IDao
  *
  * Dao层超类接口，基本的增删改查接口
  *
- * @author liaowei
- * @date 创建时间：2018年4月1日 上午9:48:36 
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-08 21:33:14
+ * @see com.liaowei.framework.core.dao.IBasisDao<E, PK>
  * @since jdk1.8
  */
-public interface IDao<T extends SpringBaseEntity, PK extends Serializable> extends IBaseDao<T, PK> {
+public interface IDao<E extends BaseEntity, PK extends Serializable> extends IBasisDao<E, PK> {
 }

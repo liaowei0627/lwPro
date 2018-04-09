@@ -16,8 +16,8 @@ import org.hibernate.id.UUIDGenerator;
  * hibernate id生成器自定义实现
  * 修改了uuid生成方式，去除“-”并将其中的字母转换成大写
  *
- * @author liaowei
- * @date 创建时间：2018年4月1日 上午9:53:15 
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-08 21:33:14
  * @see org.hibernate.id.IdentityGenerator
  * @since jdk1.8
  */

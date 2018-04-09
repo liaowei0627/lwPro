@@ -11,8 +11,8 @@ import java.security.MessageDigest;
  *
  * MD5工具类
  *
- * @author liaowei
- * @date 创建时间：2018年3月31日 下午12:03:46 
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-08 21:31:43
  * @since jdk1.8
  */
 public class MD5Utils {

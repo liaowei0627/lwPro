@@ -27,10 +27,10 @@ import org.hibernate.query.criteria.internal.OrderImpl;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
-import com.liaowei.framework.core.dao.impl.BaseDaoImpl;
+import com.liaowei.framework.core.dao.impl.BasisDaoImpl;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.dao.IDao;
-import com.liaowei.framework.entity.SpringBaseEntity;
+import com.liaowei.framework.entity.BaseEntity;
 import com.liaowei.framework.page.Pagination;
 
 /**
@@ -38,46 +38,47 @@ import com.liaowei.framework.page.Pagination;
  *
  * Dao层超类实现
  *
- * @author liaowei
- * @date 创建时间：2018年4月1日 上午9:50:12 
- * @see com.liaowei.framework.dao.IDao<T, PK>
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-08 21:33:14
+ * @see com.liaowei.framework.dao.IDao<E, PK>
+ * @see com.liaowei.framework.core.dao.impl.BasisDaoImpl<E, PK>
  * @since jdk1.8
  */
-public abstract class DaoImpl<T extends SpringBaseEntity, PK extends Serializable> extends BaseDaoImpl<T, PK> implements IDao<T, PK> {
+public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> extends BasisDaoImpl<E, PK> implements IDao<E, PK> {
 
     @Resource(name = "sessionFactory")
     protected SessionFactory sessionFactory;
 
     @Override
-    public T findEntity(PK pk) {
+    public E findEntity(PK pk) {
         return sessionFactory.getCurrentSession().get(getEntityClass(), pk);
     }
 
     @Override
-    public T addEntity(T entity) {
+    public E addEntity(E entity) {
         sessionFactory.getCurrentSession().save(entity);
         return entity;
     }
 
     @Override
-    public T updateEntity(T entity) {
+    public E updateEntity(E entity) {
         sessionFactory.getCurrentSession().update(entity);
         return entity;
     }
 
     @Override
-    public List<T> findList(T entity) throws ApplicationException {
-        List<T> resultList;
+    public List<E> findList(E entity) throws ApplicationException {
+        List<E> resultList;
 
         try {
-            Class<T> entityClass = getEntityClass();
+            Class<E> entityClass = getEntityClass();
             Session session = sessionFactory.getCurrentSession();
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<T> criteria = criteriaBuilder.createQuery(entityClass);
-            Root<T> root = criteria.from(entityClass);
+            CriteriaQuery<E> criteria = criteriaBuilder.createQuery(entityClass);
+            Root<E> root = criteria.from(entityClass);
             criteria.select(root);
             List<Predicate> predicateList = Lists.newArrayList();
-            if (SpringBaseEntity.class.isAssignableFrom(entityClass)) {
+            if (BaseEntity.class.isAssignableFrom(entityClass)) {
                 Method[] declaredMethods = entityClass.getMethods();
                 Class<?> returnType;
                 Object returnData;
@@ -109,22 +110,22 @@ public abstract class DaoImpl<T extends SpringBaseEntity, PK extends Serializabl
     }
 
     @Override
-    public Pagination<T> findPage(Pagination<T> page, T entity) throws ApplicationException {
-        List<T> resultList;
+    public Pagination<E> findPage(Pagination<E> page, E entity) throws ApplicationException {
+        List<E> resultList;
 
         try {
-            Class<T> entityClass = getEntityClass();
+            Class<E> entityClass = getEntityClass();
             Session session = sessionFactory.getCurrentSession();
             CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-            CriteriaQuery<T> criteria = criteriaBuilder.createQuery(entityClass);
+            CriteriaQuery<E> criteria = criteriaBuilder.createQuery(entityClass);
             CriteriaQuery<Tuple> countCriteria = criteriaBuilder.createQuery(Tuple.class);
-            Root<T> root = criteria.from(entityClass);
-            Root<T> countRoot = countCriteria.from(entityClass);
+            Root<E> root = criteria.from(entityClass);
+            Root<E> countRoot = countCriteria.from(entityClass);
             criteria.select(root);
             countCriteria.select(criteriaBuilder.tuple(criteriaBuilder.count(countRoot)));
             List<Predicate> predicateList = Lists.newArrayList();
             List<Predicate> countPredicateList = Lists.newArrayList();
-            if (SpringBaseEntity.class.isAssignableFrom(entityClass)) {
+            if (BaseEntity.class.isAssignableFrom(entityClass)) {
                 Method[] declaredMethods = entityClass.getMethods();
                 Class<?> returnType;
                 Object returnData;
@@ -151,7 +152,7 @@ public abstract class DaoImpl<T extends SpringBaseEntity, PK extends Serializabl
                     criteria.where(criteriaBuilder.and(predicateList.toArray(new Predicate[predicateList.size()])));
                     Order order = new OrderImpl(root.get("modifyTime"), true);
                     criteria.orderBy(order);
-                    Query<T> query = session.createQuery(criteria);
+                    Query<E> query = session.createQuery(criteria);
                     query.setFirstResult(page.getStartPosition());
                     query.setMaxResults(page.getPageSize());
                     resultList = query.getResultList();
@@ -172,11 +173,11 @@ public abstract class DaoImpl<T extends SpringBaseEntity, PK extends Serializabl
 
     @Override
     public void delEntity(PK pk) {
-        Class<T> entityClass = getEntityClass();
+        Class<E> entityClass = getEntityClass();
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaUpdate<T> criteria = criteriaBuilder.createCriteriaUpdate(entityClass);
-        Root<T> root = criteria.from(entityClass);
+        CriteriaUpdate<E> criteria = criteriaBuilder.createCriteriaUpdate(entityClass);
+        Root<E> root = criteria.from(entityClass);
         criteria.set("valid", Boolean.FALSE);
         criteria.where(criteriaBuilder.and(criteriaBuilder.equal(root.get("id"), pk)));
         session.createQuery(criteria).executeUpdate();
@@ -184,11 +185,11 @@ public abstract class DaoImpl<T extends SpringBaseEntity, PK extends Serializabl
 
     @Override
     public void delList(List<PK> pks) {
-        Class<T> entityClass = getEntityClass();
+        Class<E> entityClass = getEntityClass();
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-        CriteriaUpdate<T> criteria = criteriaBuilder.createCriteriaUpdate(entityClass);
-        Root<T> root = criteria.from(entityClass);
+        CriteriaUpdate<E> criteria = criteriaBuilder.createCriteriaUpdate(entityClass);
+        Root<E> root = criteria.from(entityClass);
         criteria.set("valid", Boolean.FALSE);
         Expression<String> exp = root.get("id");
         Predicate predicate = exp.in(pks);

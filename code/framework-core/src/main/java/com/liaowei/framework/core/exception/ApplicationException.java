@@ -1,6 +1,6 @@
 /**
  * framework-core
- * Pagination.java
+ * ApplicationException.java
  */
 package com.liaowei.framework.core.exception;
 
@@ -9,8 +9,8 @@ package com.liaowei.framework.core.exception;
  *
  * 自定义应用程序异常
  *
- * @author liaowei
- * @date 创建时间：2018年4月1日 上午10:24:43 
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-08 21:25:25
  * @see java.lang.Exception
  * @since jdk1.8
  */

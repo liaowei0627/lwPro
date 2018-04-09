@@ -6,21 +6,21 @@ package com.liaowei.study.vo;
 
 import java.time.LocalDateTime;
 
-import com.liaowei.framework.vo.SpringBaseVo;
+import com.liaowei.framework.vo.BaseVo;
 import com.liaowei.study.entity.SysUser;
 
 /**
  * UserVo
  *
- * TODO
+ * 用户信息
  *
- * @author liaowei
- * @date 创建时间：2018年4月5日 下午12:31:02 
- * @see com.liaowei.framework.service.vo.SpringBaseVo<SysUser>
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-09 22:35:43
+ * @see com.liaowei.framework.service.vo.BaseVo<SysUser>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
-public class UserVo extends SpringBaseVo<SysUser> {
+public class UserVo extends BaseVo<SysUser> {
 
     /**
      * 用户名
@@ -87,4 +87,28 @@ public class UserVo extends SpringBaseVo<SysUser> {
         this.password = password;
     }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (!(obj instanceof UserVo))
+            return false;
+        UserVo other = (UserVo) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 }

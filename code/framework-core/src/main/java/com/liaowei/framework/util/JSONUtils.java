@@ -15,8 +15,8 @@ import com.liaowei.framework.core.jackson.CustomOM;
  *
  * Jackson JSON 工具类
  *
- * @author liaowei
- * @date 创建时间：2018年3月31日 上午11:49:48 
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-08 21:31:43
  * @since jdk1.8
  */
 public class JSONUtils {

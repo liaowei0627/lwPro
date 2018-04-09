@@ -40,7 +40,7 @@ public class SysUserTest {
     public void testFind() {
         try {
             String json = null;
-            UserVo vo = sysUserService.findEntity("CE77BDD4409B42F4AE0F8D54E68E6FB5");
+            UserVo vo = sysUserService.findVo("CE77BDD4409B42F4AE0F8D54E68E6FB5");
             json = JSONUtils.objectToJSONString(vo);
             LOGGER.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
@@ -57,7 +57,7 @@ public class SysUserTest {
             vo.setValid(Boolean.TRUE);
             vo.setCreator("admin");
             vo.setReviser("admin");
-            vo = sysUserService.addEntity(vo);
+            vo = sysUserService.addVo(vo);
             String json = JSONUtils.objectToJSONString(vo);
             LOGGER.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
@@ -69,12 +69,12 @@ public class SysUserTest {
     public void testUpdate() {
         try {
             String json = null;
-            UserVo vo = sysUserService.findEntity("9E3BAC7DDF5141E592621E50F68618C9");
+            UserVo vo = sysUserService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
             json = JSONUtils.objectToJSONString(vo);
             LOGGER.debug(json);
             vo.setPassword(MD5Utils.MD5("test789"));
-            sysUserService.updateEntity(vo);
-            vo = sysUserService.findEntity("9E3BAC7DDF5141E592621E50F68618C9");
+            sysUserService.updateVo(vo);
+            vo = sysUserService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
             json = JSONUtils.objectToJSONString(vo);
             LOGGER.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
@@ -114,7 +114,7 @@ public class SysUserTest {
     @Test
     public void testDel() {
         try {
-            sysUserService.delEntity("9E3BAC7DDF5141E592621E50F68618C9");
+            sysUserService.delOne("9E3BAC7DDF5141E592621E50F68618C9");
         } catch (ApplicationException e) {
             LOGGER.error(e.getMessage(), e);
         }

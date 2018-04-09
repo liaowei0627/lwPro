@@ -26,8 +26,8 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
  * 设定对日期格式化的处理
  * 并加入JDK1.8中java.time下新的日期时间类型的格式化处理
  *
- * @author liaowei
- * @date 创建时间：2018年3月31日 下午8:04:42
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-08 21:25:25
  * @see com.fasterxml.jackson.databind.ObjectMapper
  * @since jdk1.8
  */
@@ -39,15 +39,23 @@ public class CustomOM extends ObjectMapper {
         customerSetting();
     }
 
+    /**
+     * 设置OM配置
+     */
     private void customerSetting() {
+        // java8 java.time包支持
         JavaTimeModule module = new JavaTimeModule();
+        // 序列化与反序列化LocalDate类型格式
         module.addSerializer(LocalDate.class, new LocalDateSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         module.addDeserializer(LocalDate.class, new LocalDateDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        // 序列化与反序列化LocalTime类型格式
         module.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
         module.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
+        // 序列化与反序列化LocalDateTime类型格式
         module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         registerModule(module);
+        // 旧日期类型支持
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
         setDateFormat(dateFormat);
     }

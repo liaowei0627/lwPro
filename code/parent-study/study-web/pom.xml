@@ -30,17 +30,25 @@
             <artifactId>commons-fileupload</artifactId>
         </dependency>
         <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.freemarker</groupId>
             <artifactId>freemarker</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.liaowei</groupId>
-            <artifactId>study-service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.google.code</groupId>
+            <artifactId>kaptcha</artifactId>
         </dependency>
         <dependency>
             <groupId>com.liaowei.framework</groupId>
             <artifactId>mvc-framework</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.liaowei</groupId>
+            <artifactId>study-service</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
