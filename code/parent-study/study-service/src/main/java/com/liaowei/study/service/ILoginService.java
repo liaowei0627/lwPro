@@ -4,8 +4,7 @@
  */
 package com.liaowei.study.service;
 
-import com.liaowei.framework.service.IService;
-import com.liaowei.study.entity.SysUser;
+import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.study.vo.UserVo;
 
 /**
@@ -15,9 +14,9 @@ import com.liaowei.study.vo.UserVo;
  *
  * @author liaowei
  * @date 创建时间：2018年4月6日 下午10:29:16 
- * @see com.liaowei.framework.service.ISpringService<UserVo, SysUser, String>
  * @since jdk1.8
  */
-public interface ILoginService extends IService<UserVo, SysUser, String> {
+public interface ILoginService {
 
+    UserVo findByUserName(String userName) throws ApplicationException;
 }

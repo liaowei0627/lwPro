@@ -65,8 +65,6 @@ public abstract class BaseModel<V extends BaseVo<E>, E extends BaseEntity> imple
         this.modifyTime = modifyTime;
     }
 
-    public abstract void copyVo(V vo);
-
     public abstract V toVo();
 
     /**
@@ -164,10 +162,4 @@ public abstract class BaseModel<V extends BaseVo<E>, E extends BaseEntity> imple
     public void setModifyTime(LocalDateTime modifyTime) {
         this.modifyTime = modifyTime;
     }
-
-    @Override
-    public abstract int hashCode();
-
-    @Override
-    public abstract boolean equals(Object obj);
 }

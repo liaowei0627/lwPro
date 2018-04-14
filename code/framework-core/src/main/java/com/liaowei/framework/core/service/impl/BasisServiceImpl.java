@@ -5,17 +5,14 @@
 package com.liaowei.framework.core.service.impl;
 
 import java.io.Serializable;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.liaowei.framework.core.dao.IBasisDao;
 import com.liaowei.framework.core.entity.IBasisEntity;
-import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.core.service.IBasisService;
 import com.liaowei.framework.core.vo.IBasisVo;
-import com.liaowei.framework.page.Pagination;
 
 /**
  * BasisServiceImpl
@@ -50,18 +47,4 @@ public abstract class BasisServiceImpl<V extends IBasisVo<E>, E extends IBasisEn
      * @return
      */
     protected abstract V voCopy(E entity);
-
-    public abstract V findVo(PK pk) throws ApplicationException;
-
-    public abstract V addVo(V vo) throws ApplicationException;
-
-    public abstract V updateVo(V vo) throws ApplicationException;
-
-    public abstract List<V> findList(V vo) throws ApplicationException;
-
-    public abstract Pagination<V> findPage(Pagination<V> page, V vo) throws ApplicationException;
-
-    public abstract void delOne(PK pk) throws ApplicationException;
-
-    public abstract void delList(List<PK> pks) throws ApplicationException;
 }

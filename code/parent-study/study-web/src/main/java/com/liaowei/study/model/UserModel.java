@@ -29,16 +29,14 @@ public class UserModel extends BaseModel<UserVo, SysUser> {
         this.password = password;
     }
 
-    @Override
-    public void copyVo(UserVo userVo) {
-        id = userVo.getId();
-        userName = userVo.getUserName();
-        password = userVo.getPassword();
-        valid = userVo.getValid();
-        creator = userVo.getCreator();
-        createTime = userVo.getCreateTime();
-        reviser = userVo.getReviser();
-        modifyTime = userVo.getModifyTime();
+    /**
+     * 从UserVo对象生成UserModel对象
+     * 
+     * @param userVo
+     * @return
+     */
+    public static UserModel forVo(UserVo userVo) {
+        return new UserModel(userVo.getId(), userVo.getUserName(), userVo.getPassword(), userVo.getValid(), userVo.getCreator(), userVo.getCreateTime(), userVo.getReviser(), userVo.getModifyTime());
     }
 
     @Override

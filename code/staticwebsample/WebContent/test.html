@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>范例项目</title>
+</head>
+<body>
+</body>
+</html>
+<script type="text/javascript" src="https://cdn.bootcss.com/spark-md5/3.0.0/spark-md5.min.js"></script>
+<script type="text/javascript">
+function stringToHex(str){
+    var val="";
+    for(var i = 0; i < str.length; i++){
+        if(val == "")
+            val = str.charCodeAt(i).toString(16);
+        else
+            val += str.charCodeAt(i).toString(16);
+    }
+    return val.toUpperCase();
+}
+
+var pwd = "admin123";
+var seed = "123456";
+var hexHash = SparkMD5.hash(pwd).toUpperCase();
+console.info(hexHash);
+hexHash = SparkMD5.hash(hexHash + seed).toUpperCase();
+console.info(hexHash);
+//console.info(window.btoa(hexHash));
+hexHash = window.btoa(window.encodeURIComponent(hexHash));
+console.info(hexHash);
+console.info(stringToHex(hexHash));
+</script>

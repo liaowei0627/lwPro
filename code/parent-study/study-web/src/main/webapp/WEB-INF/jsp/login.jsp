@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/login.js"></script>
         <form id="login_form" class="easyui-form" method="post" style="text-align:center;">
             <table style="margin: 10% auto auto auto;">
                 <tr><td><input id="userName" name="userName" /></td><td></td></tr>
                 <tr>
-                    <td><input id="password" name="password" /></td>
+                    <td>
+                        <input id="password" />
+                        <input type="hidden" id="encryptedPassword" name="password" />
+                    </td>
                     <td rowspan="2" style="text-align:center;">
                         <a id="changeKaptcha">
                             <img id="imgKaptcha" style="width: 125px;height: 45px;" />
@@ -20,3 +22,5 @@
         <div style="text-align:center;padding:5px">
             <a id="btnLogin" href="javascript: void(0);" />
         </div>
+<script type="text/javascript" src="https://cdn.bootcss.com/crypto-js/3.1.9/core.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/static/js/login.js"></script>

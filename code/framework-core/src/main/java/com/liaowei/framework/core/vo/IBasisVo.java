@@ -22,18 +22,11 @@ import com.liaowei.framework.core.entity.IBasisEntity;
 public interface IBasisVo<E extends IBasisEntity> extends Serializable {
 
     /**
-     * 从Entity对象复制属性值
-     * 
-     * @param entity
-     */
-    abstract void copyEntity(E entity);
-
-    /**
      * 转换成Entity对象并返回
      * 
      * @return
      */
-    abstract E toEntity();
+    E toEntity();
 
     /**
      * 主键

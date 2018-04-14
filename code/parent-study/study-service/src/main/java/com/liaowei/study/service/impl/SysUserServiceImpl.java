@@ -29,8 +29,6 @@ public class SysUserServiceImpl extends ServiceImpl<UserVo, SysUser, String> imp
 
     @Override
     protected UserVo voCopy(SysUser entity) {
-        UserVo vo = new UserVo();
-        vo.copyEntity(entity);
-        return vo;
+        return UserVo.forEntity(entity);
     }
 }

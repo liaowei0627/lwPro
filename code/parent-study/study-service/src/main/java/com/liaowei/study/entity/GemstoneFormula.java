@@ -7,9 +7,9 @@ package com.liaowei.study.entity;
 import java.time.LocalDateTime;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -34,14 +34,14 @@ public class GemstoneFormula extends BaseEntity {
      * 宝石信息
      */
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @Column(name = "GEMSTONE_ID")
+    @JoinColumn(name = "GEMSTONE_ID")
     private Gemstone gemstone;
 
     /**
      * 材料宝石
      */
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @Column(name = "MATERIAL_ID")
+    @JoinColumn(name = "MATERIAL_ID")
     private Gemstone material;
 
     /**

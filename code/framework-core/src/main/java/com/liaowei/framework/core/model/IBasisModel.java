@@ -23,18 +23,11 @@ import com.liaowei.framework.core.vo.IBasisVo;
 public interface IBasisModel<V extends IBasisVo<E>, E extends IBasisEntity> extends Serializable {
 
     /**
-     * 从Vo对象中复制属性值
-     * 
-     * @param vo
-     */
-    abstract void copyVo(V vo);
-
-    /**
      * 生成Vo对象并复制属性值
      * 
      * @return
      */
-    abstract V toVo();
+    V toVo();
 
     /**
      * 主键

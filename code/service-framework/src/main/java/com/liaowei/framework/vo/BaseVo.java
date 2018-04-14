@@ -62,10 +62,6 @@ public abstract class BaseVo<E extends BaseEntity> implements IBasisVo<E> {
         this.modifyTime = modifyTime;
     }
 
-    public abstract void copyEntity(E entity);
-
-    public abstract E toEntity();
-
     /**
      * 主键
      */

@@ -42,16 +42,8 @@ public class UserVo extends BaseVo<SysUser> {
         this.password = password;
     }
 
-    @Override
-    public void copyEntity(SysUser sysUser) {
-        id = sysUser.getId();
-        userName = sysUser.getUserName();
-        password = sysUser.getPassword();
-        valid = sysUser.getValid();
-        creator = sysUser.getCreator();
-        createTime = sysUser.getCreateTime();
-        reviser = sysUser.getReviser();
-        modifyTime = sysUser.getModifyTime();
+    public static UserVo forEntity(SysUser sysUser) {
+        return new UserVo(sysUser.getId(), sysUser.getUserName(), sysUser.getPassword(), sysUser.getValid(), sysUser.getCreator(), sysUser.getCreateTime(), sysUser.getReviser(), sysUser.getModifyTime());
     }
 
     @Override

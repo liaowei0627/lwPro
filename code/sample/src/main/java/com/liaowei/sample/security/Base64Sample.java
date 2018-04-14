@@ -1,22 +1,29 @@
+/**
+ * sample
+ * Base64Sample.java
+ */
 package com.liaowei.sample.security;
 
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
+import java.util.Base64;
+import java.util.Base64.Encoder;
 
-public class MD5Sample {
+/**
+ * Base64Sample
+ *
+ * TODO
+ *
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-11 23:08:27
+ * @see TODO
+ * @since jdk1.8
+ */
+public class Base64Sample {
 
     public static void main(String[] args) {
-        System.out.println(MD5("admin123"));
-    }
-
-    private static String MD5(String s) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] bytes = md.digest(s.getBytes(Charset.forName("UTF-8")));
-            return toHex(bytes);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        Encoder encoder = Base64.getEncoder();
+        byte[] code = encoder.encode("abcde".getBytes(Charset.forName("UTF-8")));
+        System.out.println(toHex(code));
     }
 
     private static String toHex(byte[] bytes) {

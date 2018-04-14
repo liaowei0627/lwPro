@@ -1,4 +1,8 @@
-package com.liaowei.study.test;
+/**
+ * study-web
+ * SysUserTest.java
+ */
+package com.liaowei.study.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -24,6 +28,15 @@ import com.liaowei.study.service.ILoginService;
 import com.liaowei.study.service.ISysUserService;
 import com.liaowei.study.vo.UserVo;
 
+/**
+ * SysUserTest
+ *
+ * service层JUnit测试
+ *
+ * @author 廖维(EmailTo：liaowei-0627@163.com)
+ * @date 2018-04-14 17:59:26
+ * @since jdk1.8
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath*:**/applicationContext*.xml" })
 public class SysUserTest {

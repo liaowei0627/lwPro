@@ -65,7 +65,7 @@ public class KaptchaController {
             // 生成验证码文本
             String kapText = kaptchaProducer.createText();
             session.setAttribute(Constants.KAPTCHA_SESSION_KEY, kapText);
-            LOGGER.info("生成验证码文本====" + kapText);
+            LOGGER.debug("生成验证码文本====" + kapText);
             // 利用生成的字符串构建图片
             BufferedImage bi = kaptchaProducer.createImage(kapText);
             out = response.getOutputStream();

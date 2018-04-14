@@ -68,5 +68,5 @@
         <logger>可以包含零个或多个<appender-ref>元素，标识这个appender将会添加到这个logger。-->
     <logger name="com.liaowei" level="DEBUG" additivity="true"></logger>
     <logger name="org.springframework" level="INFO" additivity="true"></logger>
-
+    <logger name="org.hibernate" level="INFO" additivity="true"></logger>
 </configuration>
