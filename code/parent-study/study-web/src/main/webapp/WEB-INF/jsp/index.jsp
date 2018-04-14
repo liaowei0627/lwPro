@@ -6,11 +6,12 @@
 <title>范例项目</title>
 <%@ include file="/WEB-INF/jsp/base/import-css.jsp"%>
 </head>
-<body class="easyui-layout">
-    <div data-options="region:'north'" style="height: 50px"></div>
-    <div data-options="region:'south',split:true" style="height: 50px;"></div>
-    <div data-options="region:'west',split:true" title="West" style="width: 20%;"></div>
+<body id="body_layout" class="easyui-layout">
+    <div id="main_header" data-options="region:'north'" style="height: 63px;position: relative;"></div>
     <div id="main_content" class="easyui-panel" data-options="region:'center',title:'Main Title'"></div>
+    <div data-options="region:'south'" style="height: 50px;">
+        <%@ include file="/WEB-INF/jsp/base/footer.jsp"%>
+    </div>
 </body>
 </html>
 <%@ include file="/WEB-INF/jsp/base/import-js.jsp"%>

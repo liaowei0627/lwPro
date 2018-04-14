@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -49,9 +48,33 @@ public class IndexController {
 	 * @return
 	 */
 	@RequestMapping(path = {"/index.htm"})
-	public String index(HttpServletRequest request, Model model) {
+	public String index() {
 		return "index";
 	}
+
+    /**
+     * 加载主页头部
+     * 
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(path = {"/header.htm"})
+    public String header() {
+        return "base/header";
+    }
+
+    /**
+     * 加载主页左侧
+     * 
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping(path = {"/menus.htm"})
+    public String menus() {
+        return "base/menus";
+    }
 
     /**
      * 打开登陆页

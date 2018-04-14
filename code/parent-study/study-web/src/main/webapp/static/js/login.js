@@ -1,6 +1,3 @@
-/**
- * 登录页js
- */
 $(document).ready(function() {
     // 用户名
     var boxUserName = $("#login_form").find("input#userName");
@@ -117,7 +114,6 @@ $(document).ready(function() {
                 engine.progress("close");// 隐藏进度条
                 engine.alert("登录失败！", "系统错误，请联系系统管理员！", "error");
             }
-            
         });
     };
 
