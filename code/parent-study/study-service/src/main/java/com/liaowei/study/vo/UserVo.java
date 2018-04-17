@@ -20,7 +20,7 @@ import com.liaowei.study.entity.SysUser;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
-public class UserVo extends BaseVo<SysUser> {
+public class UserVo extends BaseVo {
 
     /**
      * 用户名
@@ -44,11 +44,6 @@ public class UserVo extends BaseVo<SysUser> {
 
     public static UserVo forEntity(SysUser sysUser) {
         return new UserVo(sysUser.getId(), sysUser.getUserName(), sysUser.getPassword(), sysUser.getValid(), sysUser.getCreator(), sysUser.getCreateTime(), sysUser.getReviser(), sysUser.getModifyTime());
-    }
-
-    @Override
-    public SysUser toEntity() {
-        return new SysUser(id, userName, password, valid, creator, createTime, reviser, modifyTime);
     }
 
     /**

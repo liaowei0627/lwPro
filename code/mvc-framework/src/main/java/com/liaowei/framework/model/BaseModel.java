@@ -7,8 +7,10 @@ package com.liaowei.framework.model;
 import java.time.LocalDateTime;
 
 import com.liaowei.framework.core.model.IBasisModel;
-import com.liaowei.framework.entity.BaseEntity;
-import com.liaowei.framework.vo.BaseVo;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * BaseModel
@@ -21,12 +23,10 @@ import com.liaowei.framework.vo.BaseVo;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
-public abstract class BaseModel<V extends BaseVo<E>, E extends BaseEntity> implements IBasisModel<V, E> {
-
-    /**
-     * 主键
-     */
-    protected String id;
+@Getter
+@Setter
+@ToString(callSuper = true)
+public abstract class BaseModel extends BaseIdModel implements IBasisModel {
 
     /**
      * 是否有效
@@ -53,113 +53,16 @@ public abstract class BaseModel<V extends BaseVo<E>, E extends BaseEntity> imple
      */
     protected LocalDateTime modifyTime;
 
-    protected BaseModel() {
+    public BaseModel() {
+        super();
     }
 
-    protected BaseModel(String id, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
-        this.id = id;
+    public BaseModel(String id, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+        super(id);
         this.valid = valid;
         this.creator = creator;
         this.createTime = createTime;
         this.reviser = reviser;
-        this.modifyTime = modifyTime;
-    }
-
-    public abstract V toVo();
-
-    /**
-     * 主键
-     */
-    @Override
-    public String getId() {
-        return id;
-    }
-
-    /**
-     * 主键
-     */
-    @Override
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * 是否有效
-     */
-    @Override
-    public Boolean getValid() {
-        return valid;
-    }
-
-    /**
-     * 是否有效
-     */
-    @Override
-    public void setValid(Boolean valid) {
-        this.valid = valid;
-    }
-
-    /**
-     * 创建者
-     */
-    @Override
-    public String getCreator() {
-        return creator;
-    }
-
-    /**
-     * 创建者
-     */
-    @Override
-    public void setCreator(String creator) {
-        this.creator = creator;
-    }
-
-    /**
-     * 创建时间
-     */
-    @Override
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    /**
-     * 创建时间
-     */
-    @Override
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    /**
-     * 修改者
-     */
-    @Override
-    public String getReviser() {
-        return reviser;
-    }
-
-    /**
-     * 修改者
-     */
-    @Override
-    public void setReviser(String reviser) {
-        this.reviser = reviser;
-    }
-
-    /**
-     * 修改者
-     */
-    @Override
-    public LocalDateTime getModifyTime() {
-        return modifyTime;
-    }
-
-    /**
-     * 修改者
-     */
-    @Override
-    public void setModifyTime(LocalDateTime modifyTime) {
         this.modifyTime = modifyTime;
     }
 }

@@ -27,7 +27,7 @@ import com.liaowei.framework.entity.BaseEntity;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "GEMSTONE_FORMULA")
+@Table(name = "GEMSTONE_FORMULAS")
 public class GemstoneFormula extends BaseEntity {
 
     /**

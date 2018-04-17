@@ -10,26 +10,17 @@ import java.time.LocalDateTime;
 /**
  * IBasisEntity
  * 
- * 实体类顶层接口
+ * 实体类顶层通用字段接口
  * Entity用于数据层与服务层传递数据
  * 不论用何种实体层框架，其实体类均需继承此接口
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:25:25
+ * @see com.liaowei.framework.core.entity.IBasisIdEntity
  * @see java.io.Serializable
  * @since jdk1.8
  */
-public interface IBasisEntity extends Serializable {
-
-    /**
-     * 主键
-     */
-    String getId();
-
-    /**
-     * 主键
-     */
-    void setId(String id);
+public interface IBasisEntity extends IBasisIdEntity, Serializable {
 
     /**
      * 是否有效
@@ -80,8 +71,4 @@ public interface IBasisEntity extends Serializable {
      * 修改时间
      */
     void setModifyTime(LocalDateTime modifyTime);
-
-    int hashCode();
-
-    boolean equals(Object obj);
 }

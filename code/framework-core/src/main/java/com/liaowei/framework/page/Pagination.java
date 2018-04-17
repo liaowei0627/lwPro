@@ -7,6 +7,12 @@ package com.liaowei.framework.page;
 import java.io.Serializable;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * Pagination
  *
@@ -18,81 +24,49 @@ import java.util.List;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@ToString
 public class Pagination<T> implements Serializable {
 
     /**
      * 总条数，没有数据为0
      */
+    @Getter
+    @Setter
     private int total = 0;
+
     /**
      * 每页条数
      */
+    @Getter
+    @Setter
     private int pageSize = 20;
+
     /**
      * 页号从1开始
      */
+    @Getter
+    @Setter
     private int pageNumber = 1;
     /**
      * 查询起始记录下标
      * 从0开始
      */
     private int startPosition;
+
     /**
      * 数据
      */
+    @NonNull
+    @Getter
+    @Setter
     private List<T> data;
 
-    public Pagination() {
-    }
-
-    public Pagination(int total, int pageSize, int pageNumber, int startPosition, List<T> data) {
+    public Pagination(int total, int pageSize, int pageNumber, List<T> data) {
         this.total = total;
         this.pageSize = pageSize;
         this.pageNumber = pageNumber;
-        this.startPosition = startPosition;
         this.data = data;
-    }
-
-    /**
-     * 总条数，没有数据为0
-     */
-    public int getTotal() {
-        return total;
-    }
-
-    /**
-     * 总条数，没有数据为0
-     */
-    public void setTotal(int total) {
-        this.total = total;
-    }
-
-    /**
-     * 每页条数
-     */
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    /**
-     * 每页条数
-     */
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    /**
-     * 页号从1开始
-     */
-    public int getPageNumber() {
-        return pageNumber;
-    }
-
-    /**
-     * 页号从1开始
-     */
-    public void setPageNumber(int pageNumber) {
-        this.pageNumber = pageNumber;
     }
 
     /**
@@ -103,19 +77,5 @@ public class Pagination<T> implements Serializable {
     public int getStartPosition() {
         startPosition = pageNumber * pageSize - pageSize;
         return startPosition;
-    }
-
-    /**
-     * 数据
-     */
-    public List<T> getData() {
-        return data;
-    }
-
-    /**
-     * 数据
-     */
-    public void setData(List<T> data) {
-        this.data = data;
     }
 }

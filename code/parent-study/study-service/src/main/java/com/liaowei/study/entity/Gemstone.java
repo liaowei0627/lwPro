@@ -28,7 +28,7 @@ import com.liaowei.framework.entity.BaseEntity;
  */
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "GEMSTONE")
+@Table(name = "GEMSTONES")
 public class Gemstone extends BaseEntity {
 
     /**

@@ -6,12 +6,8 @@ package com.liaowei.framework.core.controller;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.liaowei.framework.core.entity.IBasisEntity;
 import com.liaowei.framework.core.model.IBasisModel;
-import com.liaowei.framework.core.service.IBasisService;
 import com.liaowei.framework.core.vo.IBasisVo;
 
 /**
@@ -26,29 +22,15 @@ import com.liaowei.framework.core.vo.IBasisVo;
  * @date 2018-04-08 21:25:25
  * @since jdk1.8
  */
-public abstract class BasisController<M extends IBasisModel<V, E>, V extends IBasisVo<E>, E extends IBasisEntity, PK extends Serializable> {
-
-    protected final Logger LOGGER = LoggerFactory.getLogger(getClassName());
+public abstract class BasisController<M extends IBasisModel, V extends IBasisVo, E extends IBasisEntity, PK extends Serializable> {
 
     /**
-     * 从子类中注入类名
-     * 
-     * @return
+     * 将Vo对象转换成Model对象
      */
-    protected abstract String getClassName();
+    protected abstract M voToModel(V v);
 
     /**
-     * 将Vo对象转换为Model对象
-     * 
-     * @param v
-     * @return
+     * 将Model对象转换成Vo对象
      */
-    protected abstract M modelCopy(V v);
-
-    /**
-     * 从子类中注入Servic
-     * 
-     * @return
-     */
-    protected abstract IBasisService<V, E, PK> getService();
+    protected abstract V modelToVo(M m);
 }

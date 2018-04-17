@@ -21,7 +21,7 @@ import com.liaowei.framework.page.Pagination;
  * @date 2018-04-08 21:25:25
  * @since jdk1.8
  */
-public interface IBasisService<V extends IBasisVo<E>, E extends IBasisEntity, PK extends Serializable> {
+public interface IBasisService<V extends IBasisVo, E extends IBasisEntity, PK extends Serializable> {
 
     /**
      * 根据主键值查询数据对象

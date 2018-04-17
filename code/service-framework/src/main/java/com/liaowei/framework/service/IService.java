@@ -20,5 +20,5 @@ import com.liaowei.framework.vo.BaseVo;
  * @see com.liaowei.framework.core.service.IBasisService<V, E, PK>
  * @since jdk1.8
  */
-public interface IService<V extends BaseVo<E>, E extends BaseEntity, PK extends Serializable> extends IBasisService<V, E, PK> {
+public interface IService<V extends BaseVo, E extends BaseEntity, PK extends Serializable> extends IBasisService<V, E, PK> {
 }

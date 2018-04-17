@@ -22,10 +22,5 @@ import com.liaowei.framework.vo.BaseVo;
  * @see com.liaowei.framework.core.controller.BasisController<M, V, E>
  * @since jdk1.8
  */
-public abstract class BaseController<M extends BaseModel<V, E>, V extends BaseVo<E>, E extends BaseEntity, PK extends Serializable> extends BasisController<M, V, E, PK> {
-
-
-    protected abstract String getClassName();
-
-    protected abstract M modelCopy(V v);
+public abstract class BaseController<M extends BaseModel, V extends BaseVo, E extends BaseEntity, PK extends Serializable> extends BasisController<M, V, E, PK> {
 }

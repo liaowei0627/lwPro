@@ -4,39 +4,19 @@
  */
 package com.liaowei.framework.core.vo;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import com.liaowei.framework.core.entity.IBasisEntity;
 
 /**
  * IBasisVo
  *
- * Vo用于服务层向控制层传递数据
+ * 用于服务层向控制层传递数据的通用属性接口
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:25:25
- * @see java.io.Serializable
+ * @see com.liaowei.framework.core.vo.IBasisIdVo
  * @since jdk1.8
  */
-public interface IBasisVo<E extends IBasisEntity> extends Serializable {
-
-    /**
-     * 转换成Entity对象并返回
-     * 
-     * @return
-     */
-    E toEntity();
-
-    /**
-     * 主键
-     */
-    String getId();
-
-    /**
-     * 主键
-     */
-    void setId(String id);
+public interface IBasisVo extends IBasisIdVo {
 
     /**
      * 是否有效
@@ -87,8 +67,4 @@ public interface IBasisVo<E extends IBasisEntity> extends Serializable {
      * 修改时间
      */
     void setModifyTime(LocalDateTime modifyTime);
-
-    int hashCode();
-
-    boolean equals(Object obj);
 }

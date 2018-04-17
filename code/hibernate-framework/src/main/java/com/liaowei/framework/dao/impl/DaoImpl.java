@@ -25,6 +25,7 @@ import org.hibernate.query.Query;
 import org.hibernate.query.criteria.internal.OrderImpl;
 
 import com.google.common.base.CaseFormat;
+import com.google.common.base.Joiner;
 import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
 import com.liaowei.framework.core.dao.impl.BasisDaoImpl;
@@ -32,6 +33,8 @@ import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.dao.IDao;
 import com.liaowei.framework.entity.BaseEntity;
 import com.liaowei.framework.page.Pagination;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * DaoImpl
@@ -44,6 +47,7 @@ import com.liaowei.framework.page.Pagination;
  * @see com.liaowei.framework.core.dao.impl.BasisDaoImpl<E, PK>
  * @since jdk1.8
  */
+@Slf4j
 public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> extends BasisDaoImpl<E, PK> implements IDao<E, PK> {
 
     @Resource(name = "sessionFactory")
@@ -51,23 +55,27 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
 
     @Override
     public E findEntity(PK pk) {
+        log.debug("根据主键值查询数据对象, 主键：" + pk);
         return sessionFactory.getCurrentSession().get(getEntityClass(), pk);
     }
 
     @Override
     public E addEntity(E entity) {
+        log.debug("新增数据，数据：" + entity.toString());
         sessionFactory.getCurrentSession().save(entity);
         return entity;
     }
 
     @Override
     public E updateEntity(E entity) {
+        log.debug("修改数据，数据：" + entity.toString());
         sessionFactory.getCurrentSession().update(entity);
         return entity;
     }
 
     @Override
     public List<E> findList(E entity) throws ApplicationException {
+        log.debug("查询数据列表，查询条件：" + entity.toString());
         List<E> resultList;
 
         try {
@@ -102,7 +110,7 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
                 resultList = session.createQuery(criteria).getResultList();
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             resultList = Lists.newArrayList();
             throw new ApplicationException(e);
         }
@@ -111,6 +119,7 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
 
     @Override
     public Pagination<E> findPage(Pagination<E> page, E entity) throws ApplicationException {
+        log.debug("查询数据分页列表，查询条件：" + entity.toString() + ",分页信息：" + page.toString());
         List<E> resultList;
 
         try {
@@ -163,7 +172,7 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
                 resultList = Lists.newArrayList();
             }
         } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
             resultList = Lists.newArrayList();
             throw new ApplicationException(e);
         }
@@ -173,6 +182,7 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
 
     @Override
     public void delEntity(PK pk) {
+        log.debug("根据主键值删除一条数据对象, 主键：" + pk);
         Class<E> entityClass = getEntityClass();
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -185,6 +195,7 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
 
     @Override
     public void delList(List<PK> pks) {
+        log.debug("根据主键值批量删除数据对象, 主键：" + Joiner.on(",").join(pks));
         Class<E> entityClass = getEntityClass();
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

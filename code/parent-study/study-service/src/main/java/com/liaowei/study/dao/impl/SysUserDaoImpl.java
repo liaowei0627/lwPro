@@ -28,11 +28,6 @@ public class SysUserDaoImpl extends DaoImpl<SysUser, String> implements ISysUser
     }
 
     @Override
-    protected String getClassName() {
-        return SysUserDaoImpl.class.getName();
-    }
-
-    @Override
     public SysUser findByUserName(String userName) {
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

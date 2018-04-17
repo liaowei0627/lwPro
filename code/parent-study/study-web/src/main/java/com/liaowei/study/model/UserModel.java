@@ -3,11 +3,10 @@ package com.liaowei.study.model;
 import java.time.LocalDateTime;
 
 import com.liaowei.framework.model.BaseModel;
-import com.liaowei.study.entity.SysUser;
 import com.liaowei.study.vo.UserVo;
 
 @SuppressWarnings("serial")
-public class UserModel extends BaseModel<UserVo, SysUser> {
+public class UserModel extends BaseModel {
 
     /**
      * 用户名
@@ -37,11 +36,6 @@ public class UserModel extends BaseModel<UserVo, SysUser> {
      */
     public static UserModel forVo(UserVo userVo) {
         return new UserModel(userVo.getId(), userVo.getUserName(), userVo.getPassword(), userVo.getValid(), userVo.getCreator(), userVo.getCreateTime(), userVo.getReviser(), userVo.getModifyTime());
-    }
-
-    @Override
-    public UserVo toVo() {
-        return new UserVo(id, userName, password, valid, creator, createTime, reviser, modifyTime);
     }
 
     /**

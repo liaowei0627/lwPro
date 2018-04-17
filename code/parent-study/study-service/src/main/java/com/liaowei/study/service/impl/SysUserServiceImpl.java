@@ -17,18 +17,20 @@ public class SysUserServiceImpl extends ServiceImpl<UserVo, SysUser, String> imp
 	@Resource(name = "sysUserDao")
 	private ISysUserDao sysUserDao;
 
-    @Override
-    protected String getClassName() {
-        return SysUserServiceImpl.class.getName();
-    }
-
 	@Override
 	protected IDao<SysUser, String> getDao() {
 	    return sysUserDao;
 	}
 
     @Override
-    protected UserVo voCopy(SysUser entity) {
-        return UserVo.forEntity(entity);
+    protected UserVo entityToVo(SysUser entity) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    protected SysUser voToEntity(UserVo vo) {
+        // TODO Auto-generated method stub
+        return null;
     }
 }

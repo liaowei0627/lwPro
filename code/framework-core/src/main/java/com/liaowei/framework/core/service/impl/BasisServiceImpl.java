@@ -6,9 +6,6 @@ package com.liaowei.framework.core.service.impl;
 
 import java.io.Serializable;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.liaowei.framework.core.dao.IBasisDao;
 import com.liaowei.framework.core.entity.IBasisEntity;
 import com.liaowei.framework.core.service.IBasisService;
@@ -24,27 +21,20 @@ import com.liaowei.framework.core.vo.IBasisVo;
  * @see com.liaowei.framework.core.service.IBasisService<T, PK>
  * @since jdk1.8
  */
-public abstract class BasisServiceImpl<V extends IBasisVo<E>, E extends IBasisEntity, PK extends Serializable> implements IBasisService<V, E, PK> {
-
-    protected final Logger LOGGER = LoggerFactory.getLogger(getClassName());
-
-    /**
-     * 从子类注入类名
-     * @return
-     */
-    protected abstract String getClassName();
+public abstract class BasisServiceImpl<V extends IBasisVo, E extends IBasisEntity, PK extends Serializable> implements IBasisService<V, E, PK> {
 
     /**
      * 从子类注入Dao
-     * @return
      */
     protected abstract IBasisDao<E, PK> getDao();
 
     /**
      * 将Entity对象转换成Vo对象
-     * 
-     * @param entity
-     * @return
      */
-    protected abstract V voCopy(E entity);
+    protected abstract V entityToVo(E entity);
+
+    /**
+     * 将Vo对象转换成Entity对象
+     */
+    protected abstract E voToEntity(V vo);
 }

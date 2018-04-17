@@ -10,6 +10,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liaowei.framework.core.jackson.CustomOM;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * JSONUtils
  *
@@ -19,6 +21,7 @@ import com.liaowei.framework.core.jackson.CustomOM;
  * @date 2018-04-08 21:31:43
  * @since jdk1.8
  */
+@Slf4j
 public class JSONUtils {
 
     private static final ObjectMapper mapper = new CustomOM();
@@ -34,6 +37,7 @@ public class JSONUtils {
      * @throws JsonProcessingException
      */
     public static String objectToJSONString(Object o) throws JsonProcessingException {
+        log.debug("对象转JSON字符串：" + o.toString());
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(o);
     }
 
@@ -46,6 +50,7 @@ public class JSONUtils {
      * @throws IOException
      */
     public static <T> T JSONStringToObject(String json, Class<T> clazz) throws IOException {
+        log.debug("JSON字符串转对象：" + json);
         return mapper.readValue(json, clazz);
     }
 }
