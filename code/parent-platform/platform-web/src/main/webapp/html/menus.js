@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    "use strict";
     // 菜单栏设置
     $("#menubar").accordion({
         fit: true

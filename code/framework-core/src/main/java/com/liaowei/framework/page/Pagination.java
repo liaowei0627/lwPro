@@ -40,14 +40,14 @@ public class Pagination<T> implements Serializable {
      */
     @Getter
     @Setter
-    private int pageSize = 20;
+    private int rows = 20;
 
     /**
      * 页号从1开始
      */
     @Getter
     @Setter
-    private int pageNumber = 1;
+    private int page = 1;
     /**
      * 查询起始记录下标
      * 从0开始
@@ -62,10 +62,15 @@ public class Pagination<T> implements Serializable {
     @Setter
     private List<T> data;
 
+    public Pagination(int pageSize, int pageNumber) {
+        this.rows = pageSize;
+        this.page = pageNumber;
+    }
+
     public Pagination(int total, int pageSize, int pageNumber, List<T> data) {
         this.total = total;
-        this.pageSize = pageSize;
-        this.pageNumber = pageNumber;
+        this.rows = pageSize;
+        this.page = pageNumber;
         this.data = data;
     }
 
@@ -75,7 +80,7 @@ public class Pagination<T> implements Serializable {
      * @return
      */
     public int getStartPosition() {
-        startPosition = pageNumber * pageSize - pageSize;
+        startPosition = page * rows - rows;
         return startPosition;
     }
 }

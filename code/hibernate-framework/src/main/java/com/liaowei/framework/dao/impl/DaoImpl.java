@@ -93,7 +93,7 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
                 String fieldName;
                 for (Method method : declaredMethods) {
                     String methodName = method.getName();
-                    if (methodName.startsWith("get") && !Objects.equal("getClass", methodName)) {
+                    if (methodName.startsWith("get") && !Objects.equal("getClass", methodName) && !Objects.equal("getHasChild", methodName)) {
                         returnType = method.getReturnType();
                         returnData = method.invoke(entity);
                         fieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, methodName.replace("get", ""));
@@ -141,7 +141,7 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
                 String fieldName;
                 for (Method method : declaredMethods) {
                     String methodName = method.getName();
-                    if (methodName.startsWith("get") && !Objects.equal("getClass", methodName)) {
+                    if (methodName.startsWith("get") && !Objects.equal("getClass", methodName) && !Objects.equal("getHasChild", methodName)) {
                         returnType = method.getReturnType();
                         returnData = method.invoke(entity);
                         fieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, methodName.replace("get", ""));
@@ -163,7 +163,7 @@ public abstract class DaoImpl<E extends BaseEntity, PK extends Serializable> ext
                     criteria.orderBy(order);
                     Query<E> query = session.createQuery(criteria);
                     query.setFirstResult(page.getStartPosition());
-                    query.setMaxResults(page.getPageSize());
+                    query.setMaxResults(page.getRows());
                     resultList = query.getResultList();
                 } else {
                     resultList = Lists.newArrayList();

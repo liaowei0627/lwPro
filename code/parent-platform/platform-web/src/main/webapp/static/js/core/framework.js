@@ -1,5 +1,5 @@
 /**
- * 核心框架js
+ * 通用js
  */
 var engine;
 var isInLoginPage = false;
@@ -7,111 +7,163 @@ var sessionUser = null;
 var currentSystemId = "";
 var showUserInfo = function() {};
 $(document).ready(function() {
-    var bodyPanel = $("#body_layout");
-    var headerPanel = bodyPanel.layout("panel", "north");
-    var footerPanel = bodyPanel.layout("panel", "south");
-    var mainPanel = bodyPanel.layout("panel", "center");
-    var menuPanel = null;
+    "use strict";
 
     // 通用方法对象
-    engine = new Object;
-    // 加载左侧菜单栏
-    engine.loadMenus = function(title, sysId) {
-        if (!menuPanel) {
-            bodyPanel.layout("add", {
+    var engineClass = function(bodyPanel) {
+        /**
+         * 主页layout对象
+         */
+        this.bodyPanel = bodyPanel;
+        /**
+         * 主页North Panel对象
+         */
+        this.headerPanel = bodyPanel.layout("panel", "north");
+        /**
+         * 主页South Panel对象
+         */
+        this.footerPanel = bodyPanel.layout("panel", "south");
+        /**
+         * 主页Center Panel对象
+         */
+        this.mainPanel = bodyPanel.layout("panel", "center");
+        /**
+         * 主页West Panel对象
+         */
+//        this.menuPanel = null;
+        /**
+         * 加载左侧菜单栏
+         * title Panel标题
+         * sysId 分系统Id
+         */
+        this.loadMenus = function(title, sysId) {
+            this.removeMenus();
+            this.bodyPanel.layout("add", {
                 region: "west",
                 width: 180,
                 split: true,
                 title: title
             });
-            menuPanel = bodyPanel.layout("panel", "west");
+            currentSystemId = sysId;
+            var menuPanel = this.bodyPanel.layout("panel", "west");
+            menuPanel.panel("refresh", "./html/menus.html?_=" + new Date().getTime());
         };
-        currentSystemId = sysId;
-        menuPanel.panel("refresh", "./html/menus.html?_=" + new Date().getTime());
-    };
-    // 销毁菜单栏
-    engine.removeMenus = function() {
-        if (menuPanel) {
-            bodyPanel.layout("remove", "west");
-            menuPanel = null;
+        /**
+         * 销毁菜单栏
+         */
+        this.removeMenus = function() {
+            this.bodyPanel.layout("remove", "west");
+            currentSystemId = "";
         };
-        currentSystemId = "";
-    };
-    // 打开分系统首页
-    engine.loadSystem = function(url, title, sysId) {
-        this.loadMenus(title, sysId);
-        mainPanel.panel("setTitle", title);
-        mainPanel.panel("refresh", url + "?_=" + new Date().getTime());
-    };
-    // 打开模块首页
-    engine.loadModel = function(url, title, modId) {
-        mainPanel.panel("setTitle", title);
-        mainPanel.panel("refresh", url + "?_=" + new Date().getTime());
-    };
-    // 加载header部分
-    engine.loadHeader = function() {
-        headerPanel.panel("refresh", "./html/header.html?_=" + new Date().getTime());
-    };
-    // 加载footer部分
-    engine.loadFooter = function() {
-        footerPanel.panel("refresh", "./html/footer.html?_" + new Date().getTime());
-    };
-    // 打开首页
-    engine.logged = function() {
-        engine.removeMenus();
-        showUserInfo();
-        mainPanel.panel("setTitle", "首页");
-        mainPanel.panel("refresh", "./html/home.html?_=" + new Date().getTime());
-        isInLoginPage = false;
-    };
-    // 打开登录页
-    engine.login = function() {
-        engine.removeMenus();
-        mainPanel.panel("setTitle", "登录页");
-        mainPanel.panel("refresh", "./html/login.html?_=" + new Date().getTime());
-        isInLoginPage = true;
-    };
-    // 进度条：open / cloase
-    engine.progress = function(action) {
-        if ("open" == action) {
-            $.messager.progress();
-        } else {
-            $.messager.progress(action);
+        /**
+         * 打开分系统首页
+         * url 链接地址
+         * title West Panel标题
+         * sysId 分系统Id
+         */
+        this.loadSystem = function(url, title, sysId) {
+            this.loadMenus(title, sysId);
+            this.mainPanel.panel("setTitle", title);
+            this.mainPanel.panel("refresh", url + "?_=" + new Date().getTime());
         };
-    };
-    // 对字符串md5编码，返回16进制字符串
-    engine.md5 = function(plaintext) {
-        return SparkMD5.hash(plaintext).toUpperCase();
-    };
-    // 将字符串转为16进制字符串
-    engine.stringToHex = function(str){
-        var val="";
-        for(var i = 0; i < str.length; i++){
-            if(val == "")
-                val = str.charCodeAt(i).toString(16);
-            else
-                val += str.charCodeAt(i).toString(16);
+        /**
+         * 打开模块首页
+         * url 链接地址
+         * title Center Panel标题
+         * modId 链接Id
+         */
+        this.loadModel = function(url, title, modId) {
+            this.mainPanel.panel("setTitle", title);
+            this.mainPanel.panel("refresh", url + "?_=" + new Date().getTime());
+        };
+        /**
+         * 加载header部分
+         */
+        this.loadHeader = function() {
+            this.headerPanel.panel("refresh", "./html/header.html?_=" + new Date().getTime());
+        };
+        /**
+         * 加载footer部分
+         */
+        this.loadFooter = function() {
+            this.footerPanel.panel("refresh", "./html/footer.html?_" + new Date().getTime());
+        };
+        /**
+         * 打开首页
+         */
+        this.logged = function() {
+            this.removeMenus();
+            showUserInfo();
+            this.mainPanel.panel("setTitle", "首页");
+            this.mainPanel.panel("refresh", "./html/home.html?_=" + new Date().getTime());
+//            isInLoginPage = false;
+        };
+        /**
+         * 打开登录页
+         */
+        this.login = function() {
+            this.removeMenus();
+            this.mainPanel.panel("setTitle", "登录页");
+            this.mainPanel.panel("refresh", "./html/login.html?_=" + new Date().getTime());
+//            isInLoginPage = true;
+        };
+        /**
+         * 进度条
+         * action 动作 open / close
+         */
+        this.progress = function(action) {
+            if ("open" == action) {
+                $.messager.progress();
+            } else {
+                $.messager.progress(action);
+            };
+        };
+        /**
+         * 对字符串md5编码，返回16进制字符串
+         * plaintext 要编码的字符串
+         */
+        this.md5 = function(plaintext) {
+            return SparkMD5.hash(plaintext).toUpperCase();
+        };
+        /**
+         * 将字符串转为16进制字符串
+         * str 要转换的字符串
+         */
+        this.stringToHex = function(str){
+            var val="";
+            for(var i = 0; i < str.length; i++){
+                if(val == "")
+                    val = str.charCodeAt(i).toString(16);
+                else
+                    val += str.charCodeAt(i).toString(16);
+            }
+            return val.toUpperCase();
         }
-        return val.toUpperCase();
-    }
-    // 对字符串进行base64编码，返回16进制字符串
-    engine.base64 = function(plaintext) {
-        return this.stringToHex(window.btoa(window.encodeURIComponent(plaintext)));
-    };
-    /** 
-     * 提示框
-     * title 标题
-     * content 内容
-     * type  可选项，值可以是error、info、question、warning
-     */
-    engine.alert = function(title, content, type) {
-        if (type && type.length > 0) {
-            $.messager.alert(title, content, type);
-        } else {
-            $.messager.alert(title, content);
+        /**
+         * 对字符串进行base64编码，返回16进制字符串
+         * plaintext 要编码的字符串
+         */
+        this.base64 = function(plaintext) {
+            return this.stringToHex(window.btoa(window.encodeURIComponent(plaintext)));
+        };
+        /** 
+         * 提示框
+         * title 标题
+         * content 内容
+         * type  可选项，值可以是error、info、question、warning
+         */
+        this.alert = function(title, content, type) {
+            if (type && type.length > 0) {
+                $.messager.alert(title, content, type);
+            } else {
+                $.messager.alert(title, content);
+            };
         };
     };
+    var bodyPanel = $("#body_layout");
+    engine = new engineClass(bodyPanel);
     // 使engine对象不可被修改
+//    Object.seal(engine);
     Object.freeze(engine);
 
     // 加载默认页面

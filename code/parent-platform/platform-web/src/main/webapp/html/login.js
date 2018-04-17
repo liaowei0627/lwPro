@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    "use strict";
     // 用户名
     var boxUserName = $("#login_form").find("input#userName");
     boxUserName.textbox({
@@ -66,13 +67,9 @@ $(document).ready(function() {
                 if (1 == result.stat) {
                     var seed = result.data;
                     var pwd = $("#password").val();
-                    console.info(pwd);
                     var pwdCiphertext = engine.md5(pwd);
-                    console.info(pwdCiphertext);
                     pwdCiphertext = engine.md5(pwdCiphertext.concat(seed));
-                    console.info(pwdCiphertext);
                     pwdCiphertext = engine.base64(pwdCiphertext);
-                    console.info(pwdCiphertext);
                     $("#encryptedPassword").val(pwdCiphertext);
                     // 提交表单
                     loginForm.form("submit", {

@@ -1,4 +1,6 @@
 $(document).ready(function() {
+    "use strict";
+
     var navigationBar = $("#navigationBar");
     var sessionUserInfo = $("#sessionUserInfo");
     var btnUserName = sessionUserInfo.find("a#btnUserName");

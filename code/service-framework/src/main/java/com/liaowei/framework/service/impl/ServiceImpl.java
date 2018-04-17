@@ -68,19 +68,15 @@ public abstract class ServiceImpl<V extends BaseVo, E extends BaseEntity, PK ext
     @Override
     public Pagination<V> findPage(Pagination<V> page, V v) throws ApplicationException {
         log.debug("查询数据分页列表，查询条件：" + v.toString() + ",分页信息：" + page.toString());
-        List<V> vl = page.getData();
         List<E> el = Lists.newArrayList();
-        for (V vo : vl) {
-            el.add(voToEntity(vo));
-        }
-        Pagination<E> p = new Pagination<>(page.getTotal(), page.getPageSize(), page.getPageNumber(), el);
+        Pagination<E> p = new Pagination<>(page.getRows(), page.getPage());
         p = getDao().findPage(p, voToEntity(v));
         el = p.getData();
-        vl = Lists.newArrayList();
+        List<V> vl = Lists.newArrayList();
         for (E e : el) {
             vl.add(entityToVo(e));
         }
-        return new Pagination<V>(page.getTotal(), page.getPageSize(), page.getPageNumber(), vl);
+        return new Pagination<V>(page.getTotal(), page.getRows(), page.getPage(), vl);
     }
 
     @Override

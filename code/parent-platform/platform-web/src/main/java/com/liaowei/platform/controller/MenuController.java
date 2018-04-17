@@ -7,11 +7,11 @@ package com.liaowei.platform.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.Lists;
@@ -46,6 +46,7 @@ public class MenuController extends BaseController<MenuModel, MenuVo, SysMenu, S
 
     @Override
     protected MenuModel voToModel(MenuVo v) {
+        log.debug("Vo转换Model：" + v.toString());
         MenuModel m = new MenuModel();
         BeanUtils.copyProperties(v, m);
         return m;
@@ -53,6 +54,7 @@ public class MenuController extends BaseController<MenuModel, MenuVo, SysMenu, S
 
     @Override
     protected MenuVo modelToVo(MenuModel m) {
+        log.debug("Model转换Vo：" + m.toString());
         MenuVo v = new MenuVo();
         BeanUtils.copyProperties(m, v);
         return v;
@@ -60,13 +62,14 @@ public class MenuController extends BaseController<MenuModel, MenuVo, SysMenu, S
 
     @RequestMapping(path = {"/list"})
     @ResponseBody
-    public Pagination<MenuListView> list(Pagination<MenuVo> page, MenuVo vo, HttpServletRequest request) throws ApplicationException {
-        page = menuService.findPage(page, vo);
-        List<MenuVo> data = page.getData();
+    public Pagination<MenuListView> list(@RequestParam(name = "page") int page, @RequestParam(name = "rows") int rows, MenuModel model) throws ApplicationException {
+        log.debug("查询菜单数据列表，page=" + page + "；rows=" + rows + "；model=" + model.toString());
+        Pagination<MenuVo> pagination = menuService.findPage(new Pagination<>(rows, page), modelToVo(model));
+        List<MenuVo> data = pagination.getData();
         List<MenuListView> list = Lists.newArrayList();
         for (MenuVo menuVo : data) {
             list.add(new MenuListView(voToModel(menuVo)));
         }
-        return new Pagination<MenuListView>(page.getTotal(), page.getPageSize(), page.getPageNumber(), list);
+        return new Pagination<MenuListView>(pagination.getTotal(), pagination.getRows(), pagination.getPage(), list);
     }
 }

@@ -7,9 +7,7 @@ package com.liaowei.platform.view;
 import com.liaowei.platform.model.MenuModel;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 /**
  * MenuListView
@@ -22,9 +20,19 @@ import lombok.Setter;
  */
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
 public class MenuListView {
 
     private MenuModel o;
+
+    public String getMenuText() {
+        return o.getMenuText();
+    }
+
+    public String getMenuUrl() {
+        return o.getMenuUrl();
+    }
+
+    public String getMenuType() {
+        return o.getMenuType().name();
+    }
 }

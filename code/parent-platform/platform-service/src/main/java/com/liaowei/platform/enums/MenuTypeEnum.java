@@ -4,6 +4,10 @@
  */
 package com.liaowei.platform.enums;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 /**
  * MenuTypeEnum
  *
@@ -13,22 +17,26 @@ package com.liaowei.platform.enums;
  * @date 2018-04-17 04:34:50
  * @since jdk1.8
  */
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public enum MenuTypeEnum {
 
     /**
      * 分系统
      */
-    SYSTEM,
+    SYSTEM("分系统"),
     /**
      * 菜单
      */
-    MENU,
+    MENU("菜单"),
     /**
      * 链接
      */
-    LINK,
+    LINK("链接"),
     /**
      * 按钮
      */
-    BUTTON;
+    BUTTON("按钮");
+
+    private String text;
 }
