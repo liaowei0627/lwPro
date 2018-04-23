@@ -2,7 +2,7 @@
  * platform-web
  * MenuController.java
  */
-package com.liaowei.platform.controller;
+package com.liaowei.platform.controller.sys;
 
 import java.util.List;
 
@@ -19,6 +19,7 @@ import com.liaowei.framework.controller.BaseController;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.page.Pagination;
 import com.liaowei.platform.entity.SysMenu;
+import com.liaowei.platform.enums.MenuTypeEnum;
 import com.liaowei.platform.model.MenuModel;
 import com.liaowei.platform.service.IMenuService;
 import com.liaowei.platform.view.MenuListView;
@@ -33,7 +34,8 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 23:18:54
- * @see com.liaowei.framework.controller.BaseController<MenuModel, MenuVo, SysMenu, String>
+ * @see com.liaowei.framework.controller.BaseController<MenuModel, MenuVo,
+ *      SysMenu, String>
  * @since jdk1.8
  */
 @Controller
@@ -60,11 +62,24 @@ public class MenuController extends BaseController<MenuModel, MenuVo, SysMenu, S
         return v;
     }
 
+    /**
+     * 请求列表数据
+     * 
+     * @param page 页号
+     * @param rows 每页行数
+     * @param model 查询条件
+     * @return
+     * @throws ApplicationException
+     */
     @RequestMapping(path = {"/list"})
     @ResponseBody
-    public Pagination<MenuListView> list(@RequestParam(name = "page") int page, @RequestParam(name = "rows") int rows, MenuModel model) throws ApplicationException {
-        log.debug("查询菜单数据列表，page=" + page + "；rows=" + rows + "；model=" + model.toString());
-        Pagination<MenuVo> pagination = menuService.findPage(new Pagination<>(rows, page), modelToVo(model));
+    public Pagination<MenuListView> list(@RequestParam(name = "page") int page, @RequestParam(name = "rows") int rows,
+            @RequestParam(name = "menuText") String menuText, @RequestParam(name = "menuType") String menuType) throws ApplicationException {
+        log.debug("查询菜单数据列表，page=" + page + "；rows=" + rows + "；menuText=" + menuText + "；menuType=" + menuType);
+        MenuVo vo = new MenuVo();
+        vo.setMenuText(menuText);
+        vo.setMenuType(MenuTypeEnum.valueOf(menuType));
+        Pagination<MenuVo> pagination = menuService.findPage(new Pagination<>(rows, page), vo);
         List<MenuVo> data = pagination.getData();
         List<MenuListView> list = Lists.newArrayList();
         for (MenuVo menuVo : data) {

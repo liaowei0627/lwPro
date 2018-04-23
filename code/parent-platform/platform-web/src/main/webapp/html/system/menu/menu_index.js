@@ -42,46 +42,37 @@ $(document).ready(function() {
         menu: "#queryMenuType",
         searcher: function(value, name) {
             console.info("value=" + value + ";name=" + name);
-//            queryParams.menuText = value;
-//            queryParams.menuType = name;
+            queryParams.menuText = value;
+            queryParams.menuType = name;
+            menuTable.datagrid("reload", queryParams);
         }
     });
     var queryMenuType = menuSearchbox.searchbox("menu");
     $.ajax({
-        url: "./category/menu",
+        url: "./category/map_list",
         type: "GET",
         cache: false,
         dataType: "json",
-        data: {
-            categoryType: "menu"
-        },
+        data: {category: "menu"},
         success: function(result, status) {
-            
+            if (1 == result.stat) {
+                var data = result.data;
+                var name;
+                var text;
+                for (var i = 0; i < data.length; i++) {
+                    name = data[i].name;
+                    text = data[i].text;
+                    queryMenuType.menu("appendItem", {
+                        text: text,
+                        name: name
+                    });
+                };
+            } else {
+                engine.alert("错误！", result.msg, "error");
+            };
         },
         error: function(request, message, e) {
-            engine.alert("登录失败！", "系统错误，请联系系统管理员！", "error");
+            engine.alert("错误！", "系统错误，请联系系统管理员！", "error");
         }
-    });
-    queryMenuType.menu("appendItem", {
-        text: "分系统",
-        name: "SYSTEM",
-        onclick: function() {
-            queryMenuType.menu("setIcon", {
-                target: queryMenuType.menu("findItem", "分系统").target,
-                iconCls: "icon-ok"
-            });
-        }
-    });
-    queryMenuType.menu("appendItem", {
-        text: "菜单",
-        name: "MENU"
-    });
-    queryMenuType.menu("appendItem", {
-        text: "链接",
-        name: "LINK"
-    });
-    queryMenuType.menu("appendItem", {
-        text: "按钮",
-        name: "BUTTON"
     });
 });
