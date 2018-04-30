@@ -43,11 +43,6 @@ import lombok.ToString;
 public class SysMenu extends BaseTreeEntity<SysMenu> {
 
     /**
-     * 菜单文本
-     */
-    private String menuText;
-
-    /**
      * 菜单地址
      */
     private String menuUrl;
@@ -69,20 +64,18 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
         super();
     }
 
-    public SysMenu(String id, String menuText, String menuUrl, MenuTypeEnum menuType, Integer orderNum, SysMenu parent,
-            Set<SysMenu> children, Boolean valid, String creator, LocalDateTime createTime, String reviser,
-            LocalDateTime modifyTime) {
-        super(id, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
-        this.menuText = menuText;
+    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, String code, String text, String fullCode, String fullText,
+            SysMenu parent, Set<SysMenu> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime,
+            String reviser, LocalDateTime modifyTime) {
+        super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
         this.menuUrl = menuUrl;
         this.menuType = menuType;
     }
 
-    public SysMenu(String id, String menuText, String menuUrl, MenuTypeEnum menuType, Integer orderNum,
-            List<SysAuthMenu> sysAuthMenus, SysMenu parent, Set<SysMenu> children, Boolean valid, String creator,
-            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
-        super(id, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
-        this.menuText = menuText;
+    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, List<SysAuthMenu> sysAuthMenus, String code, String text,
+            String fullCode, String fullText, SysMenu parent, Set<SysMenu> children, Integer orderNum, Boolean valid,
+            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+        super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
         this.menuUrl = menuUrl;
         this.menuType = menuType;
         this.sysAuthMenus = sysAuthMenus;

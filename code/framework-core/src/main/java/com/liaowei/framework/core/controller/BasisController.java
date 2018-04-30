@@ -4,9 +4,6 @@
  */
 package com.liaowei.framework.core.controller;
 
-import java.io.Serializable;
-
-import com.liaowei.framework.core.entity.IBasisEntity;
 import com.liaowei.framework.core.model.IBasisModel;
 import com.liaowei.framework.core.vo.IBasisVo;
 
@@ -22,7 +19,7 @@ import com.liaowei.framework.core.vo.IBasisVo;
  * @date 2018-04-08 21:25:25
  * @since jdk1.8
  */
-public abstract class BasisController<M extends IBasisModel, V extends IBasisVo, E extends IBasisEntity, PK extends Serializable> {
+public abstract class BasisController<M extends IBasisModel, V extends IBasisVo> {
 
     /**
      * 将Vo对象转换成Model对象

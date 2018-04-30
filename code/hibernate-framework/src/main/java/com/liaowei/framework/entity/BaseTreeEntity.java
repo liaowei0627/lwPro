@@ -40,6 +40,33 @@ import lombok.ToString;
 public class BaseTreeEntity<E> extends BaseEntity implements IBasisTreeEntity<E> {
 
     /**
+     * 编号
+     */
+    @Getter
+    @Setter
+    private String code;
+    /**
+     * 名称
+     */
+    @Getter
+    @Setter
+    private String text;
+
+    /**
+     * 全路径编号：上级全路径编号-编号
+     */
+    @Getter
+    @Setter
+    private String fullCode;
+
+    /**
+     * 全路径名称：上级全路径名称|名称
+     */
+    @Getter
+    @Setter
+    private String fullText;
+
+    /**
      * 上级数据
      */
     @Getter
@@ -75,8 +102,12 @@ public class BaseTreeEntity<E> extends BaseEntity implements IBasisTreeEntity<E>
         super();
     }
 
-    public BaseTreeEntity(String id, E parent, Set<E> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public BaseTreeEntity(String id, String code, String text, String fullCode, String fullText, E parent, Set<E> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
+        this.code = code;
+        this.text = text;
+        this.fullCode = fullCode;
+        this.fullText = fullText;
         this.parent = parent;
         this.children = children;
         this.orderNum = orderNum;

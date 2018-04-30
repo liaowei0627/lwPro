@@ -6,8 +6,10 @@ package com.liaowei.framework.core.service;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import com.liaowei.framework.core.entity.IBasisEntity;
+import com.liaowei.framework.core.enums.OrderEnum;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.core.vo.IBasisVo;
 import com.liaowei.framework.page.Pagination;
@@ -30,7 +32,7 @@ public interface IBasisService<V extends IBasisVo, E extends IBasisEntity, PK ex
      * @return
      * @throws ApplicationException
      */
-    V findVo(PK pk) throws ApplicationException;
+    V findVo(PK id) throws ApplicationException;
 
     /**
      * 新增数据
@@ -54,20 +56,22 @@ public interface IBasisService<V extends IBasisVo, E extends IBasisEntity, PK ex
      * 查询数据列表
      * 
      * @param vo
+     * @param orderBy 排序Map：key entity字段名；value asc/desc
      * @return
      * @throws ApplicationException
      */
-    List<V> findList(V vo) throws ApplicationException;
+    List<V> findList(V vo, Map<String, OrderEnum> orderBy) throws ApplicationException;
 
     /**
      * 查询数据分页列表
      * 
      * @param page
      * @param vo
+     * @param orderBy 排序Map：key entity字段名；value asc/desc
      * @return
      * @throws ApplicationException
      */
-    Pagination<V> findPage(Pagination<V> page, V vo) throws ApplicationException;
+    Pagination<V> findPage(Pagination<V> page, V vo, Map<String, OrderEnum> orderBy) throws ApplicationException;
 
     /**
      * 删除一条数据
@@ -75,7 +79,7 @@ public interface IBasisService<V extends IBasisVo, E extends IBasisEntity, PK ex
      * @param pk
      * @throws ApplicationException
      */
-    void delOne(PK pk) throws ApplicationException;
+    void delOne(PK id) throws ApplicationException;
 
     /**
      * 批量删除数据
@@ -83,5 +87,5 @@ public interface IBasisService<V extends IBasisVo, E extends IBasisEntity, PK ex
      * @param pks
      * @throws ApplicationException
      */
-    void delList(List<PK> pks) throws ApplicationException;
+    void delList(List<PK> ids) throws ApplicationException;
 }

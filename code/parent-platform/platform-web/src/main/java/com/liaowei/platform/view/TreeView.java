@@ -1,10 +1,10 @@
 /**
  * platform-web
- * MenuListView.java
+ * TreeView.java
  */
 package com.liaowei.platform.view;
 
-import com.liaowei.platform.model.MenuModel;
+import com.liaowei.framework.model.BaseTreeModel;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,20 +12,20 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * MenuListView
+ * TreeView
  *
- * 菜单列表View
+ * 前端tree数据View
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
- * @date 2018-04-22 00:57:23
+ * @date 2018-04-26 21:05:48
  * @since jdk1.8
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
-public class MenuListView {
+public class TreeView<T extends BaseTreeModel<T>> {
 
-    private MenuModel m;
+    private T m;
 
     public String getId() {
         return m.getId();
@@ -35,11 +35,11 @@ public class MenuListView {
         return m.getText();
     }
 
-    public String getMenuUrl() {
-        return m.getMenuUrl();
+    public String getState() {
+        return m.getHasChild() ? "closed" : "open";
     }
 
-    public String getMenuType() {
-        return m.getMenuType().name();
+    public T getAttributes() {
+        return m;
     }
 }

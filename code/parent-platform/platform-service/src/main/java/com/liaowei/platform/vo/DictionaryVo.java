@@ -49,29 +49,15 @@ public class DictionaryVo extends BaseTreeVo<DictionaryVo> {
     @Enumerated(value = EnumType.STRING)
     private DictTypeEnum dictType;
 
-    /**
-     * 全路径编号：上级全路径编号-字典编号
-     */
-    private String fullCode;
-
-    /**
-     * 全路径名称：上级全路径名称|字典名称
-     */
-    private String fullName;
-
     public DictionaryVo() {
         super();
     }
 
-    public DictionaryVo(String id, String dictCode, String dictName, DictTypeEnum dictType, String fullCode, String fullName,
+    public DictionaryVo(String id, DictTypeEnum dictType, String code, String text, String fullCode, String fullText,
             DictionaryVo parent, Set<DictionaryVo> children, Integer orderNum, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
-        super(id, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
-        this.dictCode = dictCode;
-        this.dictName = dictName;
+        super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
         this.dictType = dictType;
-        this.fullCode = fullCode;
-        this.fullName = fullName;
     }
 
     @Override

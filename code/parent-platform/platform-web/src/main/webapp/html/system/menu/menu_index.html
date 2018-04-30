@@ -2,12 +2,43 @@
 <meta charset="UTF-8">
 <table id="menuTable"></table>
 <div id="menuTableToolbar">
-    <a href="javascript: void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true">新增</a>
-    <a href="javascript: void(0);" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true">删除</a>
+    <a id="btnMenuAdd" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" href="javascript: void(0);">新增</a>
+    <a id="btnMenuDel" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" href="javascript: void(0);">删除</a>
     <div style="float: right;">
-        <input id="menuSearchbox" style="width:200px;" />
-        <div id="queryMenuType" style="width:100px">
+        <input id="menuSearchbox" style="width: 200px;" />
+        <div id="queryMenuType" style="width: 100px">
             <div data-options="name:'ALL', iconCls:'icon-ok'">所有类型</div>
+        </div>
+    </div>
+</div>
+<div id="menuWindow">
+    <div id="detailLayout" class="easyui-layout" data-options="fit:true">
+        <div data-options="region:'center',border:false" style="padding:10px;">
+            <form id="menuForm" class="easyui-form" method="post">
+                <input type="hidden" id="id" />
+                <div style="margin-bottom:20px">
+                    <input class="easyui-textbox" name="code" style="width: 100%;" data-options="label:'菜单编号：',required:true,validType:{length:[1,10]}" />
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-textbox" name="menuText" style="width: 100%;" data-options="label:'菜单文本：',required:true,validType:{length:[1,10]}" />
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-textbox" name="menuUrl" style="width: 100%;" data-options="label:'菜单地址：',validType:{length:[7,255]}" />
+                </div>
+                <div style="margin-bottom:20px">
+                    <input name="menuType" style="width: 100%;" />
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-textbox" name="parentId" style="width: 100%;" data-options="label:'上级菜单：'" />
+                </div>
+                <div style="margin-bottom:20px">
+                    <input class="easyui-numberbox" name="orderNum" style="width: 100%;" data-options="label:'排序号：',min:1,max:999," />
+                </div>
+            </form>
+        </div>
+        <div data-options="region:'south',border:false" style="text-align: center;">
+            <a id="btnMenuFormSave" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" href="javascript: void(0)" style="width: 80px">保存</a>
+            <a id="btnMenuFormCancel"  class="easyui-linkbutton" data-options="iconCls:'icon-clear'" href="javascript: void(0)" style="width: 80px">关闭</a>
         </div>
     </div>
 </div>

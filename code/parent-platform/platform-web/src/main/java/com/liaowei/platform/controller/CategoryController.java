@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,7 +45,7 @@ public class CategoryController {
      * @param category 指名请求的是哪种分类信息
      * @return
      */
-    @RequestMapping(path = {"/map_list"})
+    @RequestMapping(path = {"/map_list"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<List<Map<String, String>>> mapList(@RequestParam(name = "category") String category) {
         if (Strings.isNullOrEmpty(category)) {

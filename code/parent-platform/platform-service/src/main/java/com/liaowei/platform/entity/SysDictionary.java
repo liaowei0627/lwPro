@@ -38,43 +38,20 @@ import lombok.ToString;
 public class SysDictionary extends BaseTreeEntity<SysDictionary> {
 
     /**
-     * 字典编号
-     */
-    private String dictCode;
-
-    /**
-     * 字典名称
-     */
-    private String dictName;
-
-    /**
      * 字典类型
      */
     @Enumerated(value = EnumType.STRING)
     private DictTypeEnum dictType;
 
-    /**
-     * 全路径编号：上级全路径编号-字典编号
-     */
-    private String fullCode;
-
-    /**
-     * 全路径名称：上级全路径名称|字典名称
-     */
-    private String fullName;
-
     public SysDictionary() {
         super();
     }
 
-    public SysDictionary(String id, String dictCode, String dictName, DictTypeEnum dictType, String fullCode, String fullName, SysDictionary parent, Set<SysDictionary> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime, String reviser,
-            LocalDateTime modifyTime) {
-        super(id, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
-        this.dictCode = dictCode;
-        this.dictName = dictName;
+    public SysDictionary(String id, DictTypeEnum dictType, String code, String text, String fullCode, String fullText,
+            SysDictionary parent, Set<SysDictionary> children, Integer orderNum, Boolean valid, String creator,
+            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+        super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
         this.dictType = dictType;
-        this.fullCode = fullCode;
-        this.fullName = fullName;
     }
 
     @Override

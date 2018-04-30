@@ -103,7 +103,7 @@ public class UserTest {
         try {
             UserVo vo = new UserVo();
             vo.setValid(true);
-            List<UserVo> list = userService.findList(vo);
+            List<UserVo> list = userService.findList(vo, null);
             String json = JSONUtils.objectToJSONString(list);
             LOGGER.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
@@ -119,7 +119,7 @@ public class UserTest {
             Pagination<UserVo> page = new Pagination<UserVo>();
             page.setRows(5);
             page.setPage(2);
-            Pagination<UserVo> list = userService.findPage(page, vo);
+            Pagination<UserVo> list = userService.findPage(page, vo, null);
             String json = JSONUtils.objectToJSONString(list);
             LOGGER.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {

@@ -1,4 +1,4 @@
-package com.liaowei.study.test;
+package com.liaowei.platform.service;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
@@ -8,32 +8,24 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.page.Pagination;
+import com.liaowei.framework.test.TestService;
 import com.liaowei.framework.util.CryptoUtils;
 import com.liaowei.framework.util.JSONUtils;
-import com.liaowei.study.service.ILoginService;
-import com.liaowei.study.service.IUserService;
-import com.liaowei.study.vo.UserVo;
+import com.liaowei.platform.vo.UserVo;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:**/applicationContext*.xml" })
-public class UserTest {
+public class UserTest extends TestService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserTest.class);
 
     @Resource(name = "userService")
     private IUserService userService;
-    @Resource(name = "loginService")
-    private ILoginService loginService;
 
     @Test
     public void testTimezone() {
@@ -57,15 +49,14 @@ public class UserTest {
     public void testAdd() {
         try {
             UserVo vo = new UserVo();
-            vo.setUserName("test12");
+            vo.setUserName("test13");
             vo.setPassword(CryptoUtils.toMD5("test123"));
             vo.setValid(Boolean.TRUE);
             vo.setCreator("admin");
             vo.setReviser("admin");
             vo = userService.addVo(vo);
-            String json = JSONUtils.objectToJSONString(vo);
-            LOGGER.debug(json);
-        } catch (JsonProcessingException | ApplicationException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            LOGGER.debug(vo.toString());
+        } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
         }
     }
@@ -136,17 +127,6 @@ public class UserTest {
             pks.add("EAD9DF5A37FD4B3A830ED97C8D5A9D2E");
             userService.delList(pks);
         } catch (ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
-        }
-    }
-
-    @Test
-    public void testLogin() {
-        try {
-            UserVo user = loginService.findByUserName("admin");
-            String json = JSONUtils.objectToJSONString(user);
-            LOGGER.debug(json);
-        } catch (JsonProcessingException | ApplicationException e) {
             LOGGER.error(e.getMessage(), e);
         }
     }

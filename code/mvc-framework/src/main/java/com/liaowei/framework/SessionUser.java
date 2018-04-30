@@ -2,7 +2,7 @@
  * platform-web
  * SessionUser.java
  */
-package com.liaowei.platform;
+package com.liaowei.framework;
 
 import java.io.Serializable;
 

@@ -29,6 +29,33 @@ import lombok.ToString;
 public abstract class BaseTreeModel<M> extends BaseModel implements IBasisTreeModel<M> {
 
     /**
+     * 编号
+     */
+    @Getter
+    @Setter
+    private String code;
+    /**
+     * 名称
+     */
+    @Getter
+    @Setter
+    private String text;
+
+    /**
+     * 全路径编号：上级全路径编号-编号
+     */
+    @Getter
+    @Setter
+    private String fullCode;
+
+    /**
+     * 全路径名称：上级全路径名称|名称
+     */
+    @Getter
+    @Setter
+    private String fullText;
+
+    /**
      * 上级数据
      */
     @Getter
@@ -58,8 +85,12 @@ public abstract class BaseTreeModel<M> extends BaseModel implements IBasisTreeMo
         super();
     }
 
-    public BaseTreeModel(String id, M parent, Set<M> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public BaseTreeModel(String id, String code, String text, String fullCode, String fullText, M parent, Set<M> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
+        this.code = code;
+        this.text = text;
+        this.fullCode = fullCode;
+        this.fullText = fullText;
         this.parent = parent;
         this.children = children;
         this.orderNum = orderNum;

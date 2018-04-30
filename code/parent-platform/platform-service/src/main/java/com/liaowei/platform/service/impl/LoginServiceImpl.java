@@ -34,8 +34,11 @@ public class LoginServiceImpl implements ILoginService {
     @Override
     public UserVo findByUserName(String userName) throws ApplicationException {
         SysUser sysUser = loginDao.findByUserName(userName);
-        UserVo userVo = new UserVo();
-        BeanUtils.copyProperties(sysUser, userVo);
+        UserVo userVo = null;
+        if (null != sysUser) {
+            userVo = new UserVo();
+            BeanUtils.copyProperties(sysUser, userVo);
+        }
         return userVo;
     }
 }

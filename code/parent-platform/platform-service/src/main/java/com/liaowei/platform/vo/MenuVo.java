@@ -53,11 +53,10 @@ public class MenuVo extends BaseTreeVo<MenuVo> {
         super();
     }
 
-    public MenuVo(String id, String menuText, String menuUrl, MenuTypeEnum menuType, Integer orderNum, MenuVo parent,
-            Set<MenuVo> children, Boolean valid, String creator, LocalDateTime createTime, String reviser,
-            LocalDateTime modifyTime) {
-        super(id, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
-        this.menuText = menuText;
+    public MenuVo(String id, String menuUrl, MenuTypeEnum menuType, String code, String text, String fullCode, String fullText,
+            MenuVo parent, Set<MenuVo> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime,
+            String reviser, LocalDateTime modifyTime) {
+        super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
         this.menuUrl = menuUrl;
         this.menuType = menuType;
     }

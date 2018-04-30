@@ -9,13 +9,17 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.base.Objects;
+import com.liaowei.framework.SessionUser;
+import com.liaowei.framework.controller.BaseController;
+import com.liaowei.framework.core.model.IBasisModel;
+import com.liaowei.framework.core.vo.IBasisVo;
 import com.liaowei.framework.response.ResponseData;
 import com.liaowei.framework.util.CryptoUtils;
-import com.liaowei.platform.SessionUser;
 import com.liaowei.platform.service.ILoginService;
 import com.liaowei.platform.util.SeedUtils;
 import com.liaowei.platform.vo.UserVo;
@@ -31,10 +35,11 @@ import lombok.extern.slf4j.Slf4j;
  * @date 创建时间：2018年4月6日 下午10:18:45 
  * @since jdk1.8
  */
+@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping()
 @Slf4j
-public class IndexController {
+public class IndexController extends BaseController {
 
     @Resource(name = "loginService")
     private ILoginService loginService;
@@ -46,15 +51,15 @@ public class IndexController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(path = {"/index.htm"})
+	@RequestMapping(path = {"/index.htm"}, method = RequestMethod.GET)
 	public String index() {
 		return "index";
 	}
 
-    @RequestMapping(path = {"/checkLogged"})
+    @RequestMapping(path = {"/checkLogged"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<SessionUser> checkLogged(HttpServletRequest request) {
-        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("sessionUser");
+        SessionUser sessionUser = getCurUser(request);
         if (null != sessionUser) {
             return new ResponseData<SessionUser>(1, "已登录！", sessionUser);
         } else {
@@ -67,11 +72,11 @@ public class IndexController {
      * 
      * @return
      */
-    @RequestMapping(path = {"/seed"})
+    @RequestMapping(path = {"/seed"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<String> seed(HttpServletRequest request) {
         String seed = SeedUtils.getRandomString(6);
-        request.getSession().setAttribute("pwdSeed", seed);
+        setSessionAttr("pwdSeed", seed, request);
         return new ResponseData<String>(1, "seed生成成功", seed);
     }
 
@@ -94,7 +99,7 @@ public class IndexController {
      * @param request
      * @return
      */
-    @RequestMapping(path = {"/login"})
+    @RequestMapping(path = {"/login"}, method = RequestMethod.POST)
     @ResponseBody
     public ResponseData<SessionUser> doLogin(
             @RequestParam(name = "userName", required = true) String userName,
@@ -107,7 +112,7 @@ public class IndexController {
                 return new ResponseData<>(2, "用户不存在！");
             }
 
-            String pwdSeed = (String) request.getSession().getAttribute("pwdSeed");
+            String pwdSeed = String.valueOf(getSessionAttr("pwdSeed", request));
 
             // 比较密码
             String serverCiphertext = user.getPassword();
@@ -118,7 +123,7 @@ public class IndexController {
             }
             
             SessionUser sessionUser = new SessionUser(user.getId(), user.getUserName());
-            request.getSession().setAttribute("sessionUser", sessionUser);
+            setCurUser(sessionUser, request);
             return new ResponseData<SessionUser>(1, "登录成功！", sessionUser);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -131,10 +136,20 @@ public class IndexController {
      * 
      * @return
      */
-    @RequestMapping(path = {"/logout"})
+    @RequestMapping(path = {"/logout"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<String> logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("sessionUser");
+        removeCurUser(request);
         return new ResponseData<String>(1, "登出成功");
+    }
+
+    @Override
+    protected IBasisModel voToModel(IBasisVo v) {
+        return null;
+    }
+
+    @Override
+    protected IBasisVo modelToVo(IBasisModel m) {
+        return null;
     }
 }

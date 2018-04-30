@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -49,7 +50,7 @@ public class KaptchaController {
      * @param request
      * @param response
      */
-    @RequestMapping(path = {"/getKaptchaCode"})
+    @RequestMapping(path = {"/getKaptchaCode"}, method = RequestMethod.GET)
     public void getKaptchaCode(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
 
@@ -91,7 +92,7 @@ public class KaptchaController {
      * @param request
      * @return
      */
-    @RequestMapping(path = {"/checkKaptchaCode"})
+    @RequestMapping(path = {"/checkKaptchaCode"}, method = RequestMethod.POST)
     @ResponseBody
     public boolean checkKaptchaCode(
             @RequestParam(name = "kaptchaCode", required = true) String kaptchaCode,
