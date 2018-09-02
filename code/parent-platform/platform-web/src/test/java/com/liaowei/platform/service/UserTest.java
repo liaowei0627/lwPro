@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -13,8 +14,12 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.page.Pagination;
+import com.liaowei.framework.page.Pagination.OrderEnum;
+import com.liaowei.framework.query.Where;
+import com.liaowei.framework.query.operator.OneValueComparisonOperator;
 import com.liaowei.framework.test.TestService;
 import com.liaowei.framework.util.CryptoUtils;
 import com.liaowei.framework.util.JSONUtils;
@@ -81,10 +86,13 @@ public class UserTest extends TestService {
     @Test
     public void testFindList() {
         try {
-            UserVo vo = new UserVo();
-            vo.setValid(true);
-            List<UserVo> list = userService.findList(vo, null);
-            String json = JSONUtils.objectToJSONString(list);
+            Map<String, OrderEnum> orderBy = Maps.newHashMap();
+            orderBy.put("orderNum", OrderEnum.ASC);
+            Pagination<UserVo> page = new Pagination<UserVo>(orderBy);
+            page.setPageable(false);
+            Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
+            Pagination<UserVo> pagination = userService.findList(page, where);
+            String json = JSONUtils.objectToJSONString(pagination);
             LOGGER.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
             LOGGER.error(e.getMessage(), e);
@@ -94,13 +102,12 @@ public class UserTest extends TestService {
     @Test
     public void testFindPage() {
         try {
-            UserVo vo = new UserVo();
-            vo.setValid(true);
-            Pagination<UserVo> page = new Pagination<UserVo>();
-            page.setRows(5);
-            page.setPage(2);
-            Pagination<UserVo> list = userService.findPage(page, vo, null);
-            String json = JSONUtils.objectToJSONString(list);
+            Map<String, OrderEnum> orderBy = Maps.newHashMap();
+            orderBy.put("orderNum", OrderEnum.ASC);
+            Pagination<UserVo> page = new Pagination<UserVo>(5, 2, orderBy);
+            Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
+            Pagination<UserVo> pagination = userService.findList(page, where);
+            String json = JSONUtils.objectToJSONString(pagination);
             LOGGER.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
             LOGGER.error(e.getMessage(), e);

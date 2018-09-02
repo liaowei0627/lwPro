@@ -7,7 +7,7 @@ package com.liaowei.framework.core.dao.impl;
 import java.io.Serializable;
 
 import com.liaowei.framework.core.dao.IBasisDao;
-import com.liaowei.framework.core.entity.IBasisEntity;
+import com.liaowei.framework.core.entity.IBasisIdEntity;
 
 /**
  * BasisDaoImpl
@@ -19,7 +19,7 @@ import com.liaowei.framework.core.entity.IBasisEntity;
  * @see com.liaowei.framework.core.dao.IBasisDao<T, PK>
  * @since jdk1.8
  */
-public abstract class BasisDaoImpl<E extends IBasisEntity, PK extends Serializable> implements IBasisDao<E, PK> {
+public abstract class BasisDaoImpl<E extends IBasisIdEntity, PK extends Serializable> implements IBasisDao<E, PK> {
 
     protected abstract Class<E> getEntityClass();
 }

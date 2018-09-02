@@ -4,6 +4,7 @@
  */
 package com.liaowei.platform.service;
 
+import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.service.IService;
 import com.liaowei.platform.entity.SysMenu;
 import com.liaowei.platform.vo.MenuVo;
@@ -19,4 +20,13 @@ import com.liaowei.platform.vo.MenuVo;
  * @since jdk1.8
  */
 public interface IMenuService extends IService<MenuVo, SysMenu, String> {
+
+    /**
+     * 新增数据
+     * 
+     * @param vo
+     * @return
+     * @throws ApplicationException
+     */
+    MenuVo addVo(MenuVo vo) throws ApplicationException;
 }

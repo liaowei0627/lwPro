@@ -2,7 +2,7 @@
  * platform-service
  * TestEnumJson.java
  */
-package com.liaowei.platform;
+package com.liaowei.platform.test.enums;
 
 import org.junit.Test;
 

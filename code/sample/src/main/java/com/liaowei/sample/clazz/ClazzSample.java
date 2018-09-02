@@ -4,46 +4,55 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Objects;
 
 public class ClazzSample {
+    private static final Logger log = LoggerFactory.getLogger(ClazzSample.class);
 
-    public static void main(String[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-        checkField();
-    }
-
-    public static void checkField() {
+    @Test
+    public void checkField() {
         Field[] fields = SamplePojo.class.getFields();
-        System.out.println(fields.length);
+        log.info(String.valueOf(fields.length));
         for (Field field : fields) {
-            System.out.println(field.getName());
+            log.info(field.getName());
         }
     }
 
-    public static void checkInstanceOf() {
+    @Test
+    public void checkInstanceOf() {
         Object pojo = new SamplePojo();
-        System.out.println(pojo instanceof SamplePojo);
-        System.out.println(pojo instanceof SampleSuperPojo);
-        System.out.println(SampleSuperPojo.class.isAssignableFrom(pojo.getClass()));
-        System.out.println(SamplePojo.class.isAssignableFrom(SampleSuperPojo.class));
+        log.info(String.valueOf(pojo instanceof SamplePojo));
+        log.info(String.valueOf(pojo instanceof SampleSuperPojo));
+        log.info(String.valueOf(SampleSuperPojo.class.isAssignableFrom(pojo.getClass())));
+        log.info(String.valueOf(SamplePojo.class.isAssignableFrom(SampleSuperPojo.class)));
         Class<SamplePojo> c = SamplePojo.class;
         c.cast(pojo);
     }
 
-    public static void checkMethod() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+    @Test
+    public void checkMethod() throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         SamplePojo pojo = new SamplePojo();
         pojo.setId("adfsdf");
         pojo.setUserName("admin");
         pojo.setPassword("admin123");
+        SamplePojo parent = new SamplePojo();
+        parent.setId("qwerty");
+        parent.setUserName("padmin");
+        parent.setPassword("padmin123");
+        pojo.setParent(parent);
         Class<SamplePojo> clazz = SamplePojo.class;
         Method[] dms = clazz.getMethods();
         String methodName;
         for (Method method : dms) {
             methodName = method.getName();
             if (methodName.startsWith("get") && !Objects.equal("getClass", methodName)) {
-                System.out.println(methodName);
-//                System.out.println(method.getReturnType().getName());
-//                System.out.println(method.invoke(pojo));
+                log.info(methodName);
+                log.info(method.getReturnType().getName());
+//                log.info(method.invoke(pojo));
             }
         }
     }

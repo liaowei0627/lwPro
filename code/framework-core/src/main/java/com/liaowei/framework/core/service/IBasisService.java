@@ -6,13 +6,10 @@ package com.liaowei.framework.core.service;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
-import com.liaowei.framework.core.entity.IBasisEntity;
-import com.liaowei.framework.core.enums.OrderEnum;
+import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.core.exception.ApplicationException;
-import com.liaowei.framework.core.vo.IBasisVo;
-import com.liaowei.framework.page.Pagination;
+import com.liaowei.framework.core.vo.IBasisIdVo;
 
 /**
  * IBasisService
@@ -23,7 +20,7 @@ import com.liaowei.framework.page.Pagination;
  * @date 2018-04-08 21:25:25
  * @since jdk1.8
  */
-public interface IBasisService<V extends IBasisVo, E extends IBasisEntity, PK extends Serializable> {
+public interface IBasisService<V extends IBasisIdVo, E extends IBasisIdEntity, PK extends Serializable> {
 
     /**
      * 根据主键值查询数据对象
@@ -51,27 +48,6 @@ public interface IBasisService<V extends IBasisVo, E extends IBasisEntity, PK ex
      * @throws ApplicationException
      */
     V updateVo(V vo) throws ApplicationException;
-
-    /**
-     * 查询数据列表
-     * 
-     * @param vo
-     * @param orderBy 排序Map：key entity字段名；value asc/desc
-     * @return
-     * @throws ApplicationException
-     */
-    List<V> findList(V vo, Map<String, OrderEnum> orderBy) throws ApplicationException;
-
-    /**
-     * 查询数据分页列表
-     * 
-     * @param page
-     * @param vo
-     * @param orderBy 排序Map：key entity字段名；value asc/desc
-     * @return
-     * @throws ApplicationException
-     */
-    Pagination<V> findPage(Pagination<V> page, V vo, Map<String, OrderEnum> orderBy) throws ApplicationException;
 
     /**
      * 删除一条数据

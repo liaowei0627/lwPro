@@ -106,7 +106,7 @@ $(document).ready(function() {
         prompt: "菜单文本",
         menu: "#queryMenuType",
         searcher: function(value, name) {
-            queryParams.menuText = value;
+            queryParams.text = value;
             queryParams.menuType = name;
             menuTable.datagrid("reload", queryParams);
         }

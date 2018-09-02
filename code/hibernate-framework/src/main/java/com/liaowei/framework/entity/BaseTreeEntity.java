@@ -17,6 +17,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
+import com.google.common.collect.Sets;
 import com.liaowei.framework.core.entity.IBasisTreeEntity;
 
 import lombok.Getter;
@@ -71,7 +72,7 @@ public class BaseTreeEntity<E> extends BaseEntity implements IBasisTreeEntity<E>
      */
     @Getter
     @Setter
-    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PARENT_ID")
     private E parent;
 
@@ -80,10 +81,10 @@ public class BaseTreeEntity<E> extends BaseEntity implements IBasisTreeEntity<E>
      */
     @Getter
     @Setter
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="parent")
     @Column(name = "parent")
     @OrderBy("orderNum asc")
-    private Set<E> children;
+    private Set<E> children = Sets.<E>newHashSet();
 
     /**
      * 顺序

@@ -5,7 +5,6 @@
 package com.liaowei.platform.controller;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.common.base.Objects;
 import com.liaowei.framework.SessionUser;
 import com.liaowei.framework.controller.BaseController;
+import com.liaowei.framework.core.model.IBasisIdModel;
 import com.liaowei.framework.core.model.IBasisModel;
+import com.liaowei.framework.core.vo.IBasisIdVo;
 import com.liaowei.framework.core.vo.IBasisVo;
 import com.liaowei.framework.response.ResponseData;
 import com.liaowei.framework.util.CryptoUtils;
@@ -58,8 +59,8 @@ public class IndexController extends BaseController {
 
     @RequestMapping(path = {"/checkLogged"}, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData<SessionUser> checkLogged(HttpServletRequest request) {
-        SessionUser sessionUser = getCurUser(request);
+    public ResponseData<SessionUser> checkLogged() {
+        SessionUser sessionUser = getCurUser();
         if (null != sessionUser) {
             return new ResponseData<SessionUser>(1, "已登录！", sessionUser);
         } else {
@@ -74,9 +75,9 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(path = {"/seed"}, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData<String> seed(HttpServletRequest request) {
+    public ResponseData<String> seed() {
         String seed = SeedUtils.getRandomString(6);
-        setSessionAttr("pwdSeed", seed, request);
+        setSessionAttr("pwdSeed", seed);
         return new ResponseData<String>(1, "seed生成成功", seed);
     }
 
@@ -103,8 +104,7 @@ public class IndexController extends BaseController {
     @ResponseBody
     public ResponseData<SessionUser> doLogin(
             @RequestParam(name = "userName", required = true) String userName,
-            @RequestParam(name = "password", required = true) String password,
-            HttpServletRequest request) {
+            @RequestParam(name = "password", required = true) String password) {
         try {
             // 查询用户对象
             UserVo user = loginService.findByUserName(userName);
@@ -112,7 +112,7 @@ public class IndexController extends BaseController {
                 return new ResponseData<>(2, "用户不存在！");
             }
 
-            String pwdSeed = String.valueOf(getSessionAttr("pwdSeed", request));
+            String pwdSeed = String.valueOf(getSessionAttr("pwdSeed"));
 
             // 比较密码
             String serverCiphertext = user.getPassword();
@@ -123,7 +123,7 @@ public class IndexController extends BaseController {
             }
             
             SessionUser sessionUser = new SessionUser(user.getId(), user.getUserName());
-            setCurUser(sessionUser, request);
+            setCurUser(sessionUser);
             return new ResponseData<SessionUser>(1, "登录成功！", sessionUser);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -138,18 +138,18 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(path = {"/logout"}, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData<String> logout(HttpServletRequest request) {
-        removeCurUser(request);
+    public ResponseData<String> logout() {
+        removeCurUser();
         return new ResponseData<String>(1, "登出成功");
     }
 
     @Override
-    protected IBasisModel voToModel(IBasisVo v) {
+    protected IBasisModel voToModel(IBasisIdVo v) {
         return null;
     }
 
     @Override
-    protected IBasisVo modelToVo(IBasisModel m) {
+    protected IBasisVo modelToVo(IBasisIdModel m) {
         return null;
     }
 }

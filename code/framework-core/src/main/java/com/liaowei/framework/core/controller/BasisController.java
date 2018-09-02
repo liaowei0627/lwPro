@@ -4,8 +4,8 @@
  */
 package com.liaowei.framework.core.controller;
 
-import com.liaowei.framework.core.model.IBasisModel;
-import com.liaowei.framework.core.vo.IBasisVo;
+import com.liaowei.framework.core.model.IBasisIdModel;
+import com.liaowei.framework.core.vo.IBasisIdVo;
 
 /**
  * BasisController
@@ -19,7 +19,7 @@ import com.liaowei.framework.core.vo.IBasisVo;
  * @date 2018-04-08 21:25:25
  * @since jdk1.8
  */
-public abstract class BasisController<M extends IBasisModel, V extends IBasisVo> {
+public abstract class BasisController<M extends IBasisIdModel, V extends IBasisIdVo> {
 
     /**
      * 将Vo对象转换成Model对象

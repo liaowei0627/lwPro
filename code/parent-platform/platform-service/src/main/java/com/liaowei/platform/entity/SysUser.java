@@ -5,7 +5,7 @@
 package com.liaowei.platform.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.collect.Sets;
 import com.liaowei.framework.entity.BaseEntity;
 
 import lombok.Getter;
@@ -53,14 +54,14 @@ public class SysUser extends BaseEntity {
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Column(name = "sysUserId")
-    private List<SysUserRole> sysUserRoles;
+    private Set<SysUserRole> sysUserRoles = Sets.<SysUserRole>newHashSet();
 
     /**
      * 用户权限关系数据集合
      */
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Column(name = "sysUserId")
-    private List<SysUserAuth> sysUserAuths;
+    private Set<SysUserAuth> sysUserAuths = Sets.<SysUserAuth>newHashSet();
 
     public SysUser() {
         super();
@@ -73,7 +74,7 @@ public class SysUser extends BaseEntity {
         this.password = password;
     }
 
-    public SysUser(String id, String userName, String password, List<SysUserRole> sysUserRoles, List<SysUserAuth> sysUserAuths,
+    public SysUser(String id, String userName, String password, Set<SysUserRole> sysUserRoles, Set<SysUserAuth> sysUserAuths,
             Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;

@@ -6,12 +6,8 @@ package com.liaowei.framework.core.dao;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
-import com.liaowei.framework.core.entity.IBasisEntity;
-import com.liaowei.framework.core.enums.OrderEnum;
-import com.liaowei.framework.core.exception.ApplicationException;
-import com.liaowei.framework.page.Pagination;
+import com.liaowei.framework.core.entity.IBasisIdEntity;
 
 /**
  * IBasisDao
@@ -23,7 +19,7 @@ import com.liaowei.framework.page.Pagination;
  * @see java.io.Serializable
  * @since jdk1.8
  */
-public interface IBasisDao<E extends IBasisEntity, PK extends Serializable> {
+public interface IBasisDao<E extends IBasisIdEntity, PK extends Serializable> {
 
     /**
      * 通过主键查询一个实体对象
@@ -51,28 +47,6 @@ public interface IBasisDao<E extends IBasisEntity, PK extends Serializable> {
      * @throws ServiceException
      */
     E updateEntity(E entity);
-
-    /**
-     * 查询数据集合
-     * 
-     * @param entity 用作查询条件的实体对象
-     * @param orderBy 排序Map：key entity字段名；value asc/desc
-     * @return
-     * @throws Exception 
-     * @throws ServiceException
-     */
-    List<E> findList(E entity, Map<String, OrderEnum> orderBy) throws ApplicationException;
-
-    /**
-     * 分页查询
-     * 
-     * @param page 分页对象
-     * @param entity 用作查询条件的实体对象
-     * @param orderBy 排序Map：key entity字段名；value asc/desc
-     * @return
-     * @throws ServiceException
-     */
-    Pagination<E> findPage(Pagination<E> page, E entity, Map<String, OrderEnum> orderBy) throws ApplicationException;
 
     /**
      * 逻辑删除一条数据

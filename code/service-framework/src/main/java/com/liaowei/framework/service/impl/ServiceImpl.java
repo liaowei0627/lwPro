@@ -6,17 +6,17 @@ package com.liaowei.framework.service.impl;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
-import com.liaowei.framework.core.enums.OrderEnum;
+import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.core.service.impl.BasisServiceImpl;
-import com.liaowei.framework.entity.BaseEntity;
+import com.liaowei.framework.dao.IDao;
 import com.liaowei.framework.page.Pagination;
+import com.liaowei.framework.query.Where;
 import com.liaowei.framework.service.IService;
-import com.liaowei.framework.vo.BaseVo;
+import com.liaowei.framework.vo.BaseIdVo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -32,7 +32,12 @@ import lombok.extern.slf4j.Slf4j;
  * @since jdk1.8
  */
 @Slf4j
-public abstract class ServiceImpl<V extends BaseVo, E extends BaseEntity, PK extends Serializable> extends BasisServiceImpl<V, E, PK> implements IService<V, E, PK> {
+public abstract class ServiceImpl<V extends BaseIdVo, E extends IBasisIdEntity, PK extends Serializable> extends BasisServiceImpl<V, E, PK> implements IService<V, E, PK> {
+
+    /**
+     * 从子类注入Dao
+     */
+    protected abstract IDao<E, PK> getDao();
 
     @Override
     public V findVo(PK id) throws ApplicationException {
@@ -64,28 +69,17 @@ public abstract class ServiceImpl<V extends BaseVo, E extends BaseEntity, PK ext
     }
 
     @Override
-    public List<V> findList(V v, Map<String, OrderEnum> orderBy) throws ApplicationException {
-        log.debug("查询数据列表，查询条件：" + v.toString());
-        List<E> l = getDao().findList(voToEntity(v), orderBy);
-        List<V> vl = Lists.newArrayList();
-        for (E e : l) {
-            vl.add(entityToVo(e));
-        }
-        return vl;
-    }
-
-    @Override
-    public Pagination<V> findPage(Pagination<V> page, V v, Map<String, OrderEnum> orderBy) throws ApplicationException {
-        log.debug("查询数据分页列表，查询条件：" + v.toString() + ",分页信息：" + page.toString());
+    public Pagination<V> findList(Pagination<V> pagination, Where where) throws ApplicationException {
+        log.debug("查询数据分页列表，查询条件：" + where.toString() + ",分页信息：" + pagination.toString());
         List<E> el = Lists.newArrayList();
-        Pagination<E> p = new Pagination<>(page.getRows(), page.getPage());
-        p = getDao().findPage(p, voToEntity(v), orderBy);
+        Pagination<E> p = new Pagination<>(pagination.getRows(), pagination.getPage());
+        p = getDao().findList(p, where);
         el = p.getData();
         List<V> vl = Lists.newArrayList();
         for (E e : el) {
             vl.add(entityToVo(e));
         }
-        return new Pagination<V>(page.getTotal(), page.getRows(), page.getPage(), vl);
+        return new Pagination<V>(p.getTotal(), p.getRows(), p.getPage(), vl);
     }
 
     @Override

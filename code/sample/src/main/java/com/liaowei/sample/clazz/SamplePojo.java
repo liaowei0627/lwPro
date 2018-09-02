@@ -12,6 +12,8 @@ public class SamplePojo extends SampleSuperPojo {
      */
     private String password;
 
+    private SamplePojo parent;
+
     public String getUserName() {
         return userName;
     }
@@ -26,5 +28,13 @@ public class SamplePojo extends SampleSuperPojo {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public SamplePojo getParent() {
+        return parent;
+    }
+
+    public void setParent(SamplePojo parent) {
+        this.parent = parent;
     }
 }

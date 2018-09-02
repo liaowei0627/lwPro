@@ -14,9 +14,8 @@ package com.liaowei.framework.core.exception;
  * @see java.lang.Exception
  * @since jdk1.8
  */
+@SuppressWarnings("serial")
 public class ApplicationException extends Exception {
-
-    private static final long serialVersionUID = 1427673274640746353L;
 
     public ApplicationException() {
         super();

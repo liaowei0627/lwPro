@@ -6,10 +6,9 @@ package com.liaowei.framework.core.service.impl;
 
 import java.io.Serializable;
 
-import com.liaowei.framework.core.dao.IBasisDao;
-import com.liaowei.framework.core.entity.IBasisEntity;
+import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.core.service.IBasisService;
-import com.liaowei.framework.core.vo.IBasisVo;
+import com.liaowei.framework.core.vo.IBasisIdVo;
 
 /**
  * BasisServiceImpl
@@ -21,12 +20,7 @@ import com.liaowei.framework.core.vo.IBasisVo;
  * @see com.liaowei.framework.core.service.IBasisService<T, PK>
  * @since jdk1.8
  */
-public abstract class BasisServiceImpl<V extends IBasisVo, E extends IBasisEntity, PK extends Serializable> implements IBasisService<V, E, PK> {
-
-    /**
-     * 从子类注入Dao
-     */
-    protected abstract IBasisDao<E, PK> getDao();
+public abstract class BasisServiceImpl<V extends IBasisIdVo, E extends IBasisIdEntity, PK extends Serializable> implements IBasisService<V, E, PK> {
 
     /**
      * 将Entity对象转换成Vo对象

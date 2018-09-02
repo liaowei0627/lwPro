@@ -5,7 +5,6 @@
 package com.liaowei.platform.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.collect.Sets;
 import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.platform.enums.MenuTypeEnum;
 
@@ -56,9 +56,9 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
     /**
      * 权限菜单关系中间表数据
      */
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Column(name = "sysMenuId")
-    private List<SysAuthMenu> sysAuthMenus;
+    private Set<SysAuthMenu> sysAuthMenus = Sets.<SysAuthMenu>newHashSet();
 
     public SysMenu() {
         super();
@@ -72,7 +72,7 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
         this.menuType = menuType;
     }
 
-    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, List<SysAuthMenu> sysAuthMenus, String code, String text,
+    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, Set<SysAuthMenu> sysAuthMenus, String code, String text,
             String fullCode, String fullText, SysMenu parent, Set<SysMenu> children, Integer orderNum, Boolean valid,
             String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);

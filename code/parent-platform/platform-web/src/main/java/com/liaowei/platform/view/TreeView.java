@@ -23,9 +23,9 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
-public class TreeView<T extends BaseTreeModel<T>> {
+public class TreeView<M extends BaseTreeModel<M>> {
 
-    private T m;
+    private M m;
 
     public String getId() {
         return m.getId();
@@ -39,7 +39,7 @@ public class TreeView<T extends BaseTreeModel<T>> {
         return m.getHasChild() ? "closed" : "open";
     }
 
-    public T getAttributes() {
+    public M getAttributes() {
         return m;
     }
 }
