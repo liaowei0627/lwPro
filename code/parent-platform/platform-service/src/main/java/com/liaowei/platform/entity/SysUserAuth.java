@@ -7,9 +7,12 @@ package com.liaowei.platform.entity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.liaowei.framework.entity.BaseIdEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -24,12 +27,14 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Entity
 @Table(name = "SYS_USER_AUTHS")
-public class SysUserAuth extends BaseIdEntity {
+public class SysUserAuth extends BaseIdEntity<SysUserAuth> {
 
     /**
      * 用户ID
@@ -41,14 +46,26 @@ public class SysUserAuth extends BaseIdEntity {
      */
     private String sysAuthId;
 
-    public SysUserAuth() {
-        super();
-    }
-
     public SysUserAuth(String id, String sysUserId, String sysAuthId) {
         super(id);
         this.sysUserId = sysUserId;
         this.sysAuthId = sysAuthId;
+    }
+
+    @Override
+    public void setEntity(SysUserAuth e) {
+        String id = e.getId();
+        if (!Strings.isNullOrEmpty(id)) {
+            this.id = id;
+        }
+        String sysUserId = e.getSysUserId();
+        if (!Strings.isNullOrEmpty(sysUserId)) {
+            this.sysUserId = sysUserId;
+        }
+        String sysAuthId = e.getSysAuthId();
+        if (!Strings.isNullOrEmpty(sysAuthId)) {
+            this.sysAuthId = sysAuthId;
+        }
     }
 
     @Override
@@ -69,8 +86,7 @@ public class SysUserAuth extends BaseIdEntity {
             return false;
         SysUserAuth other = (SysUserAuth) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

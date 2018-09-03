@@ -9,9 +9,12 @@ import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.liaowei.framework.entity.BaseEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -26,25 +29,56 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Entity
 @Table(name = "SYS_SITES")
-public class SysSite extends BaseEntity {
+public class SysSite extends BaseEntity<SysSite> {
 
     /**
      * 站点名称
      */
     private String siteName;
 
-    public SysSite() {
-        super();
-    }
-
-    public SysSite(String id, String siteName, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public SysSite(String id, String siteName, Boolean valid, String creator, LocalDateTime createTime, String reviser,
+            LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.siteName = siteName;
+    }
+
+    @Override
+    public void setEntity(SysSite e) {
+        String id = e.getId();
+        if (!Strings.isNullOrEmpty(id)) {
+            this.id = id;
+        }
+        String siteName = e.getSiteName();
+        if (!Strings.isNullOrEmpty(siteName)) {
+            this.siteName = siteName;
+        }
+        Boolean valid = e.getValid();
+        if (null != valid) {
+            this.valid = valid;
+        }
+        String creator = e.getCreator();
+        if (!Strings.isNullOrEmpty(creator)) {
+            this.creator = creator;
+        }
+        LocalDateTime createTime = e.getCreateTime();
+        if (null != createTime) {
+            this.createTime = createTime;
+        }
+        String reviser = e.getReviser();
+        if (!Strings.isNullOrEmpty(reviser)) {
+            this.reviser = reviser;
+        }
+        LocalDateTime modifyTime = e.getModifyTime();
+        if (null != modifyTime) {
+            this.modifyTime = modifyTime;
+        }
     }
 
     @Override
@@ -65,8 +99,7 @@ public class SysSite extends BaseEntity {
             return false;
         SysSite other = (SysSite) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

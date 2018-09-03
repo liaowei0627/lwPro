@@ -17,5 +17,5 @@ import com.liaowei.platform.entity.SysSite;
  * @see com.liaowei.framework.dao.IDao<SysSite, String>
  * @since jdk1.8
  */
-public interface ISiteDao extends IDao<SysSite, String> {
+public interface ISiteDao extends IDao<SysSite> {
 }

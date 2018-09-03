@@ -4,13 +4,17 @@
  */
 package com.liaowei.framework.core.jackson;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
@@ -58,5 +62,14 @@ public class CustomOM extends ObjectMapper {
         // 旧日期类型支持
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
         setDateFormat(dateFormat);
+        // 对null的处理
+        getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+
+            @Override
+            public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+                gen.writeString("");
+            }
+            
+        });
     }
 }

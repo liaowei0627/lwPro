@@ -12,8 +12,6 @@ import javax.annotation.Resource;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,6 +30,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.liaowei.framework.util.CryptoUtils;
 import com.liaowei.framework.util.JSONUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * SysUserTest
  *
@@ -44,9 +44,8 @@ import com.liaowei.framework.util.JSONUtils;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(locations = {"classpath:/spring-mvc.xml", "classpath*:**/applicationContext*.xml"})
+@Slf4j
 public class SysUserTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SysUserTest.class);
 
     @Resource
     private WebApplicationContext wac;
@@ -78,12 +77,12 @@ public class SysUserTest {
             result = response.getContentAsString();
             map = JSONUtils.JSONStringToObject(result, HashMap.class);
             String seed = map.get("data");
-            LOGGER.info("seed is：" + seed);
+            log.info("INFO：seed is：" + seed);
 
             String pwdCiphertext = CryptoUtils.toMD5(password);
             pwdCiphertext = CryptoUtils.toMD5(pwdCiphertext.concat(seed));
             pwdCiphertext = CryptoUtils.base64Encoder(pwdCiphertext);
-            LOGGER.info("pwdCiphertext is：" + pwdCiphertext);
+            log.info("INFO：pwdCiphertext is：" + pwdCiphertext);
 
             MockHttpServletRequestBuilder loginPost = MockMvcRequestBuilders.post("/login");
             loginPost.param("userName", userName);
@@ -94,10 +93,10 @@ public class SysUserTest {
             response = loginResult.getResponse();
             result = response.getContentAsString();
             map = JSONUtils.JSONStringToObject(result, HashMap.class);
-            LOGGER.info("login is：" + map.get("msg"));
+            log.info("INFO：login is：" + map.get("msg"));
             
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

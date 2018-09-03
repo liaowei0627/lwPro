@@ -49,7 +49,7 @@ public class CategoryController {
     @ResponseBody
     public ResponseData<List<Map<String, String>>> mapList(@RequestParam(name = "category") String category) {
         if (Strings.isNullOrEmpty(category)) {
-            log.error("参数为空");
+            log.error("ERROR：参数为空");
             return new ResponseData<>(0, "参数为空");
         }
         List<Map<String, String>> list = Lists.newArrayList();

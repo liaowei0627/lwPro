@@ -10,6 +10,8 @@ import java.util.List;
 import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.core.vo.IBasisIdVo;
+import com.liaowei.framework.page.Pagination;
+import com.liaowei.framework.query.Where;
 
 /**
  * IBasisService
@@ -20,7 +22,7 @@ import com.liaowei.framework.core.vo.IBasisIdVo;
  * @date 2018-04-08 21:25:25
  * @since jdk1.8
  */
-public interface IBasisService<V extends IBasisIdVo, E extends IBasisIdEntity, PK extends Serializable> {
+public interface IBasisService<E extends IBasisIdEntity<E>, V extends IBasisIdVo<E, V>, PK extends Serializable> {
 
     /**
      * 根据主键值查询数据对象
@@ -30,6 +32,16 @@ public interface IBasisService<V extends IBasisIdVo, E extends IBasisIdEntity, P
      * @throws ApplicationException
      */
     V findVo(PK id) throws ApplicationException;
+
+    /**
+     * 查询数据分页列表
+     * 
+     * @param pagination 分页对象
+     * @param where hql查询条件对象
+     * @return
+     * @throws ApplicationException
+     */
+    Pagination<V> findList(Pagination<V> pagination, Where where) throws ApplicationException;
 
     /**
      * 新增数据

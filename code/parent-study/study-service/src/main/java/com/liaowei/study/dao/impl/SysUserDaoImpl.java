@@ -18,7 +18,7 @@ import com.liaowei.study.dao.ISysUserDao;
 import com.liaowei.study.entity.SysUser;
 
 @Repository("sysUserDao")
-public class SysUserDaoImpl extends DaoImpl<SysUser, String> implements ISysUserDao {
+public class SysUserDaoImpl extends DaoImpl<SysUser> implements ISysUserDao {
 
 	@Resource(name = "sessionFactory")
 	protected SessionFactory sessionFactory;

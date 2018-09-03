@@ -42,13 +42,14 @@ $(document).ready(function() {
 
     // 验证码图片
     var imgKaptcha = $("#login_form").find("img#imgKaptcha");
-    imgKaptcha.attr("src", "./kaptcha/getKaptchaCode?_=" + new Date().getTime());
+    //imgKaptcha.attr("src", "./kaptcha/getKaptchaCode?_=" + new Date().getTime());
 
     // 更换验证码
     var aChangeKaptcha = $("#login_form").find("a#changeKaptcha");
-    aChangeKaptcha.click(function() {
+    aChangeKaptcha.on("click", function() {
         imgKaptcha.attr("src", "./kaptcha/getKaptchaCode?_=" + new Date().getTime());
     });
+    aChangeKaptcha.click();
 
     // 表单
     var loginForm = $("#login_form");

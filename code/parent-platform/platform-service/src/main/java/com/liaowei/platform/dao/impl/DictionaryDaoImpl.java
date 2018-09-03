@@ -22,7 +22,7 @@ import com.liaowei.platform.entity.SysDictionary;
  * @since jdk1.8
  */
 @Repository("dictionaryDao")
-public class DictionaryDaoImpl extends DaoImpl<SysDictionary, String> implements IDictionaryDao {
+public class DictionaryDaoImpl extends DaoImpl<SysDictionary> implements IDictionaryDao {
 
     @Override
     protected Class<SysDictionary> getEntityClass() {

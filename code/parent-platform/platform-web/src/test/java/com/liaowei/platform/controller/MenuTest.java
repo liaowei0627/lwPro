@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,6 +20,8 @@ import org.springframework.test.web.servlet.result.StatusResultMatchers;
 import com.liaowei.framework.test.TestController;
 import com.liaowei.framework.util.JSONUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * MenuTest
  *
@@ -32,9 +32,8 @@ import com.liaowei.framework.util.JSONUtils;
  * @see com.liaowei.framework.test.TestController
  * @since jdk1.8
  */
+@Slf4j
 public class MenuTest extends TestController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MenuTest.class);
 
     @Test
     public void testAdd() {
@@ -59,9 +58,9 @@ public class MenuTest extends TestController {
             result = response.getContentAsString();
             @SuppressWarnings("unchecked")
             Map<String, String> map = JSONUtils.JSONStringToObject(result, HashMap.class);
-            LOGGER.info("add is：" + map.get("msg"));
+            log.info("INFO：add is：" + map.get("msg"));
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

@@ -1,7 +1,5 @@
 package com.liaowei.platform.service;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.liaowei.framework.core.exception.ApplicationException;
@@ -25,9 +20,10 @@ import com.liaowei.framework.util.CryptoUtils;
 import com.liaowei.framework.util.JSONUtils;
 import com.liaowei.platform.vo.UserVo;
 
-public class UserTest extends TestService {
+import lombok.extern.slf4j.Slf4j;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserTest.class);
+@Slf4j
+public class UserTest extends TestService {
 
     @Resource(name = "userService")
     private IUserService userService;
@@ -35,18 +31,16 @@ public class UserTest extends TestService {
     @Test
     public void testTimezone() {
         ZoneId defaultZone = ZoneId.systemDefault();
-        LOGGER.debug(defaultZone.getId());
+        log.debug(defaultZone.getId());
     }
 
     @Test
     public void testFind() {
         try {
-            String json = null;
             UserVo vo = userService.findVo("CE77BDD4409B42F4AE0F8D54E68E6FB5");
-            json = JSONUtils.objectToJSONString(vo);
-            LOGGER.debug(json);
-        } catch (JsonProcessingException | ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.debug(vo.toString());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -60,9 +54,9 @@ public class UserTest extends TestService {
             vo.setCreator("admin");
             vo.setReviser("admin");
             vo = userService.addVo(vo);
-            LOGGER.debug(vo.toString());
+            log.debug(vo.toString());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -72,14 +66,14 @@ public class UserTest extends TestService {
             String json = null;
             UserVo vo = userService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
             json = JSONUtils.objectToJSONString(vo);
-            LOGGER.debug(json);
+            log.debug(json);
             vo.setPassword(CryptoUtils.toMD5("test789"));
             userService.updateVo(vo);
             vo = userService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
             json = JSONUtils.objectToJSONString(vo);
-            LOGGER.debug(json);
-        } catch (JsonProcessingException | ApplicationException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.debug(vo.toString());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -92,10 +86,9 @@ public class UserTest extends TestService {
             page.setPageable(false);
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
             Pagination<UserVo> pagination = userService.findList(page, where);
-            String json = JSONUtils.objectToJSONString(pagination);
-            LOGGER.debug(json);
-        } catch (JsonProcessingException | ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.debug(pagination.toString());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -107,10 +100,9 @@ public class UserTest extends TestService {
             Pagination<UserVo> page = new Pagination<UserVo>(5, 2, orderBy);
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
             Pagination<UserVo> pagination = userService.findList(page, where);
-            String json = JSONUtils.objectToJSONString(pagination);
-            LOGGER.debug(json);
-        } catch (JsonProcessingException | ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.debug(pagination.toString());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -119,7 +111,7 @@ public class UserTest extends TestService {
         try {
             userService.delOne("9E3BAC7DDF5141E592621E50F68618C9");
         } catch (ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -134,7 +126,7 @@ public class UserTest extends TestService {
             pks.add("EAD9DF5A37FD4B3A830ED97C8D5A9D2E");
             userService.delList(pks);
         } catch (ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

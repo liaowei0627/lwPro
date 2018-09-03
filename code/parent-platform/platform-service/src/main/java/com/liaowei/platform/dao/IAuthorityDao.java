@@ -17,5 +17,5 @@ import com.liaowei.platform.entity.SysAuthority;
  * @see com.liaowei.framework.dao.IDao<SysAuthority, String>
  * @since jdk1.8
  */
-public interface IAuthorityDao extends IDao<SysAuthority, String> {
+public interface IAuthorityDao extends IDao<SysAuthority> {
 }

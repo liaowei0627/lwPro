@@ -4,12 +4,15 @@
  */
 package com.liaowei.framework.model;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 import com.liaowei.framework.core.model.IBasisTreeModel;
+import com.liaowei.framework.entity.BaseTreeEntity;
+import com.liaowei.framework.vo.BaseTreeVo;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -25,76 +28,62 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
-public abstract class BaseTreeModel<M> extends BaseModel implements IBasisTreeModel<M> {
+public abstract class BaseTreeModel<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>> extends BaseModel<E, V, M> implements IBasisTreeModel<E, V, M> {
 
     /**
      * 编号
      */
     @Getter
     @Setter
-    private String code;
+    protected String code;
     /**
      * 名称
      */
     @Getter
     @Setter
-    private String text;
+    protected String text;
 
     /**
      * 全路径编号：上级全路径编号-编号
      */
     @Getter
     @Setter
-    private String fullCode;
+    protected String fullCode;
 
     /**
      * 全路径名称：上级全路径名称|名称
      */
     @Getter
     @Setter
-    private String fullText;
+    protected String fullText;
 
     /**
      * 上级数据
      */
     @Getter
     @Setter
-    private M parent;
+    protected M parent;
 
     /**
      * 下级数据集合
      */
     @Getter
     @Setter
-    private Set<M> children;
+    protected List<M> children;
 
     /**
      * 顺序
      */
     @Getter
     @Setter
-    private Integer orderNum;
+    protected Integer orderNum;
 
     /**
      * 是否有子节点
      */
-    private Boolean hasChild;
-
-    public BaseTreeModel() {
-        super();
-    }
-
-    public BaseTreeModel(String id, String code, String text, String fullCode, String fullText, M parent, Set<M> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
-        super(id, valid, creator, createTime, reviser, modifyTime);
-        this.code = code;
-        this.text = text;
-        this.fullCode = fullCode;
-        this.fullText = fullText;
-        this.parent = parent;
-        this.children = children;
-        this.orderNum = orderNum;
-    }
+    protected Boolean hasChild;
 
     /**
      * 是否有子节点

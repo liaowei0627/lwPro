@@ -1,12 +1,18 @@
 package com.liaowei.study.model;
 
-import java.time.LocalDateTime;
-
 import com.liaowei.framework.model.BaseModel;
+import com.liaowei.study.entity.SysUser;
 import com.liaowei.study.vo.UserVo;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @SuppressWarnings("serial")
-public class UserModel extends BaseModel {
+@NoArgsConstructor
+@Getter
+@Setter
+public class UserModel extends BaseModel<SysUser, UserVo, UserModel> {
 
     /**
      * 用户名
@@ -18,24 +24,22 @@ public class UserModel extends BaseModel {
      */
     private String password;
 
-    public UserModel() {
-        super();
+    @Override
+    public void copyForVo(UserVo temp) {
+        id = temp.getId();
+        valid = temp.getValid();
+        creator = temp.getCreator();
+        createTime = temp.getCreateTime();
+        reviser = temp.getReviser();
+        modifyTime = temp.getModifyTime();
+
+        userName = temp.getUserName();
+        password = temp.getPassword();
     }
 
-    public UserModel(String id, String userName, String password, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
-        super(id, valid, creator, createTime, reviser, modifyTime);
-        this.userName = userName;
-        this.password = password;
-    }
-
-    /**
-     * 从UserVo对象生成UserModel对象
-     * 
-     * @param userVo
-     * @return
-     */
-    public static UserModel forVo(UserVo userVo) {
-        return new UserModel(userVo.getId(), userVo.getUserName(), userVo.getPassword(), userVo.getValid(), userVo.getCreator(), userVo.getCreateTime(), userVo.getReviser(), userVo.getModifyTime());
+    @Override
+    public UserVo copyToVo() {
+        return new UserVo(id, userName, password, valid, creator, createTime, reviser, modifyTime);
     }
 
     /**

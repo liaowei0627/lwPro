@@ -5,9 +5,10 @@
 package com.liaowei.framework.model;
 
 import com.liaowei.framework.core.model.IBasisIdModel;
+import com.liaowei.framework.entity.BaseIdEntity;
+import com.liaowei.framework.vo.BaseIdVo;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,11 +26,10 @@ import lombok.ToString;
  */
 @SuppressWarnings("serial")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @ToString
-public abstract class BaseIdModel implements IBasisIdModel {
+public abstract class BaseIdModel<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>, M extends BaseIdModel<E, V, M>> implements IBasisIdModel<E, V, M> {
 
     /**
      * 主键

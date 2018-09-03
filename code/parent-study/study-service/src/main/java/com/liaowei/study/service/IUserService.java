@@ -14,5 +14,5 @@ import com.liaowei.study.vo.UserVo;
  * @see com.liaowei.framework.service.IService<UserVo, SysUser, String>
  * @since jdk1.8
  */
-public interface IUserService extends IService<UserVo, SysUser, String> {
+public interface IUserService extends IService<SysUser, UserVo> {
 }

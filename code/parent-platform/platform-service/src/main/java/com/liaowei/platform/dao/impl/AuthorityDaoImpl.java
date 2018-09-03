@@ -22,7 +22,7 @@ import com.liaowei.platform.entity.SysAuthority;
  * @since jdk1.8
  */
 @Repository("authorityDao")
-public class AuthorityDaoImpl extends DaoImpl<SysAuthority, String> implements IAuthorityDao {
+public class AuthorityDaoImpl extends DaoImpl<SysAuthority> implements IAuthorityDao {
 
     @Override
     protected Class<SysAuthority> getEntityClass() {

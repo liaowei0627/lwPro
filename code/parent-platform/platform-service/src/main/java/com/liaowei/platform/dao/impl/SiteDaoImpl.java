@@ -22,7 +22,7 @@ import com.liaowei.platform.entity.SysSite;
  * @since jdk1.8
  */
 @Repository("siteDao")
-public class SiteDaoImpl extends DaoImpl<SysSite, String> implements ISiteDao {
+public class SiteDaoImpl extends DaoImpl<SysSite> implements ISiteDao {
 
     @Override
     protected Class<SysSite> getEntityClass() {

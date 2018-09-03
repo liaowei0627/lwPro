@@ -5,13 +5,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Objects;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ClazzSample {
-    private static final Logger log = LoggerFactory.getLogger(ClazzSample.class);
 
     @Test
     public void checkField() {

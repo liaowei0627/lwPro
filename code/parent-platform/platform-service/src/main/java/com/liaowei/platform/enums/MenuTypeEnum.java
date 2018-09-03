@@ -7,6 +7,7 @@ package com.liaowei.platform.enums;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 
 /**
  * MenuTypeEnum
@@ -19,6 +20,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@ToString
 public enum MenuTypeEnum {
 
     /**

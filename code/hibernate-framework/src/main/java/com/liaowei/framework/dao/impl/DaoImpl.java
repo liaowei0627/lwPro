@@ -4,7 +4,6 @@
  */
 package com.liaowei.framework.dao.impl;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -43,34 +42,34 @@ import lombok.extern.slf4j.Slf4j;
  * @since jdk1.8
  */
 @Slf4j
-public abstract class DaoImpl<E extends BaseIdEntity, PK extends Serializable> extends BasisDaoImpl<E, PK> implements IDao<E, PK> {
+public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E, String> implements IDao<E> {
 
     @Resource(name = "sessionFactory")
     protected SessionFactory sessionFactory;
 
     @Override
-    public E findEntity(PK id) {
-        log.debug("根据主键值查询数据对象, 主键：" + id);
+    public E findEntity(String id) {
+        log.debug("DEBUG：根据主键值查询数据对象, 主键：" + id);
         return sessionFactory.getCurrentSession().get(getEntityClass(), id);
     }
 
     @Override
     public E addEntity(E entity) {
-        log.debug("新增数据，数据：" + entity.toString());
+        log.debug("DEBUG：新增数据，数据：" + entity.toString());
         sessionFactory.getCurrentSession().save(entity);
         return entity;
     }
 
     @Override
     public E updateEntity(E entity) {
-        log.debug("修改数据，数据：" + entity.toString());
+        log.debug("DEBUG：修改数据，数据：" + entity.toString());
         sessionFactory.getCurrentSession().update(entity);
         return entity;
     }
 
     @Override
     public Pagination<E> findList(Pagination<E> pagination, Where where) throws ApplicationException {
-        log.debug("查询数据分页列表，查询条件：" + (null == where ? "无条件" : where.toString()) + ",分页信息：" + (null == pagination ? "无分页" : pagination.toString()));
+        log.debug("DEBUG：查询数据分页列表，查询条件：" + (null == where ? "无条件" : where.toString()) + ",分页信息：" + (null == pagination ? "无分页" : pagination.toString()));
         List<E> resultList = null;
 
         try {
@@ -92,8 +91,8 @@ public abstract class DaoImpl<E extends BaseIdEntity, PK extends Serializable> e
     }
 
     @Override
-    public void delEntity(PK id) {
-        log.debug("根据主键值删除一条数据对象, 主键：" + id);
+    public void delEntity(String id) {
+        log.debug("DEBUG：根据主键值删除一条数据对象, 主键：" + id);
         Class<E> entityClass = getEntityClass();
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -105,8 +104,8 @@ public abstract class DaoImpl<E extends BaseIdEntity, PK extends Serializable> e
     }
 
     @Override
-    public void delList(List<PK> ids) {
-        log.debug("根据主键值批量删除数据对象, 主键：" + Joiner.on(",").join(ids));
+    public void delList(List<String> ids) {
+        log.debug("DEBUG：根据主键值批量删除数据对象, 主键：" + Joiner.on(",").join(ids));
         Class<E> entityClass = getEntityClass();
         Session session = sessionFactory.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();

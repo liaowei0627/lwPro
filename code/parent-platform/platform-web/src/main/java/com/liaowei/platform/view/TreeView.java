@@ -4,7 +4,9 @@
  */
 package com.liaowei.platform.view;
 
+import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.framework.model.BaseTreeModel;
+import com.liaowei.framework.vo.BaseTreeVo;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -23,7 +25,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
-public class TreeView<M extends BaseTreeModel<M>> {
+public class TreeView<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>> {
 
     private M m;
 

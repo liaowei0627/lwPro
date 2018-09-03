@@ -4,7 +4,6 @@
  */
 package com.liaowei.framework.core.entity;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
  * @see java.io.Serializable
  * @since jdk1.8
  */
-public interface IBasisEntity extends IBasisIdEntity, Serializable {
+public interface IBasisEntity<E extends IBasisEntity<E>> extends IBasisIdEntity<E> {
 
     /**
      * 是否有效

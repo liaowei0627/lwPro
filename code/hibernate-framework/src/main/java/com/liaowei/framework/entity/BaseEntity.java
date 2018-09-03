@@ -11,7 +11,9 @@ import javax.persistence.MappedSuperclass;
 
 import com.liaowei.framework.core.entity.IBasisEntity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -27,11 +29,12 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @ToString(callSuper = true)
 @MappedSuperclass
-public abstract class BaseEntity extends BaseIdEntity implements IBasisEntity {
+public abstract class BaseEntity<E extends BaseEntity<E>> extends BaseIdEntity<E> implements IBasisEntity<E> {
 
     /**
      * 是否有效
@@ -59,10 +62,6 @@ public abstract class BaseEntity extends BaseIdEntity implements IBasisEntity {
      */
     @Column(insertable = false, updatable = false)
     protected LocalDateTime modifyTime;
-
-    protected BaseEntity() {
-        super();
-    }
 
     protected BaseEntity(String id, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id);

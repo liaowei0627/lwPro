@@ -7,9 +7,12 @@ package com.liaowei.platform.entity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.liaowei.framework.entity.BaseIdEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -24,12 +27,14 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Entity
 @Table(name = "SYS_USER_ROLES")
-public class SysUserRole extends BaseIdEntity {
+public class SysUserRole extends BaseIdEntity<SysUserRole> {
 
     /**
      * 用户ID
@@ -41,14 +46,26 @@ public class SysUserRole extends BaseIdEntity {
      */
     private String sysRoleId;
 
-    public SysUserRole() {
-        super();
-    }
-
     public SysUserRole(String id, String sysUserId, String sysRoleId) {
         super(id);
         this.sysUserId = sysUserId;
         this.sysRoleId = sysRoleId;
+    }
+
+    @Override
+    public void setEntity(SysUserRole e) {
+        String id = e.getId();
+        if (!Strings.isNullOrEmpty(id)) {
+            this.id = id;
+        }
+        String sysUserId = e.getSysUserId();
+        if (!Strings.isNullOrEmpty(sysUserId)) {
+            this.sysUserId = sysUserId;
+        }
+        String sysRoleId = e.getSysRoleId();
+        if (!Strings.isNullOrEmpty(sysRoleId)) {
+            this.sysRoleId = sysRoleId;
+        }
     }
 
     @Override
@@ -69,8 +86,7 @@ public class SysUserRole extends BaseIdEntity {
             return false;
         SysUserRole other = (SysUserRole) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

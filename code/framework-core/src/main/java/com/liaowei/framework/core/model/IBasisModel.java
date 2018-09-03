@@ -6,6 +6,9 @@ package com.liaowei.framework.core.model;
 
 import java.time.LocalDateTime;
 
+import com.liaowei.framework.core.entity.IBasisEntity;
+import com.liaowei.framework.core.vo.IBasisVo;
+
 /**
  * IBasisModel
  *
@@ -16,7 +19,8 @@ import java.time.LocalDateTime;
  * @see java.io.Serializable
  * @since jdk1.8
  */
-public interface IBasisModel extends IBasisIdModel {
+public interface IBasisModel<E extends IBasisEntity<E>, V extends IBasisVo<E, V>, M extends IBasisModel<E, V, M>>
+        extends IBasisIdModel<E, V, M> {
 
     /**
      * 是否有效

@@ -17,5 +17,5 @@ import com.liaowei.platform.entity.SysMenu;
  * @see com.liaowei.framework.dao.IDao<SysMenu, String>
  * @since jdk1.8
  */
-public interface IMenuDao extends IDao<SysMenu, String> {
+public interface IMenuDao extends IDao<SysMenu> {
 }

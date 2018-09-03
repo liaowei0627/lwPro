@@ -8,19 +8,22 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.platform.enums.MenuTypeEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -35,6 +38,8 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
@@ -56,13 +61,9 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
     /**
      * 权限菜单关系中间表数据
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Column(name = "sysMenuId")
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "sysMenuId")
     private Set<SysAuthMenu> sysAuthMenus = Sets.<SysAuthMenu>newHashSet();
-
-    public SysMenu() {
-        super();
-    }
 
     public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, String code, String text, String fullCode, String fullText,
             SysMenu parent, Set<SysMenu> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime,
@@ -79,6 +80,62 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
         this.menuUrl = menuUrl;
         this.menuType = menuType;
         this.sysAuthMenus = sysAuthMenus;
+    }
+
+    @Override
+    public void setEntity(SysMenu e) {
+        String id = e.getId();
+        if (!Strings.isNullOrEmpty(id)) {
+            this.id = id;
+        }
+        String code = e.getCode();
+        if (!Strings.isNullOrEmpty(code)) {
+            this.code = code;
+        }
+        String text = e.getText();
+        if (!Strings.isNullOrEmpty(text)) {
+            this.text = text;
+        }
+        String fullCode = e.getFullCode();
+        if (!Strings.isNullOrEmpty(fullCode)) {
+            this.fullCode = fullCode;
+        }
+        String fullText = e.getFullText();
+        if (!Strings.isNullOrEmpty(fullText)) {
+            this.fullText = fullText;
+        }
+        Integer orderNum = e.getOrderNum();
+        if (null != orderNum) {
+            this.orderNum = orderNum;
+        }
+        String menuUrl = e.getMenuUrl();
+        if (!Strings.isNullOrEmpty(menuUrl)) {
+            this.menuUrl = menuUrl;
+        }
+        MenuTypeEnum menuType = e.getMenuType();
+        if (null != menuType) {
+            this.menuType = menuType;
+        }
+        Boolean valid = e.getValid();
+        if (null != valid) {
+            this.valid = valid;
+        }
+        String creator = e.getCreator();
+        if (!Strings.isNullOrEmpty(creator)) {
+            this.creator = creator;
+        }
+        LocalDateTime createTime = e.getCreateTime();
+        if (null != createTime) {
+            this.createTime = createTime;
+        }
+        String reviser = e.getReviser();
+        if (!Strings.isNullOrEmpty(reviser)) {
+            this.reviser = reviser;
+        }
+        LocalDateTime modifyTime = e.getModifyTime();
+        if (null != modifyTime) {
+            this.modifyTime = modifyTime;
+        }
     }
 
     @Override
@@ -99,8 +156,7 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
             return false;
         SysMenu other = (SysMenu) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

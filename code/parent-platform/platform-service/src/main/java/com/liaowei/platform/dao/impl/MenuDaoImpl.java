@@ -22,7 +22,7 @@ import com.liaowei.platform.entity.SysMenu;
  * @since jdk1.8
  */
 @Repository("menuDao")
-public class MenuDaoImpl extends DaoImpl<SysMenu, String> implements IMenuDao {
+public class MenuDaoImpl extends DaoImpl<SysMenu> implements IMenuDao {
 
     @Override
     protected Class<SysMenu> getEntityClass() {

@@ -17,5 +17,5 @@ import com.liaowei.platform.entity.SysDictionary;
  * @see com.liaowei.framework.dao.IDao<SysDictionary, String>
  * @since jdk1.8
  */
-public interface IDictionaryDao extends IDao<SysDictionary, String> {
+public interface IDictionaryDao extends IDao<SysDictionary> {
 }

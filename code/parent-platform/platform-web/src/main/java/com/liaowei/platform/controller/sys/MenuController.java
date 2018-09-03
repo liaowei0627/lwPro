@@ -4,10 +4,8 @@
  */
 package com.liaowei.platform.controller.sys;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -29,6 +27,8 @@ import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.operator.NoValueComparisonOperator;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
 import com.liaowei.framework.response.ResponseData;
+import com.liaowei.platform.entity.SysMenu;
+import com.liaowei.platform.enums.MenuTypeEnum;
 import com.liaowei.platform.model.MenuModel;
 import com.liaowei.platform.service.IMenuService;
 import com.liaowei.platform.view.MenuListView;
@@ -51,57 +51,19 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping(path = {"/sys/menu"})
 @Slf4j
-public class MenuController extends BaseController<MenuModel, MenuVo> {
+public class MenuController extends BaseController<SysMenu, MenuVo, MenuModel> {
 
     @Resource(name = "menuService")
     private IMenuService menuService;
 
     @Override
     protected MenuModel voToModel(MenuVo v) {
-        log.debug("Vo转换Model：" + v.toString());
+        log.debug("DEBUG：Vo转换Model：" + v.toString());
 
-        MenuVo voParent = v.getParent();
-        MenuModel parent = null;
-        if (null != voParent) {
-            parent = voToModel(voParent);
-        }
-        Set<MenuModel> children = null;
-        Set<MenuVo> voChildren = v.getChildren();
-        if (null != voChildren && !voChildren.isEmpty()) {
-            children = new HashSet<>();
-            for (MenuVo vo : voChildren) {
-                children.add(voToModel(vo));
-            }
-        }
-        MenuModel m = new MenuModel(v.getId(), v.getMenuUrl(), v.getMenuType(), v.getCode(), v.getText(), v.getFullCode(),
-                v.getFullText(), parent, children, v.getOrderNum(), v.getValid(), v.getCreator(), v.getCreateTime(),
-                v.getReviser(), v.getModifyTime());
+        MenuModel m = new MenuModel();
+        m.copyForVo(v);
 
         return m;
-    }
-
-    @Override
-    protected MenuVo modelToVo(MenuModel m) {
-        log.debug("Model转换Vo：" + m.toString());
-
-        MenuModel modelParent = m.getParent();
-        MenuVo parent = null;
-        if (null != modelParent) {
-            parent = modelToVo(modelParent);
-        }
-        Set<MenuVo> children = null;
-        Set<MenuModel> modelChildren = m.getChildren();
-        if (null != modelChildren && !modelChildren.isEmpty()) {
-            children = new HashSet<>();
-            for (MenuModel vo : modelChildren) {
-                children.add(modelToVo(vo));
-            }
-        }
-        MenuVo v = new MenuVo(m.getId(), m.getMenuUrl(), m.getMenuType(), m.getCode(), m.getText(), m.getFullCode(),
-                m.getFullText(), parent, children, m.getOrderNum(), m.getValid(), m.getCreator(), m.getCreateTime(),
-                m.getReviser(), m.getModifyTime());
-
-        return v;
     }
 
     /**
@@ -115,18 +77,32 @@ public class MenuController extends BaseController<MenuModel, MenuVo> {
      */
     @RequestMapping(path = {"/list"}, method = RequestMethod.GET)
     @ResponseBody
-    public Pagination<MenuListView> list(Pagination<?> pagination) throws ApplicationException {
-        log.debug("查询菜单数据列表，pagination=" + pagination.toString());
+    public Pagination<MenuListView> list(@RequestParam(name = "menuType", required = false) String menuType,
+            Pagination<?> pagination) throws ApplicationException {
+        log.debug("DEBUG：查询菜单数据列表，pagination=" + pagination.toString());
         Map<String, OrderEnum> orderBy = Maps.newHashMap();
         orderBy.put("orderNum", OrderEnum.ASC);
         Where where = null;
-        where = createWhere(where);
+        String[] keywords = new String[] {"text"};
+        String[] excKey = new String[] {"menuType"};
+        where = configWhere(where, keywords, excKey);
         if (null == where) {
             where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
         } else {
             where.childAndWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
         }
-        Pagination<MenuVo> paginationTmp = menuService.findList(new Pagination<MenuVo>(pagination.getRows(), pagination.getPage(), orderBy), where);
+        if (!Strings.isNullOrEmpty(menuType)) {
+            MenuTypeEnum menuTypeEnum = MenuTypeEnum.valueOf(menuType);
+            if (null != menuTypeEnum) {
+                if (null == where) {
+                    where = Where.rootWhere("menuType", OneValueComparisonOperator.EQ, menuTypeEnum);
+                } else {
+                    where.childAndWhere("menuType", OneValueComparisonOperator.EQ, menuTypeEnum);
+                }
+            }
+        }
+        Pagination<MenuVo> paginationTmp = menuService
+                .findList(new Pagination<MenuVo>(pagination.getRows(), pagination.getPage(), orderBy), where);
         List<MenuVo> data = paginationTmp.getData();
         List<MenuListView> list = Lists.newArrayList();
         for (MenuVo menuVo : data) {
@@ -144,9 +120,9 @@ public class MenuController extends BaseController<MenuModel, MenuVo> {
      */
     @RequestMapping(path = {"/tree"}, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData<List<TreeView<MenuModel>>> tree(@RequestParam(name = "parentId", required = false) String parentId)
+    public ResponseData<List<TreeView<SysMenu, MenuVo, MenuModel>>> tree(@RequestParam(name = "parentId", required = false) String parentId)
             throws ApplicationException {
-        log.debug("取得菜单树，parentId=" + parentId);
+        log.debug("DEBUG：取得菜单树，parentId=" + parentId);
         Map<String, OrderEnum> orderBy = Maps.newHashMap();
         orderBy.put("orderNum", OrderEnum.ASC);
         Pagination<MenuVo> pagination = new Pagination<MenuVo>(orderBy);
@@ -159,15 +135,35 @@ public class MenuController extends BaseController<MenuModel, MenuVo> {
         }
         pagination = menuService.findList(pagination, where);
         List<MenuVo> data = pagination.getData();
-        List<TreeView<MenuModel>> list = Lists.newArrayList();
+        List<TreeView<SysMenu, MenuVo, MenuModel>> list = Lists.newArrayList();
         for (MenuVo menuVo : data) {
-            list.add(new TreeView<MenuModel>(voToModel(menuVo)));
+            list.add(new TreeView<SysMenu, MenuVo, MenuModel>(voToModel(menuVo)));
         }
-        return new ResponseData<List<TreeView<MenuModel>>>(1, "取得菜单树形数据成功！", list);
+        return new ResponseData<List<TreeView<SysMenu, MenuVo, MenuModel>>>(1, "取得菜单树形数据成功！", list);
     }
 
     /**
-     * 取得菜单树
+     * 取得菜单详情
+     * 
+     * @param id 菜单id
+     * @return
+     * @throws ApplicationException
+     */
+    @RequestMapping(path = {"/load"}, method = RequestMethod.GET)
+    @ResponseBody
+    public MenuView load(@RequestParam(name = "id", required = true) String id) throws ApplicationException {
+        MenuView view = null;
+        if (!Strings.isNullOrEmpty(id)) {
+            MenuVo vo = menuService.findVo(id);
+            if (null != vo) {
+                view = new MenuView(voToModel(vo));
+            }
+        }
+        return view;
+    }
+
+    /**
+     * 保存菜单
      * 
      * @param parentId 上级菜单id
      * @return
@@ -176,12 +172,12 @@ public class MenuController extends BaseController<MenuModel, MenuVo> {
     @RequestMapping(path = {"/save"}, method = RequestMethod.POST)
     @ResponseBody
     public ResponseData<String> save(MenuView menu) throws ApplicationException {
-        log.debug("取得菜单树，menu=" + menu.toString());
+        log.debug("DEBUG：取得菜单树，menu=" + menu.toString());
 
         ResponseData<String> responseData;
         SessionUser sessionUser = getCurUser();
         String userName = sessionUser.getUserName();
-        MenuVo vo = modelToVo(menu.toModel());
+        MenuVo vo = menu.toModel().copyToVo();
         if (Strings.isNullOrEmpty(vo.getId())) {
             vo.setCreator(userName);
             vo.setReviser(userName);

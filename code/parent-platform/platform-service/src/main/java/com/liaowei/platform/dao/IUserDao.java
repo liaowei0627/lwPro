@@ -17,5 +17,5 @@ import com.liaowei.platform.entity.SysUser;
  * @see com.liaowei.framework.dao.IDao<SysUser, String>
  * @since jdk1.8
  */
-public interface IUserDao extends IDao<SysUser, String> {
+public interface IUserDao extends IDao<SysUser> {
 }

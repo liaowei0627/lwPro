@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,9 +37,10 @@ public class Pagination<E> implements Serializable {
     /**
      * 是否分页，默认分页
      */
+    @JsonIgnore
     @Getter
     @Setter
-    private boolean isPageable = true;
+    private Boolean pageable = true;
 
     /**
      * 总条数，没有数据为0
@@ -48,6 +52,7 @@ public class Pagination<E> implements Serializable {
     /**
      * 每页条数
      */
+    @JsonIgnore
     @Getter
     @Setter
     private int rows = 20;
@@ -55,6 +60,7 @@ public class Pagination<E> implements Serializable {
     /**
      * 页号从1开始
      */
+    @JsonIgnore
     @Getter
     @Setter
     private int page = 1;
@@ -63,11 +69,13 @@ public class Pagination<E> implements Serializable {
      * 查询起始记录下标
      * 从0开始
      */
+    @JsonIgnore
     private int startPosition;
 
     /**
      * 排序字段
      */
+    @JsonIgnore
     @Getter
     @Setter
     private Map<String, OrderEnum> orderBy = null;
@@ -75,6 +83,7 @@ public class Pagination<E> implements Serializable {
     /**
      * 数据
      */
+    @JsonProperty("rows")
     @NonNull
     @Getter
     @Setter
@@ -95,11 +104,11 @@ public class Pagination<E> implements Serializable {
         this.orderBy = orderBy;
     }
 
-    public Pagination(int pageSize, int pageNumber, Map<String, OrderEnum> orderBy, boolean isPageable) {
+    public Pagination(int pageSize, int pageNumber, Map<String, OrderEnum> orderBy, boolean pageable) {
         this.rows = pageSize;
         this.page = pageNumber;
         this.orderBy = orderBy;
-        this.isPageable = isPageable;
+        this.pageable = pageable;
     }
 
     public Pagination(int total, int pageSize, int pageNumber, List<E> data) {

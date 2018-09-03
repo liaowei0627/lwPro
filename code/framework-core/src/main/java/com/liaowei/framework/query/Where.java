@@ -1,8 +1,6 @@
 package com.liaowei.framework.query;
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +14,7 @@ import com.liaowei.framework.query.operator.PredicateOperator;
 import com.liaowei.framework.query.operator.TwoValueComparisonOperator;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -30,8 +29,9 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 @ToString
-public class Where implements IBasisWhere {
+public class Where {
 
     /** 别名 */
     public static final String ALIAS = "t";
@@ -388,25 +388,6 @@ public class Where implements IBasisWhere {
     }
 
     /**
-     * 将当前Where对象输出成where语句和条件map
-     * 
-     * @return
-     */
-    public WhereClause toWhereClause() {
-        StringBuilder sb = new StringBuilder();
-        Map<String, Object> param = new HashMap<>();
-        sb.append("where ");
-
-        // 解析当前对象
-        WhereClause wc = assemble(this);
-        sb.append(wc.getWhereClause());
-        param.putAll(wc.getParam());
-
-        WhereClause whereClause = new WhereClause(sb.toString(), param);
-        return whereClause;
-    }
-
-    /**
      * 判断值是否是集合或数组
      * 
      * @param value
@@ -549,101 +530,5 @@ public class Where implements IBasisWhere {
         child.put(predicateOperator, childWhere);
         childrenWhere.add(child);
         return childWhere;
-    }
-
-    /**
-     * 组装条件对象
-     * 
-     * @param where
-     * @return
-     */
-    private WhereClause assemble(Where where) {
-        StringBuilder sb = new StringBuilder();
-        Map<String, Object> param = new HashMap<>();
-
-        // 当前对象条件
-        String paramKey = Where.ALIAS + "_" + where.propertyName.replace(".", "_") + "_" + String.valueOf(new Date().getTime());
-        Enum<?> operatorEnum = where.operator;
-        if (operatorEnum instanceof NoValueComparisonOperator) {
-            NoValueComparisonOperator operator = (NoValueComparisonOperator) operatorEnum;
-            sb.append(Where.ALIAS + "." + where.propertyName + " " + operator.getText() + " ");
-        } else if (operatorEnum instanceof OneValueComparisonOperator) {
-            OneValueComparisonOperator operator = (OneValueComparisonOperator) operatorEnum;
-            if (operator.equals(OneValueComparisonOperator.MEMBER_OF) || operator.equals(OneValueComparisonOperator.NOT_MEMBER_OF)) {
-                sb.append(":" + paramKey + " " + operator.getText() + " " + Where.ALIAS + "." + where.propertyName + " ");
-                param.put(paramKey, where.value);
-            } else {
-                sb.append(Where.ALIAS + "." + where.propertyName + " " + operator.getText() + " ");
-                if (operator.equals(OneValueComparisonOperator.LIKE) || operator.equals(OneValueComparisonOperator.NOT_LIKE)) {
-                    sb.append(":" + paramKey + " ");
-                    param.put(paramKey, "%" + where.value + "%");
-                } else {
-                    sb.append(":" + paramKey + " ");
-                    param.put(paramKey, where.value);
-                }
-            }
-        } else if (operatorEnum instanceof TwoValueComparisonOperator) {
-            TwoValueComparisonOperator operator = (TwoValueComparisonOperator) operatorEnum;
-            sb.append(Where.ALIAS + "." + where.propertyName + " " + operator.getText() + " ");
-            sb.append(":" + paramKey + " and :" + paramKey + "_2 ");
-            param.put(paramKey, where.value);
-            param.put(paramKey + "_2", where.value2);
-        } else if (operatorEnum instanceof CollectionValueComparisonOperator) {
-            CollectionValueComparisonOperator operator = (CollectionValueComparisonOperator) operatorEnum;
-            sb.append(Where.ALIAS + "." + where.propertyName + " " + operator.getText() + " ");
-            sb.append("(:" + paramKey + ") ");
-            param.put(paramKey, where.value);
-        }
-
-        // nextWhere
-        Where nextWhere = where.nextWhere;
-        if (null != nextWhere) {
-            sb.append(where.nextWhereOperator.getText() + " ");
-            WhereClause wc1 = assemble(nextWhere);
-            sb.append(wc1.getWhereClause());
-            param.putAll(wc1.getParam());
-        }
-
-        // 括号条件集合
-        List<Map<PredicateOperator, Where>> children = where.childrenWhere;
-        if (!children.isEmpty()) {
-            WhereClause wc2 = assembleChildren(children);
-            sb.append(wc2.getWhereClause());
-            param.putAll(wc2.getParam());
-        }
-
-        WhereClause wc = new WhereClause(sb.toString(), param);
-        return wc;
-    }
-
-    private WhereClause assembleChildren(List<Map<PredicateOperator, Where>> children) {
-        StringBuilder sb = new StringBuilder();
-        Map<String, Object> param = new HashMap<>();
-        WhereClause whereClause = null;
-        if (!children.isEmpty()) {
-            WhereClause wc;
-            for (Map<PredicateOperator, Where> child : children) {
-                wc = assemble(child);
-                sb.append(wc.getWhereClause());
-                param.putAll(wc.getParam());
-            }
-            whereClause = new WhereClause(sb.toString(), param);
-        }
-        return whereClause;
-    }
-
-    private WhereClause assemble(Map<PredicateOperator, Where> child) {
-        StringBuilder sb = new StringBuilder();
-        Map<String, Object> param = new HashMap<>();
-        PredicateOperator operator = child.keySet().iterator().next();
-        sb.append(operator.getText() + " ");
-        sb.append("(");
-        Where where = child.get(operator);
-        WhereClause wc = assemble(where);
-        sb.append(wc.getWhereClause());
-        sb.append(")");
-        param.putAll(wc.getParam());
-        WhereClause whereClause = new WhereClause(sb.toString(), param);
-        return whereClause;
     }
 }

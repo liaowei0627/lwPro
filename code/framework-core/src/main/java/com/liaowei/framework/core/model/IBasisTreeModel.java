@@ -4,7 +4,10 @@
  */
 package com.liaowei.framework.core.model;
 
-import java.util.Set;
+import java.util.List;
+
+import com.liaowei.framework.core.entity.IBasisTreeEntity;
+import com.liaowei.framework.core.vo.IBasisTreeVo;
 
 /**
  * IBasisTreeEntity
@@ -16,7 +19,13 @@ import java.util.Set;
  * @see com.liaowei.framework.core.entity.IBasisEntity
  * @since jdk1.8
  */
-public interface IBasisTreeModel<M> extends IBasisModel {
+public interface IBasisTreeModel<E extends IBasisTreeEntity<E>, V extends IBasisTreeVo<E, V>, M extends IBasisTreeModel<E, V, M>>
+        extends IBasisModel<E, V, M> {
+
+    /**
+     * 将Model属性复制到新的Vo对象
+     */
+    V copyToVo(M m);
 
     /**
      * 上级数据
@@ -31,12 +40,12 @@ public interface IBasisTreeModel<M> extends IBasisModel {
     /**
      * 下级数据集合
      */
-    public Set<M> getChildren();
+    public List<M> getChildren();
 
     /**
      * 下级数据集合
      */
-    public void setChildren(Set<M> children);
+    public void setChildren(List<M> children);
 
     /**
      * 是否有子节点

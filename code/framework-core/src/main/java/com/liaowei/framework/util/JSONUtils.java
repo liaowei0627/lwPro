@@ -37,7 +37,7 @@ public class JSONUtils {
      * @throws JsonProcessingException
      */
     public static String objectToJSONString(Object o) throws JsonProcessingException {
-        log.debug("对象转JSON字符串：" + o.toString());
+        log.debug("DEBUG：对象转JSON字符串：" + o.toString());
         return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(o);
     }
 
@@ -50,7 +50,7 @@ public class JSONUtils {
      * @throws IOException
      */
     public static <T> T JSONStringToObject(String json, Class<T> clazz) throws IOException {
-        log.debug("JSON字符串转对象：" + json);
+        log.debug("DEBUG：JSON字符串转对象：" + json);
         return mapper.readValue(json, clazz);
     }
 }

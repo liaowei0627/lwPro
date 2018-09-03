@@ -9,8 +9,10 @@ import java.util.List;
 import java.util.Set;
 
 import com.liaowei.framework.vo.BaseVo;
+import com.liaowei.platform.entity.SysUser;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -25,10 +27,11 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class UserVo extends BaseVo {
+public class UserVo extends BaseVo<SysUser, UserVo> {
 
     /**
      * 用户名
@@ -65,10 +68,6 @@ public class UserVo extends BaseVo {
      */
     private Set<MenuVo> menus;
 
-    public UserVo() {
-        super();
-    }
-
     public UserVo(String id, String userName, String password, Boolean valid, String creator, LocalDateTime createTime,
             String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
@@ -90,6 +89,24 @@ public class UserVo extends BaseVo {
     }
 
     @Override
+    public void copyForEntity(SysUser temp) {
+        id = temp.getId();
+        valid = temp.getValid();
+        creator = temp.getCreator();
+        createTime = temp.getCreateTime();
+        reviser = temp.getReviser();
+        modifyTime = temp.getModifyTime();
+
+        userName = temp.getUserName();
+        password = temp.getPassword();
+    }
+
+    @Override
+    public SysUser copyToEntity() {
+        return new SysUser(id, userName, password, valid, creator, createTime, reviser, modifyTime);
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -107,8 +124,7 @@ public class UserVo extends BaseVo {
             return false;
         UserVo other = (UserVo) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

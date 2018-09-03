@@ -52,10 +52,6 @@ public enum OneValueComparisonOperator {
      */
     LIKE("like"),
     /**
-     * not like
-     */
-    NOT_LIKE("not like"),
-    /**
      * member of
      */
     MEMBER_OF("member of"),

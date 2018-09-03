@@ -15,8 +15,8 @@ import com.liaowei.platform.vo.UserVo;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-30 18:45:00
- * @see com.liaowei.framework.service.IService<UserVo, SysUser, String>
+ * @see com.liaowei.framework.service.IService<SysUser, UserVo>
  * @since jdk1.8
  */
-public interface IUserService extends IService<UserVo, SysUser, String> {
+public interface IUserService extends IService<SysUser, UserVo> {
 }

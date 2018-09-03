@@ -18,7 +18,7 @@ import java.util.Set;
  * @see com.liaowei.framework.core.entity.IBasisEntity
  * @since jdk1.8
  */
-public interface IBasisTreeEntity<E> extends IBasisEntity {
+public interface IBasisTreeEntity<E extends IBasisTreeEntity<E>> extends IBasisEntity<E> {
 
     /**
      * 上级数据

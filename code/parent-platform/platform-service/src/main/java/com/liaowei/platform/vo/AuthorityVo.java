@@ -4,16 +4,18 @@
  */
 package com.liaowei.platform.vo;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import com.liaowei.framework.vo.BaseVo;
+import com.liaowei.platform.entity.SysAuthority;
 import com.liaowei.platform.enums.AuthTypeEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -28,10 +30,12 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class AuthorityVo extends BaseVo {
+public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
 
     /**
      * 权限名称
@@ -54,17 +58,22 @@ public class AuthorityVo extends BaseVo {
      */
     private List<MenuVo> menus;
 
-    public AuthorityVo() {
-        super();
+    @Override
+    public void copyForEntity(SysAuthority temp) {
+        id = temp.getId();
+        valid = temp.getValid();
+        creator = temp.getCreator();
+        createTime = temp.getCreateTime();
+        reviser = temp.getReviser();
+        modifyTime = temp.getModifyTime();
+
+        authName = temp.getAuthName();
+        authType = temp.getAuthType();
     }
 
-    public AuthorityVo(String id, String authName, AuthTypeEnum authType, List<AuthDataTypeVo> authDataTypes, List<MenuVo> menus,
-            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
-        super(id, valid, creator, createTime, reviser, modifyTime);
-        this.authName = authName;
-        this.authType = authType;
-        this.authDataTypes = authDataTypes;
-        this.menus = menus;
+    @Override
+    public SysAuthority copyToEntity() {
+        return new SysAuthority(id, authName, authType, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override
@@ -85,8 +94,7 @@ public class AuthorityVo extends BaseVo {
             return false;
         AuthorityVo other = (AuthorityVo) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

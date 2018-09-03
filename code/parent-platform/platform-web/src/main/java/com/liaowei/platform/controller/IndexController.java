@@ -15,10 +15,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.common.base.Objects;
 import com.liaowei.framework.SessionUser;
 import com.liaowei.framework.controller.BaseController;
-import com.liaowei.framework.core.model.IBasisIdModel;
 import com.liaowei.framework.core.model.IBasisModel;
 import com.liaowei.framework.core.vo.IBasisIdVo;
-import com.liaowei.framework.core.vo.IBasisVo;
 import com.liaowei.framework.response.ResponseData;
 import com.liaowei.framework.util.CryptoUtils;
 import com.liaowei.platform.service.ILoginService;
@@ -145,11 +143,6 @@ public class IndexController extends BaseController {
 
     @Override
     protected IBasisModel voToModel(IBasisIdVo v) {
-        return null;
-    }
-
-    @Override
-    protected IBasisVo modelToVo(IBasisIdModel m) {
         return null;
     }
 }

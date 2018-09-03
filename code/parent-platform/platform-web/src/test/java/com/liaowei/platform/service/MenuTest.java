@@ -10,8 +10,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Maps;
 import com.liaowei.framework.page.Pagination;
@@ -20,9 +18,10 @@ import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.operator.NoValueComparisonOperator;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
 import com.liaowei.framework.test.TestService;
-import com.liaowei.framework.util.JSONUtils;
 import com.liaowei.platform.enums.MenuTypeEnum;
 import com.liaowei.platform.vo.MenuVo;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * MenuTest
@@ -34,9 +33,8 @@ import com.liaowei.platform.vo.MenuVo;
  * @see com.liaowei.framework.test.TestService
  * @since jdk1.8
  */
+@Slf4j
 public class MenuTest extends TestService {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MenuTest.class);
 
     @Resource(name = "menuService")
     private IMenuService menuService;
@@ -55,9 +53,9 @@ public class MenuTest extends TestService {
             vo.setReviser("admin");
             vo.setModifyTime(LocalDateTime.now());
             vo = menuService.addVo(vo);
-            LOGGER.info(vo.toString());
+            log.info(vo.toString());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -71,9 +69,9 @@ public class MenuTest extends TestService {
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
             where.andWhere("parent", NoValueComparisonOperator.IS_NULL);
             Pagination<MenuVo> pagination = menuService.findList(page, where);
-            LOGGER.info(JSONUtils.objectToJSONString(pagination));
+            log.info(pagination.toString());
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

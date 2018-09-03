@@ -5,16 +5,23 @@
  */
 package com.liaowei.sample;
 
+import org.junit.Test;
+
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * TestCommont
  *
- * TODO
- *
  * @author liaowei
  * @date 创建时间：2018年3月31日 上午11:48:55 
- * @see TODO
  * @since jdk1.8
  */
+@Slf4j
 public class TestCommont {
 
+    @Test
+    public void test() {
+        log.info(String.valueOf(null == null));
+        log.info(String.valueOf("".equals(null)));
+    }
 }

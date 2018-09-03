@@ -7,9 +7,12 @@ package com.liaowei.platform.entity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.liaowei.framework.entity.BaseIdEntity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -24,12 +27,14 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Entity
 @Table(name = "SYS_AUTH_MENUS")
-public class SysAuthMenu extends BaseIdEntity {
+public class SysAuthMenu extends BaseIdEntity<SysAuthMenu> {
 
     /**
      * 权限ID
@@ -41,14 +46,26 @@ public class SysAuthMenu extends BaseIdEntity {
      */
     private String sysMenuId;
 
-    public SysAuthMenu() {
-        super();
-    }
-
     public SysAuthMenu(String id, String sysAuthId, String sysMenuId) {
         super(id);
         this.sysAuthId = sysAuthId;
         this.sysMenuId = sysMenuId;
+    }
+
+    @Override
+    public void setEntity(SysAuthMenu e) {
+        String id = e.getId();
+        if (!Strings.isNullOrEmpty(id)) {
+            this.id = id;
+        }
+        String sysAuthId = e.getSysAuthId();
+        if (!Strings.isNullOrEmpty(sysAuthId)) {
+            this.sysAuthId = sysAuthId;
+        }
+        String sysMenuId = e.getSysMenuId();
+        if (!Strings.isNullOrEmpty(sysMenuId)) {
+            this.sysMenuId = sysMenuId;
+        }
     }
 
     @Override
@@ -69,8 +86,7 @@ public class SysAuthMenu extends BaseIdEntity {
             return false;
         SysAuthMenu other = (SysAuthMenu) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

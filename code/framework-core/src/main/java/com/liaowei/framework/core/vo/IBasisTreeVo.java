@@ -4,7 +4,9 @@
  */
 package com.liaowei.framework.core.vo;
 
-import java.util.Set;
+import java.util.List;
+
+import com.liaowei.framework.core.entity.IBasisTreeEntity;
 
 /**
  * IBasisTreeVo
@@ -16,8 +18,12 @@ import java.util.Set;
  * @see com.liaowei.framework.core.vo.IBasisIdVo
  * @since jdk1.8
  */
-public interface IBasisTreeVo<V> extends IBasisIdVo {
+public interface IBasisTreeVo<E extends IBasisTreeEntity<E>, V extends IBasisTreeVo<E, V>> extends IBasisVo<E, V> {
 
+    /**
+     * 将Vo属性复制到新的Entity对象
+     */
+    E copyToEntity(V v);
 
     /**
      * 上级数据
@@ -32,12 +38,12 @@ public interface IBasisTreeVo<V> extends IBasisIdVo {
     /**
      * 下级数据集合
      */
-    public Set<V> getChildren();
+    public List<V> getChildren();
 
     /**
      * 下级数据集合
      */
-    public void setChildren(Set<V> children);
+    public void setChildren(List<V> children);
 
     /**
      * 是否有子节点

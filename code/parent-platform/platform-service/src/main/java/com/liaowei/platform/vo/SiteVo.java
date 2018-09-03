@@ -4,11 +4,11 @@
  */
 package com.liaowei.platform.vo;
 
-import java.time.LocalDateTime;
-
 import com.liaowei.framework.vo.BaseVo;
+import com.liaowei.platform.entity.SysSite;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -23,24 +23,32 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class SiteVo extends BaseVo {
+public class SiteVo extends BaseVo<SysSite, SiteVo> {
 
     /**
      * 站点名称
      */
     private String siteName;
 
-    public SiteVo() {
-        super();
+    @Override
+    public void copyForEntity(SysSite temp) {
+        id = temp.getId();
+        valid = temp.getValid();
+        creator = temp.getCreator();
+        createTime = temp.getCreateTime();
+        reviser = temp.getReviser();
+        modifyTime = temp.getModifyTime();
+
+        siteName = temp.getSiteName();
     }
 
-    public SiteVo(String id, String siteName, Boolean valid, String creator, LocalDateTime createTime, String reviser,
-            LocalDateTime modifyTime) {
-        super(id, valid, creator, createTime, reviser, modifyTime);
-        this.siteName = siteName;
+    @Override
+    public SysSite copyToEntity() {
+        return new SysSite(id, siteName, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override
@@ -61,8 +69,7 @@ public class SiteVo extends BaseVo {
             return false;
         SiteVo other = (SiteVo) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

@@ -47,6 +47,20 @@ public class MenuView {
     }
 
     /**
+     * 编号
+     */
+    public String getCode() {
+        return m.getCode();
+    }
+
+    /**
+     * 编号
+     */
+    public void setCode(String code) {
+        m.setCode(code);
+    }
+
+    /**
      * 菜单文本
      */
     public String getText() {

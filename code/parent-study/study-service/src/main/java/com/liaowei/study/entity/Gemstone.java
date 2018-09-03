@@ -29,7 +29,7 @@ import com.liaowei.framework.entity.BaseEntity;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "GEMSTONES")
-public class Gemstone extends BaseEntity {
+public class Gemstone extends BaseEntity<Gemstone> {
 
     /**
      * 宝石名称
@@ -102,6 +102,12 @@ public class Gemstone extends BaseEntity {
     }
 
     @Override
+    public void setEntity(Gemstone e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -119,8 +125,7 @@ public class Gemstone extends BaseEntity {
             return false;
         Gemstone other = (Gemstone) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

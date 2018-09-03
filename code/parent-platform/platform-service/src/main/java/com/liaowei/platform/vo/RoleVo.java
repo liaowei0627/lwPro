@@ -4,16 +4,17 @@
  */
 package com.liaowei.platform.vo;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import com.liaowei.framework.vo.BaseVo;
+import com.liaowei.platform.entity.SysRole;
 import com.liaowei.platform.enums.RoleTypeEnum;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -28,10 +29,11 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class RoleVo extends BaseVo {
+public class RoleVo extends BaseVo<SysRole, RoleVo> {
 
     /**
      * 角色名称
@@ -49,23 +51,22 @@ public class RoleVo extends BaseVo {
      */
     private List<AuthorityVo> authorities;
 
-    public RoleVo() {
-        super();
+    @Override
+    public void copyForEntity(SysRole temp) {
+        id = temp.getId();
+        valid = temp.getValid();
+        creator = temp.getCreator();
+        createTime = temp.getCreateTime();
+        reviser = temp.getReviser();
+        modifyTime = temp.getModifyTime();
+
+        roleName = temp.getRoleName();
+        roleType = temp.getRoleType();
     }
 
-    public RoleVo(String id, String roleName, RoleTypeEnum roleType, Boolean valid, String creator, LocalDateTime createTime,
-            String reviser, LocalDateTime modifyTime) {
-        super(id, valid, creator, createTime, reviser, modifyTime);
-        this.roleName = roleName;
-        this.roleType = roleType;
-    }
-
-    public RoleVo(String id, String roleName, RoleTypeEnum roleType, List<AuthorityVo> authorities, Boolean valid, String creator, LocalDateTime createTime,
-            String reviser, LocalDateTime modifyTime) {
-        super(id, valid, creator, createTime, reviser, modifyTime);
-        this.roleName = roleName;
-        this.roleType = roleType;
-        this.authorities = authorities;
+    @Override
+    public SysRole copyToEntity() {
+        return new SysRole(id, roleName, roleType, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override
@@ -86,8 +87,7 @@ public class RoleVo extends BaseVo {
             return false;
         RoleVo other = (RoleVo) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

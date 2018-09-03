@@ -17,5 +17,5 @@ import com.liaowei.platform.entity.SysRole;
  * @see com.liaowei.framework.dao.IDao<SysRole, String>
  * @since jdk1.8
  */
-public interface IRoleDao extends IDao<SysRole, String> {
+public interface IRoleDao extends IDao<SysRole> {
 }

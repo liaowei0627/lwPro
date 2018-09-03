@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.liaowei.framework.core.entity.IBasisIdEntity;
+import com.liaowei.framework.core.exception.ApplicationException;
+import com.liaowei.framework.page.Pagination;
+import com.liaowei.framework.query.Where;
 
 /**
  * IBasisDao
@@ -19,7 +22,7 @@ import com.liaowei.framework.core.entity.IBasisIdEntity;
  * @see java.io.Serializable
  * @since jdk1.8
  */
-public interface IBasisDao<E extends IBasisIdEntity, PK extends Serializable> {
+public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable> {
 
     /**
      * 通过主键查询一个实体对象
@@ -29,6 +32,16 @@ public interface IBasisDao<E extends IBasisIdEntity, PK extends Serializable> {
      * @throws ServiceException
      */
     E findEntity(PK id);
+
+    /**
+     * 分页查询数据集合
+     * 
+     * @param pagination 分页对象
+     * @param where hql查询条件对象
+     * @return
+     * @throws ServiceException
+     */
+    Pagination<E> findList(Pagination<E> pagination, Where where) throws ApplicationException;
 
     /**
      * insert一个实体对象

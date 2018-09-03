@@ -37,7 +37,7 @@ public class CryptoUtils {
      * @throws UnsupportedEncodingException 
      */
     public static String toMD5(String s) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        log.debug("MD5编码：" + s);
+        log.debug("DEBUG：MD5编码：" + s);
         return toHexString(encrypt(s, "MD5"));
     }
 
@@ -51,7 +51,7 @@ public class CryptoUtils {
      * @throws UnsupportedEncodingException
      */
     public static byte[] encrypt(String s, String algorithm) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        log.debug("对字符串单向加密（不可逆加密）编码：" + s);
+        log.debug("DEBUG：对字符串单向加密（不可逆加密）编码：" + s);
 
         MessageDigest md = MessageDigest.getInstance(algorithm);
         byte[] bytes = md.digest(s.getBytes("UTF-8"));
@@ -67,7 +67,7 @@ public class CryptoUtils {
      * @throws UnsupportedEncodingException
      */
     public static String base64Encoder(String s) throws UnsupportedEncodingException {
-        log.debug("将字符串进行Base64编码：" + s);
+        log.debug("DEBUG：将字符串进行Base64编码：" + s);
 
         Encoder encoder = Base64.getEncoder();
         byte[] bytes = encoder.encode(s.getBytes("UTF-8"));
@@ -82,7 +82,7 @@ public class CryptoUtils {
      * @return 解码后的字符串明文
      */
     public static String base64Deconder(String ciphertext) {
-        log.debug("将Base64密文解码：" + ciphertext);
+        log.debug("DEBUG：将Base64密文解码：" + ciphertext);
 
         Decoder decoder = Base64.getDecoder();
         byte[] bytes = decoder.decode(hexToBytes(ciphertext));
@@ -98,7 +98,7 @@ public class CryptoUtils {
      * @return
      */
     public static String toHexString(byte[] bytes) {
-        log.debug("将byte[]转换为16进制字符串：" + Arrays.toString(bytes));
+        log.debug("DEBUG：将byte[]转换为16进制字符串：" + Arrays.toString(bytes));
 
         StringBuilder buf = new StringBuilder(bytes.length * 2);
         for (byte b : bytes) { // 使用String的format方法进行转换
@@ -115,7 +115,7 @@ public class CryptoUtils {
      * @return
      */
     public static byte[] hexToBytes(String str) {
-        log.debug("将16进制字符串转换为byte[]：" + str);
+        log.debug("DEBUG：将16进制字符串转换为byte[]：" + str);
 
         if (str == null || str.trim().equals("")) {
             return new byte[0];

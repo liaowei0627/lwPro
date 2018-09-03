@@ -1,7 +1,5 @@
 package com.liaowei.study.test;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
@@ -13,16 +11,13 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.page.Pagination.OrderEnum;
 import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
 import com.liaowei.framework.util.CryptoUtils;
-import com.liaowei.framework.util.JSONUtils;
 import com.liaowei.study.service.ILoginService;
 import com.liaowei.study.service.IUserService;
 import com.liaowei.study.vo.UserVo;
@@ -48,11 +43,9 @@ public class UserTest {
     @Test
     public void testFind() {
         try {
-            String json = null;
             UserVo vo = userService.findVo("CE77BDD4409B42F4AE0F8D54E68E6FB5");
-            json = JSONUtils.objectToJSONString(vo);
-            log.debug(json);
-        } catch (JsonProcessingException | ApplicationException e) {
+            log.debug(vo.toString());
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -67,9 +60,8 @@ public class UserTest {
             vo.setCreator("admin");
             vo.setReviser("admin");
             vo = userService.addVo(vo);
-            String json = JSONUtils.objectToJSONString(vo);
-            log.debug(json);
-        } catch (JsonProcessingException | ApplicationException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            log.debug(vo.toString());
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -77,16 +69,13 @@ public class UserTest {
     @Test
     public void testUpdate() {
         try {
-            String json = null;
             UserVo vo = userService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
-            json = JSONUtils.objectToJSONString(vo);
-            log.debug(json);
+            log.debug(vo.toString());
             vo.setPassword(CryptoUtils.toMD5("test789"));
             userService.updateVo(vo);
             vo = userService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
-            json = JSONUtils.objectToJSONString(vo);
-            log.debug(json);
-        } catch (JsonProcessingException | ApplicationException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            log.debug(vo.toString());
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -99,10 +88,9 @@ public class UserTest {
             Pagination<UserVo> page = new Pagination<UserVo>(orderBy);
             page.setPageable(false);
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
-            Pagination<UserVo> list = userService.findList(page, where);
-            String json = JSONUtils.objectToJSONString(list);
-            log.debug(json);
-        } catch (JsonProcessingException | ApplicationException e) {
+            Pagination<UserVo> pagination = userService.findList(page, where);
+            log.debug(pagination.toString());
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -114,10 +102,9 @@ public class UserTest {
             orderBy.put("orderNum", OrderEnum.ASC);
             Pagination<UserVo> page = new Pagination<UserVo>(5, 2, orderBy);
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
-            Pagination<UserVo> list = userService.findList(page, where);
-            String json = JSONUtils.objectToJSONString(list);
-            log.debug(json);
-        } catch (JsonProcessingException | ApplicationException e) {
+            Pagination<UserVo> pagination = userService.findList(page, where);
+            log.debug(pagination.toString());
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -126,7 +113,7 @@ public class UserTest {
     public void testDel() {
         try {
             userService.delOne("9E3BAC7DDF5141E592621E50F68618C9");
-        } catch (ApplicationException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -141,7 +128,7 @@ public class UserTest {
             pks.add("9F6EB231D466453996E8F93FA9B96FF4");
             pks.add("EAD9DF5A37FD4B3A830ED97C8D5A9D2E");
             userService.delList(pks);
-        } catch (ApplicationException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -150,9 +137,8 @@ public class UserTest {
     public void testLogin() {
         try {
             UserVo user = loginService.findByUserName("admin");
-            String json = JSONUtils.objectToJSONString(user);
-            log.debug(json);
-        } catch (JsonProcessingException | ApplicationException e) {
+            log.debug(user.toString());
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }

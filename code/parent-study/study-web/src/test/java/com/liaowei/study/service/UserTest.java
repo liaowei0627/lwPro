@@ -14,8 +14,6 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -31,6 +29,8 @@ import com.liaowei.framework.util.CryptoUtils;
 import com.liaowei.framework.util.JSONUtils;
 import com.liaowei.study.vo.UserVo;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * SysUserTest
  *
@@ -42,9 +42,8 @@ import com.liaowei.study.vo.UserVo;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath*:**/applicationContext*.xml" })
+@Slf4j
 public class UserTest {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserTest.class);
 
     @Resource(name = "userService")
     private IUserService userService;
@@ -54,7 +53,7 @@ public class UserTest {
     @Test
     public void testTimezone() {
         ZoneId defaultZone = ZoneId.systemDefault();
-        LOGGER.debug(defaultZone.getId());
+        log.debug(defaultZone.getId());
     }
 
     @Test
@@ -63,9 +62,9 @@ public class UserTest {
             String json = null;
             UserVo vo = userService.findVo("CE77BDD4409B42F4AE0F8D54E68E6FB5");
             json = JSONUtils.objectToJSONString(vo);
-            LOGGER.debug(json);
+            log.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -80,9 +79,9 @@ public class UserTest {
             vo.setReviser("admin");
             vo = userService.addVo(vo);
             String json = JSONUtils.objectToJSONString(vo);
-            LOGGER.debug(json);
+            log.debug(json);
         } catch (JsonProcessingException | ApplicationException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -92,14 +91,14 @@ public class UserTest {
             String json = null;
             UserVo vo = userService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
             json = JSONUtils.objectToJSONString(vo);
-            LOGGER.debug(json);
+            log.debug(json);
             vo.setPassword(CryptoUtils.toMD5("test789"));
             userService.updateVo(vo);
             vo = userService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
             json = JSONUtils.objectToJSONString(vo);
-            LOGGER.debug(json);
+            log.debug(json);
         } catch (JsonProcessingException | ApplicationException | NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -113,9 +112,9 @@ public class UserTest {
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
             Pagination<UserVo> list = userService.findList(page, where);
             String json = JSONUtils.objectToJSONString(list);
-            LOGGER.debug(json);
+            log.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -128,9 +127,9 @@ public class UserTest {
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
             Pagination<UserVo> list = userService.findList(page, where);
             String json = JSONUtils.objectToJSONString(list);
-            LOGGER.debug(json);
+            log.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -139,7 +138,7 @@ public class UserTest {
         try {
             userService.delOne("9E3BAC7DDF5141E592621E50F68618C9");
         } catch (ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -154,7 +153,7 @@ public class UserTest {
             pks.add("EAD9DF5A37FD4B3A830ED97C8D5A9D2E");
             userService.delList(pks);
         } catch (ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -163,9 +162,9 @@ public class UserTest {
         try {
             UserVo user = loginService.findByUserName("admin");
             String json = JSONUtils.objectToJSONString(user);
-            LOGGER.debug(json);
+            log.debug(json);
         } catch (JsonProcessingException | ApplicationException e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

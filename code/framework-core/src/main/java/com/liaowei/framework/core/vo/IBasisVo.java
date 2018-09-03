@@ -6,6 +6,8 @@ package com.liaowei.framework.core.vo;
 
 import java.time.LocalDateTime;
 
+import com.liaowei.framework.core.entity.IBasisEntity;
+
 /**
  * IBasisVo
  *
@@ -16,7 +18,7 @@ import java.time.LocalDateTime;
  * @see com.liaowei.framework.core.vo.IBasisIdVo
  * @since jdk1.8
  */
-public interface IBasisVo extends IBasisIdVo {
+public interface IBasisVo<E extends IBasisEntity<E>, V extends IBasisVo<E, V>> extends IBasisIdVo<E, V> {
 
     /**
      * 是否有效

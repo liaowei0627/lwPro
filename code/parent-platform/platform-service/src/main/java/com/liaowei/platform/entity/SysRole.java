@@ -5,21 +5,24 @@
 package com.liaowei.platform.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
+import com.google.common.collect.Sets;
 import com.liaowei.framework.entity.BaseEntity;
 import com.liaowei.platform.enums.RoleTypeEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -34,12 +37,14 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Entity
 @Table(name = "SYS_ROLES")
-public class SysRole extends BaseEntity {
+public class SysRole extends BaseEntity<SysRole> {
 
     /**
      * 角色名称
@@ -55,20 +60,16 @@ public class SysRole extends BaseEntity {
     /**
      * 角色权限关系数据集合
      */
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Column(name = "sysRoleId")
-    private List<SysRoleAuth> sysRoleAuths;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sysRoleId")
+    private Set<SysRoleAuth> sysRoleAuths = Sets.<SysRoleAuth>newHashSet();
 
     /**
      * 用户角色关系数据集合
      */
-    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @Column(name = "sysRoleId")
-    private List<SysUserRole> sysUserRoles;
-
-    public SysRole() {
-        super();
-    }
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sysRoleId")
+    private Set<SysUserRole> sysUserRoles = Sets.<SysUserRole>newHashSet();
 
     public SysRole(String id, String roleName, RoleTypeEnum roleType, Boolean valid, String creator, LocalDateTime createTime,
             String reviser, LocalDateTime modifyTime) {
@@ -77,13 +78,49 @@ public class SysRole extends BaseEntity {
         this.roleType = roleType;
     }
 
-    public SysRole(String id, String roleName, RoleTypeEnum roleType, List<SysRoleAuth> sysRoleAuths, List<SysUserRole> sysUserRoles,
-            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public SysRole(String id, String roleName, RoleTypeEnum roleType, Boolean valid, String creator, LocalDateTime createTime,
+            String reviser, LocalDateTime modifyTime, Set<SysRoleAuth> sysRoleAuths, Set<SysUserRole> sysUserRoles) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.roleName = roleName;
         this.roleType = roleType;
         this.sysRoleAuths = sysRoleAuths;
         this.sysUserRoles = sysUserRoles;
+    }
+
+    @Override
+    public void setEntity(SysRole e) {
+        String id = e.getId();
+        if (!Strings.isNullOrEmpty(id)) {
+            this.id = id;
+        }
+        String roleName = e.getRoleName();
+        if (!Strings.isNullOrEmpty(roleName)) {
+            this.roleName = roleName;
+        }
+        RoleTypeEnum roleType = e.getRoleType();
+        if (null != roleType) {
+            this.roleType = roleType;
+        }
+        Boolean valid = e.getValid();
+        if (null != valid) {
+            this.valid = valid;
+        }
+        String creator = e.getCreator();
+        if (!Strings.isNullOrEmpty(creator)) {
+            this.creator = creator;
+        }
+        LocalDateTime createTime = e.getCreateTime();
+        if (null != createTime) {
+            this.createTime = createTime;
+        }
+        String reviser = e.getReviser();
+        if (!Strings.isNullOrEmpty(reviser)) {
+            this.reviser = reviser;
+        }
+        LocalDateTime modifyTime = e.getModifyTime();
+        if (null != modifyTime) {
+            this.modifyTime = modifyTime;
+        }
     }
 
     @Override
@@ -104,8 +141,7 @@ public class SysRole extends BaseEntity {
             return false;
         SysRole other = (SysRole) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

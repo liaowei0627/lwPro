@@ -30,13 +30,11 @@ public class LoginServiceImpl implements ILoginService {
     @Resource(name = "sysUserDao")
     private ISysUserDao sysUserDao;
 
-    public UserVo voCopy(SysUser entity) {
-        return UserVo.forEntity(entity);
-    }
-
     @Override
     public UserVo findByUserName(String userName) throws ApplicationException {
         SysUser sysUser = sysUserDao.findByUserName(userName);
-        return UserVo.forEntity(sysUser);
+        UserVo vo = new UserVo();
+        vo.copyForEntity(sysUser);
+        return vo;
     }
 }

@@ -22,7 +22,7 @@ import com.liaowei.platform.entity.SysUser;
  * @since jdk1.8
  */
 @Repository("userDao")
-public class UserDaoImpl extends DaoImpl<SysUser, String> implements IUserDao {
+public class UserDaoImpl extends DaoImpl<SysUser> implements IUserDao {
 
     @Override
     protected Class<SysUser> getEntityClass() {

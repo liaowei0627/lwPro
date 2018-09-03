@@ -7,8 +7,12 @@ package com.liaowei.framework.model;
 import java.time.LocalDateTime;
 
 import com.liaowei.framework.core.model.IBasisModel;
+import com.liaowei.framework.entity.BaseEntity;
+import com.liaowei.framework.vo.BaseVo;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -23,10 +27,11 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @ToString(callSuper = true)
-public abstract class BaseModel extends BaseIdModel implements IBasisModel {
+public abstract class BaseModel<E extends BaseEntity<E>, V extends BaseVo<E, V>, M extends BaseModel<E, V, M>> extends BaseIdModel<E, V, M> implements IBasisModel<E, V, M> {
 
     /**
      * 是否有效
@@ -52,17 +57,4 @@ public abstract class BaseModel extends BaseIdModel implements IBasisModel {
      * 修改时间
      */
     protected LocalDateTime modifyTime;
-
-    public BaseModel() {
-        super();
-    }
-
-    public BaseModel(String id, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
-        super(id);
-        this.valid = valid;
-        this.creator = creator;
-        this.createTime = createTime;
-        this.reviser = reviser;
-        this.modifyTime = modifyTime;
-    }
 }

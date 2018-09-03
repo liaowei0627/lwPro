@@ -18,7 +18,7 @@ public class WhereTest {
             Where child = where.childAndWhere("e", OneValueComparisonOperator.EQ, "f");
             child.andWhere("g", OneValueComparisonOperator.EQ, "h");
             where.childOrWhere("i", TwoValueComparisonOperator.BETWEEN, "j", "k");
-            log.info(where.toWhereClause().toString());
+            log.info(QueryUtils.toWhereClause(where).toString());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

@@ -8,8 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
@@ -23,6 +21,8 @@ import com.liaowei.framework.test.TestController;
 import com.liaowei.framework.util.CryptoUtils;
 import com.liaowei.framework.util.JSONUtils;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * UserTest
  *
@@ -32,9 +32,8 @@ import com.liaowei.framework.util.JSONUtils;
  * @date 2018-04-14 17:59:06
  * @since jdk1.8
  */
+@Slf4j
 public class LoginTest extends TestController {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LoginTest.class);
 
     @SuppressWarnings("unchecked")
     @Test
@@ -57,12 +56,12 @@ public class LoginTest extends TestController {
             result = response.getContentAsString();
             map = JSONUtils.JSONStringToObject(result, HashMap.class);
             String seed = map.get("data");
-            LOGGER.info("seed is：" + seed);
+            log.info("INFO：seed is：" + seed);
 
             String pwdCiphertext = CryptoUtils.toMD5(password);
             pwdCiphertext = CryptoUtils.toMD5(pwdCiphertext.concat(seed));
             pwdCiphertext = CryptoUtils.base64Encoder(pwdCiphertext);
-            LOGGER.info("pwdCiphertext is：" + pwdCiphertext);
+            log.info("INFO：pwdCiphertext is：" + pwdCiphertext);
 
             MockHttpServletRequestBuilder loginPost = MockMvcRequestBuilders.post("/login");
             loginPost.param("userName", userName);
@@ -73,10 +72,10 @@ public class LoginTest extends TestController {
             response = loginResult.getResponse();
             result = response.getContentAsString();
             map = JSONUtils.JSONStringToObject(result, HashMap.class);
-            LOGGER.info("login is：" + map.get("msg"));
+            log.info("INFO：login is：" + map.get("msg"));
             
         } catch (Exception e) {
-            LOGGER.error(e.getMessage(), e);
+            log.error(e.getMessage(), e);
         }
     }
 }

@@ -16,10 +16,10 @@ import com.liaowei.platform.vo.MenuVo;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 23:38:17
- * @see com.liaowei.framework.service.IService<MenuVo, SysMenu, String>
+ * @see com.liaowei.framework.service.IService<SysMenu, MenuVo>
  * @since jdk1.8
  */
-public interface IMenuService extends IService<MenuVo, SysMenu, String> {
+public interface IMenuService extends IService<SysMenu, MenuVo> {
 
     /**
      * 新增数据

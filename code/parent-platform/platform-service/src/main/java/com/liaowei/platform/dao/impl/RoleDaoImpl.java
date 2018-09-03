@@ -22,7 +22,7 @@ import com.liaowei.platform.entity.SysRole;
  * @since jdk1.8
  */
 @Repository("roleDao")
-public class RoleDaoImpl extends DaoImpl<SysRole, String> implements IRoleDao {
+public class RoleDaoImpl extends DaoImpl<SysRole> implements IRoleDao {
 
     @Override
     protected Class<SysRole> getEntityClass() {

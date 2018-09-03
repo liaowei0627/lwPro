@@ -20,15 +20,11 @@ import com.liaowei.framework.core.vo.IBasisIdVo;
  * @see com.liaowei.framework.core.service.IBasisService<T, PK>
  * @since jdk1.8
  */
-public abstract class BasisServiceImpl<V extends IBasisIdVo, E extends IBasisIdEntity, PK extends Serializable> implements IBasisService<V, E, PK> {
+public abstract class BasisServiceImpl<E extends IBasisIdEntity<E>, V extends IBasisIdVo<E, V>, PK extends Serializable>
+        implements IBasisService<E, V, PK> {
 
     /**
      * 将Entity对象转换成Vo对象
      */
     protected abstract V entityToVo(E entity);
-
-    /**
-     * 将Vo对象转换成Entity对象
-     */
-    protected abstract E voToEntity(V vo);
 }

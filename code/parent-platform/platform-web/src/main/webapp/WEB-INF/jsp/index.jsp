@@ -9,7 +9,7 @@
 <body id="body_layout" class="easyui-layout">
     <div id="main_header" data-options="region:'north'" style="height: 63px;position: relative;"></div>
     <div id="main_content" class="easyui-panel" data-options="region:'center',title:'Main Title'"></div>
-    <div data-options="region:'south'" style="height: 50px;"></div>
+    <div data-options="region:'south'" style="height: 70px;"></div>
 </body>
 <%@ include file="./base/import-js.jsp"%>
 </html>

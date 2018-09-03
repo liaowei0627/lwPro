@@ -6,8 +6,6 @@ package com.liaowei.platform.test.enums;
 
 import org.junit.Test;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.liaowei.framework.util.JSONUtils;
 import com.liaowei.platform.enums.MenuTypeEnum;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,8 +25,8 @@ public class TestEnumJson {
     @Test
     public void testEnumJson() {
         try {
-            log.info(JSONUtils.objectToJSONString(MenuTypeEnum.BUTTON));
-        } catch (JsonProcessingException e) {
+            log.info(MenuTypeEnum.BUTTON.toString());
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }
@@ -37,8 +35,10 @@ public class TestEnumJson {
     public void testEnumArray() {
         try {
             MenuTypeEnum[] menuTypes = MenuTypeEnum.values();
-            log.info(JSONUtils.objectToJSONString(menuTypes));
-        } catch (JsonProcessingException e) {
+            for (MenuTypeEnum menuTypeEnum : menuTypes) {
+                log.info(menuTypeEnum.toString());
+            }
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
     }

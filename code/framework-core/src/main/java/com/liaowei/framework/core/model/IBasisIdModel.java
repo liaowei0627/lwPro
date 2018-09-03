@@ -6,6 +6,9 @@ package com.liaowei.framework.core.model;
 
 import java.io.Serializable;
 
+import com.liaowei.framework.core.entity.IBasisIdEntity;
+import com.liaowei.framework.core.vo.IBasisIdVo;
+
 /**
  * IBasisIdModel
  *
@@ -16,7 +19,20 @@ import java.io.Serializable;
  * @see java.io.Serializable
  * @since jdk1.8
  */
-public interface IBasisIdModel extends Serializable {
+public interface IBasisIdModel<E extends IBasisIdEntity<E>, V extends IBasisIdVo<E, V>, M extends IBasisIdModel<E, V, M>>
+        extends Serializable {
+
+    /**
+     * 将Vo属性复制到当前Entity对象
+     * 
+     * @param vo
+     */
+    void copyForVo(V v);
+
+    /**
+     * 将Model属性复制到新的Vo对象
+     */
+    V copyToVo();
 
     /**
      * 主键

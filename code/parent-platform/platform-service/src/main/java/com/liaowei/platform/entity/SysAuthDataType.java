@@ -9,10 +9,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
+import com.google.common.base.Strings;
 import com.liaowei.framework.entity.BaseIdEntity;
 import com.liaowei.platform.enums.DataAuthTypeEnum;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -27,12 +29,13 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 @Entity
 @Table(name = "SYS_AUTH_DATA_TYPES")
-public class SysAuthDataType extends BaseIdEntity {
+public class SysAuthDataType extends BaseIdEntity<SysAuthDataType> {
 
     /**
      * 系统权限ID
@@ -55,15 +58,31 @@ public class SysAuthDataType extends BaseIdEntity {
     @Enumerated(value = EnumType.STRING)
     private DataAuthTypeEnum dataAuthType;
 
-    public SysAuthDataType() {
-        super();
-    }
-
     public SysAuthDataType(String id, String sysAuthId, String sites, DataAuthTypeEnum dataAuthType) {
         super(id);
         this.sysAuthId = sysAuthId;
         this.sites = sites;
         this.dataAuthType = dataAuthType;
+    }
+
+    @Override
+    public void setEntity(SysAuthDataType e) {
+        String id = e.getId();
+        if (!Strings.isNullOrEmpty(id)) {
+            this.id = id;
+        }
+        String sysAuthId = e.getSysAuthId();
+        if (!Strings.isNullOrEmpty(sysAuthId)) {
+            this.sysAuthId = sysAuthId;
+        }
+        String sites = e.getSites();
+        if (!Strings.isNullOrEmpty(sites)) {
+            this.sites = sites;
+        }
+        DataAuthTypeEnum dataAuthType = e.getDataAuthType();
+        if (null != dataAuthType) {
+            this.dataAuthType = dataAuthType;
+        }
     }
 
     @Override
@@ -84,8 +103,7 @@ public class SysAuthDataType extends BaseIdEntity {
             return false;
         SysAuthDataType other = (SysAuthDataType) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

@@ -7,6 +7,7 @@ package com.liaowei.platform.controller;
 import java.awt.image.BufferedImage;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,10 +19,8 @@ import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.google.common.base.Strings;
 import com.liaowei.framework.controller.BaseController;
-import com.liaowei.framework.core.model.IBasisIdModel;
 import com.liaowei.framework.core.model.IBasisModel;
 import com.liaowei.framework.core.vo.IBasisIdVo;
-import com.liaowei.framework.core.vo.IBasisVo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -46,18 +45,17 @@ public class KaptchaController extends BaseController {
     /**
      * 取得验证码图片 输出图片输出流
      * 
-     * @param request
      * @param response
      */
     @RequestMapping(path = {"/getKaptchaCode"}, method = RequestMethod.GET)
-    public void getKaptchaCode() {
+    public void getKaptchaCode(HttpServletResponse response) {
         // 生成验证码文本
         String kapText = kaptchaProducer.createText();
         setSessionAttr(Constants.KAPTCHA_SESSION_KEY, kapText);
-        log.debug("生成验证码文本====" + kapText);
+        log.debug("DEBUG：生成验证码文本====" + kapText);
         // 利用生成的字符串构建图片
         BufferedImage bi = kaptchaProducer.createImage(kapText);
-        responseJPEG(bi);
+        responseJPEG(bi, response);
     }
 
     /**
@@ -75,7 +73,7 @@ public class KaptchaController extends BaseController {
         }
         String generateCode = (String) getSessionAttr(Constants.KAPTCHA_SESSION_KEY);
         if (generateCode.equals(kaptchaCode)) {
-            log.info("验证成功");
+            log.debug("DEBUG：验证成功");
             return true;
         } else {
             return false;
@@ -84,11 +82,6 @@ public class KaptchaController extends BaseController {
 
     @Override
     protected IBasisModel voToModel(IBasisIdVo v) {
-        return null;
-    }
-
-    @Override
-    protected IBasisVo modelToVo(IBasisIdModel m) {
         return null;
     }
 }

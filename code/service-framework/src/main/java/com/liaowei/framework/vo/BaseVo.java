@@ -7,8 +7,11 @@ package com.liaowei.framework.vo;
 import java.time.LocalDateTime;
 
 import com.liaowei.framework.core.vo.IBasisVo;
+import com.liaowei.framework.entity.BaseEntity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -23,10 +26,11 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @ToString(callSuper = true)
-public abstract class BaseVo extends BaseIdVo implements IBasisVo {
+public abstract class BaseVo<E extends BaseEntity<E>, V extends BaseVo<E, V>> extends BaseIdVo<E, V> implements IBasisVo<E, V> {
 
     /**
      * 是否有效
@@ -53,11 +57,7 @@ public abstract class BaseVo extends BaseIdVo implements IBasisVo {
      */
     protected LocalDateTime modifyTime;
 
-    public BaseVo() {
-        super();
-    }
-
-    public BaseVo(String id, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    protected BaseVo(String id, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id);
         this.valid = valid;
         this.creator = creator;

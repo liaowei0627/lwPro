@@ -4,16 +4,19 @@
  */
 package com.liaowei.platform.model;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import com.google.common.collect.Lists;
 import com.liaowei.framework.model.BaseTreeModel;
+import com.liaowei.platform.entity.SysMenu;
 import com.liaowei.platform.enums.MenuTypeEnum;
+import com.liaowei.platform.vo.MenuVo;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -28,10 +31,11 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class MenuModel extends BaseTreeModel<MenuModel> {
+public class MenuModel extends BaseTreeModel<SysMenu, MenuVo, MenuModel> {
 
     /**
      * 菜单地址
@@ -44,16 +48,75 @@ public class MenuModel extends BaseTreeModel<MenuModel> {
     @Enumerated(value = EnumType.STRING)
     private MenuTypeEnum menuType;
 
-    public MenuModel() {
-        super();
+    @Override
+    public void copyForVo(MenuVo temp) {
+        id = temp.getId();
+        valid = temp.getValid();
+        creator = temp.getCreator();
+        createTime = temp.getCreateTime();
+        reviser = temp.getReviser();
+        modifyTime = temp.getModifyTime();
+        code = temp.getCode();
+        text = temp.getText();
+        fullCode = temp.getFullCode();
+        fullText = temp.getFullText();
+        orderNum = temp.getOrderNum();
+
+        MenuVo pMenu = temp.getParent();
+        if (null != pMenu) {
+            parent = new MenuModel();
+            parent.copyForVo(pMenu);
+        }
+
+        List<MenuVo> cMenus = temp.getChildren();
+        if (null != cMenus && !cMenus.isEmpty()) {
+            MenuModel child;
+            for (MenuVo cMenu : cMenus) {
+                child = new MenuModel();
+                child.copyForVo(cMenu);
+                children.add(child);
+            }
+        }
+
+        this.menuUrl = temp.getMenuUrl();
+        this.menuType = temp.getMenuType();
     }
 
-    public MenuModel(String id, String menuUrl, MenuTypeEnum menuType, String code, String text, String fullCode, String fullText,
-            MenuModel parent, Set<MenuModel> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime,
-            String reviser, LocalDateTime modifyTime) {
-        super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
-        this.menuUrl = menuUrl;
-        this.menuType = menuType;
+    @Override
+    public MenuVo copyToVo() {
+        MenuVo parentVo = null;
+        if (null != parent) {
+            parentVo = copyToVo(parent);
+        }
+        List<MenuVo> childrenVo = null;
+        if (null != children && !children.isEmpty()) {
+            childrenVo = Lists.newArrayList();
+            for (MenuModel child : children) {
+                childrenVo.add(copyToVo(child));
+            }
+        }
+        return new MenuVo(id, menuUrl, menuType, code, text, fullCode, fullText, parentVo, childrenVo, orderNum, valid, creator,
+                createTime, reviser, modifyTime);
+    }
+
+    @Override
+    public MenuVo copyToVo(MenuModel model) {
+        MenuVo parentVo = null;
+        MenuModel parent = model.getParent();
+        if (null != parent) {
+            parentVo = copyToVo(parent);
+        }
+        List<MenuVo> childrenVo = null;
+        List<MenuModel> children = model.getChildren();
+        if (null != children && !children.isEmpty()) {
+            childrenVo = Lists.newArrayList();
+            for (MenuModel child : children) {
+                childrenVo.add(copyToVo(child));
+            }
+        }
+        return new MenuVo(model.getId(), model.getMenuUrl(), model.getMenuType(), model.getCode(), model.getText(),
+                model.getFullCode(), model.getFullText(), parentVo, childrenVo, model.getOrderNum(), model.getValid(),
+                model.getCreator(), model.getCreateTime(), model.getReviser(), model.getModifyTime());
     }
 
     @Override
@@ -74,8 +137,7 @@ public class MenuModel extends BaseTreeModel<MenuModel> {
             return false;
         MenuModel other = (MenuModel) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

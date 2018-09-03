@@ -4,16 +4,20 @@
  */
 package com.liaowei.platform.vo;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
+import com.google.common.collect.Sets;
 import com.liaowei.framework.vo.BaseTreeVo;
+import com.liaowei.platform.entity.SysDictionary;
 import com.liaowei.platform.enums.DictTypeEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -28,10 +32,12 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class DictionaryVo extends BaseTreeVo<DictionaryVo> {
+public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
 
     /**
      * 字典编号
@@ -49,15 +55,73 @@ public class DictionaryVo extends BaseTreeVo<DictionaryVo> {
     @Enumerated(value = EnumType.STRING)
     private DictTypeEnum dictType;
 
-    public DictionaryVo() {
-        super();
+    @Override
+    public void copyForEntity(SysDictionary temp) {
+        id = temp.getId();
+        valid = temp.getValid();
+        creator = temp.getCreator();
+        createTime = temp.getCreateTime();
+        reviser = temp.getReviser();
+        modifyTime = temp.getModifyTime();
+        code = temp.getCode();
+        text = temp.getText();
+        fullCode = temp.getFullCode();
+        fullText = temp.getFullText();
+        orderNum = temp.getOrderNum();
+
+        SysDictionary pDic = temp.getParent();
+        if (null != pDic) {
+            parent = new DictionaryVo();
+            parent.copyForEntity(pDic);
+        }
+
+        Set<SysDictionary> cDics = temp.getChildren();
+        if (!cDics.isEmpty()) {
+            DictionaryVo child;
+            for (SysDictionary cDic : cDics) {
+                child = new DictionaryVo();
+                child.copyForEntity(cDic);
+                children.add(child);
+            }
+        }
+
+        dictType = temp.getDictType();
     }
 
-    public DictionaryVo(String id, DictTypeEnum dictType, String code, String text, String fullCode, String fullText,
-            DictionaryVo parent, Set<DictionaryVo> children, Integer orderNum, Boolean valid, String creator,
-            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
-        super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
-        this.dictType = dictType;
+    @Override
+    public SysDictionary copyToEntity() {
+        SysDictionary parentEntity = null;
+        if (null != parent) {
+            parentEntity = copyToEntity(parent);
+        }
+        Set<SysDictionary> childrenEntity = null;
+        if (null != children && !children.isEmpty()) {
+            childrenEntity = Sets.newHashSet();
+            for (DictionaryVo child : children) {
+                childrenEntity.add(copyToEntity(child));
+            }
+        }
+        return new SysDictionary(id, dictType, code, text, fullCode, fullText, parentEntity, childrenEntity , orderNum, valid, creator, createTime, reviser,
+                modifyTime);
+    }
+
+    @Override
+    public SysDictionary copyToEntity(DictionaryVo v) {
+        SysDictionary parentEntity = null;
+        DictionaryVo parent = v.getParent();
+        if (null != parent) {
+            parentEntity = copyToEntity(parent);
+        }
+        Set<SysDictionary> childrenEntity = null;
+        List<DictionaryVo> children = v.getChildren();
+        if (null != children && !children.isEmpty()) {
+            childrenEntity = Sets.newHashSet();
+            for (DictionaryVo child : children) {
+                childrenEntity.add(copyToEntity(child));
+            }
+        }
+        return new SysDictionary(v.getId(), v.getDictType(), v.getCode(), v.getText(), v.getFullCode(), v.getFullText(), parentEntity, childrenEntity , v.getOrderNum(), v.getValid(), v.getCreator(), v.getCreateTime(), v.getReviser(),
+                v.getModifyTime());
     }
 
     @Override
@@ -78,8 +142,7 @@ public class DictionaryVo extends BaseTreeVo<DictionaryVo> {
             return false;
         DictionaryVo other = (DictionaryVo) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

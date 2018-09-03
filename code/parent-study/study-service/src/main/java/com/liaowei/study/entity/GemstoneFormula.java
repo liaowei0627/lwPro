@@ -28,7 +28,7 @@ import com.liaowei.framework.entity.BaseEntity;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "GEMSTONE_FORMULAS")
-public class GemstoneFormula extends BaseEntity {
+public class GemstoneFormula extends BaseEntity<GemstoneFormula> {
 
     /**
      * 宝石信息
@@ -123,6 +123,12 @@ public class GemstoneFormula extends BaseEntity {
     }
 
     @Override
+    public void setEntity(GemstoneFormula e) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
@@ -140,8 +146,7 @@ public class GemstoneFormula extends BaseEntity {
             return false;
         GemstoneFormula other = (GemstoneFormula) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;

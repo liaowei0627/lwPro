@@ -36,7 +36,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @MappedSuperclass
-public abstract class BaseIdEntity implements IBasisIdEntity {
+public abstract class BaseIdEntity<E extends BaseIdEntity<E>> implements IBasisIdEntity<E> {
 
     /**
      * 主键

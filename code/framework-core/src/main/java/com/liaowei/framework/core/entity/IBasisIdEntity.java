@@ -18,7 +18,7 @@ import java.io.Serializable;
  * @see java.io.Serializable
  * @since jdk1.8
  */
-public interface IBasisIdEntity extends Serializable {
+public interface IBasisIdEntity<E extends IBasisIdEntity<E>> extends Serializable {
 
     /**
      * 主键
@@ -29,4 +29,13 @@ public interface IBasisIdEntity extends Serializable {
      * 主键
      */
     void setId(String id);
+
+    /**
+     * 复制对象
+     * 
+     * 为空或null不会复制
+     * 
+     * @param e
+     */
+    void setEntity(E e);
 }

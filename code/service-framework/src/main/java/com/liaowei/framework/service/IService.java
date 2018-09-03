@@ -4,13 +4,8 @@
  */
 package com.liaowei.framework.service;
 
-import java.io.Serializable;
-
-import com.liaowei.framework.core.entity.IBasisIdEntity;
-import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.core.service.IBasisService;
-import com.liaowei.framework.page.Pagination;
-import com.liaowei.framework.query.Where;
+import com.liaowei.framework.entity.BaseIdEntity;
 import com.liaowei.framework.vo.BaseIdVo;
 
 /**
@@ -23,15 +18,5 @@ import com.liaowei.framework.vo.BaseIdVo;
  * @see com.liaowei.framework.core.service.IBasisService<V, E, PK>
  * @since jdk1.8
  */
-public interface IService<V extends BaseIdVo, E extends IBasisIdEntity, PK extends Serializable> extends IBasisService<V, E, PK> {
-
-    /**
-     * 查询数据分页列表
-     * 
-     * @param pagination 分页对象
-     * @param where hql查询条件对象
-     * @return
-     * @throws ApplicationException
-     */
-    Pagination<V> findList(Pagination<V> pagination, Where where) throws ApplicationException;
+public interface IService<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>> extends IBasisService<E, V, String> {
 }

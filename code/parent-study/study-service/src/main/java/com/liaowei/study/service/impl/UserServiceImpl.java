@@ -11,26 +11,27 @@ import com.liaowei.study.entity.SysUser;
 import com.liaowei.study.service.IUserService;
 import com.liaowei.study.vo.UserVo;
 
-@Service("userService")
-public class UserServiceImpl extends ServiceImpl<UserVo, SysUser, String> implements IUserService {
+import lombok.extern.slf4j.Slf4j;
 
-	@Resource(name = "userDao")
-	private ISysUserDao userDao;
+@Service("userService")
+@Slf4j
+public class UserServiceImpl extends ServiceImpl<SysUser, UserVo> implements IUserService {
+
+	@Resource(name = "sysUserDao")
+	private ISysUserDao sysUserDao;
 
 	@Override
-	protected IDao<SysUser, String> getDao() {
-	    return userDao;
+	protected IDao<SysUser> getDao() {
+	    return sysUserDao;
 	}
 
     @Override
-    protected UserVo entityToVo(SysUser entity) {
-        // TODO Auto-generated method stub
-        return null;
-    }
+    protected UserVo entityToVo(SysUser e) {
+        log.debug("DEBUG：Entity转换Vo：" + e);
 
-    @Override
-    protected SysUser voToEntity(UserVo vo) {
-        // TODO Auto-generated method stub
-        return null;
+        UserVo v = new UserVo();
+        v.copyForEntity(e);
+
+        return v;
     }
 }

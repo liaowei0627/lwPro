@@ -8,9 +8,12 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
 import com.liaowei.framework.vo.BaseIdVo;
+import com.liaowei.platform.entity.SysAuthDataType;
 import com.liaowei.platform.enums.DataAuthTypeEnum;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -25,10 +28,12 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
-public class AuthDataTypeVo extends BaseIdVo {
+public class AuthDataTypeVo extends BaseIdVo<SysAuthDataType, AuthDataTypeVo> {
 
 
     /**
@@ -52,15 +57,17 @@ public class AuthDataTypeVo extends BaseIdVo {
     @Enumerated(value = EnumType.STRING)
     private DataAuthTypeEnum dataAuthType;
 
-    public AuthDataTypeVo() {
-        super();
+    @Override
+    public void copyForEntity(SysAuthDataType temp) {
+        id = temp.getId();
+        sysAuthId = temp.getSysAuthId();
+        sites = temp.getSites();
+        dataAuthType = temp.getDataAuthType();
     }
 
-    public AuthDataTypeVo(String id, String sysAuthId, String sites, DataAuthTypeEnum dataAuthType) {
-        super(id);
-        this.sysAuthId = sysAuthId;
-        this.sites = sites;
-        this.dataAuthType = dataAuthType;
+    @Override
+    public SysAuthDataType copyToEntity() {
+        return new SysAuthDataType(id, sysAuthId, sites, dataAuthType);
     }
 
     @Override
@@ -81,8 +88,7 @@ public class AuthDataTypeVo extends BaseIdVo {
             return false;
         AuthDataTypeVo other = (AuthDataTypeVo) obj;
         if (id == null) {
-            if (other.id != null)
-                return false;
+            return false;
         } else if (!id.equals(other.id))
             return false;
         return true;
