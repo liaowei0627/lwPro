@@ -42,7 +42,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = false)
 @Entity
 @Table(name = "SYS_MENUS")
 public class SysMenu extends BaseTreeEntity<SysMenu> {

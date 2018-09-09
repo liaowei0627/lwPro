@@ -4,12 +4,9 @@
  */
 package com.liaowei.platform.model;
 
-import java.util.List;
-
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import com.google.common.collect.Lists;
 import com.liaowei.framework.model.BaseTreeModel;
 import com.liaowei.platform.entity.SysMenu;
 import com.liaowei.platform.enums.MenuTypeEnum;
@@ -61,21 +58,12 @@ public class MenuModel extends BaseTreeModel<SysMenu, MenuVo, MenuModel> {
         fullCode = temp.getFullCode();
         fullText = temp.getFullText();
         orderNum = temp.getOrderNum();
+        hasChild = temp.getHasChild();
 
         MenuVo pMenu = temp.getParent();
         if (null != pMenu) {
             parent = new MenuModel();
             parent.copyForVo(pMenu);
-        }
-
-        List<MenuVo> cMenus = temp.getChildren();
-        if (null != cMenus && !cMenus.isEmpty()) {
-            MenuModel child;
-            for (MenuVo cMenu : cMenus) {
-                child = new MenuModel();
-                child.copyForVo(cMenu);
-                children.add(child);
-            }
         }
 
         this.menuUrl = temp.getMenuUrl();
@@ -88,14 +76,7 @@ public class MenuModel extends BaseTreeModel<SysMenu, MenuVo, MenuModel> {
         if (null != parent) {
             parentVo = copyToVo(parent);
         }
-        List<MenuVo> childrenVo = null;
-        if (null != children && !children.isEmpty()) {
-            childrenVo = Lists.newArrayList();
-            for (MenuModel child : children) {
-                childrenVo.add(copyToVo(child));
-            }
-        }
-        return new MenuVo(id, menuUrl, menuType, code, text, fullCode, fullText, parentVo, childrenVo, orderNum, valid, creator,
+        return new MenuVo(id, menuUrl, menuType, code, text, fullCode, fullText, parentVo, null, orderNum, null, valid, creator,
                 createTime, reviser, modifyTime);
     }
 
@@ -106,16 +87,8 @@ public class MenuModel extends BaseTreeModel<SysMenu, MenuVo, MenuModel> {
         if (null != parent) {
             parentVo = copyToVo(parent);
         }
-        List<MenuVo> childrenVo = null;
-        List<MenuModel> children = model.getChildren();
-        if (null != children && !children.isEmpty()) {
-            childrenVo = Lists.newArrayList();
-            for (MenuModel child : children) {
-                childrenVo.add(copyToVo(child));
-            }
-        }
         return new MenuVo(model.getId(), model.getMenuUrl(), model.getMenuType(), model.getCode(), model.getText(),
-                model.getFullCode(), model.getFullText(), parentVo, childrenVo, model.getOrderNum(), model.getValid(),
+                model.getFullCode(), model.getFullText(), parentVo, null, model.getOrderNum(), null, model.getValid(),
                 model.getCreator(), model.getCreateTime(), model.getReviser(), model.getModifyTime());
     }
 

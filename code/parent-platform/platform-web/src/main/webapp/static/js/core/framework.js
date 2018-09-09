@@ -147,7 +147,19 @@ $(document).ready(function() {
             return this.stringToHex(window.btoa(window.encodeURIComponent(plaintext)));
         };
         /** 
-         * 提示框
+         * 警告提示窗口
+         * title 标题
+         * content 内容
+         * type  可选项，值可以是error、info、question、warning
+         */
+        this.messager = function(title, content) {
+            $.messager.show({
+                title: title,
+                msg: content
+            });
+        };
+        /** 
+         * 警告提示窗口
          * title 标题
          * content 内容
          * type  可选项，值可以是error、info、question、warning
@@ -158,6 +170,32 @@ $(document).ready(function() {
             } else {
                 $.messager.alert(title, content);
             };
+        };
+        /**
+         * 弹窗
+         * dialogProp 参数对象
+         */
+        this.showDialog = function(dialogProp) {
+            var dialog = $("#" + dialogProp.id);
+            dialog = dialog.dialog({
+                title: dialogProp.title,
+                width: dialogProp.width,
+                height: dialogProp.height,
+                closed: true,
+                cache: false,
+                modal: dialogProp.modal,
+                buttons: dialogProp.buttons
+            });
+            return dialog;
+        };
+
+        /**
+         * 页面加载事件
+         * document 被加载的页面文档对象
+         * loadBundle 事件触发时要运行的方法
+         */
+        this.onload = function(document, loadBundle) {
+            $(document).ready(loadBundle);
         };
     };
     var bodyPanel = $("#body_layout");

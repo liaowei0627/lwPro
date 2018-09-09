@@ -134,15 +134,6 @@ public class UserTest {
     }
 
     @Test
-    public void testDel() {
-        try {
-            userService.delOne("9E3BAC7DDF5141E592621E50F68618C9");
-        } catch (ApplicationException e) {
-            log.error(e.getMessage(), e);
-        }
-    }
-
-    @Test
     public void testDelList() {
         try {
             List<String> pks = Lists.newArrayList();
@@ -151,7 +142,7 @@ public class UserTest {
             pks.add("08758B607B8541ACB1FA2C6EC50637BF");
             pks.add("9F6EB231D466453996E8F93FA9B96FF4");
             pks.add("EAD9DF5A37FD4B3A830ED97C8D5A9D2E");
-            userService.delList(pks);
+            userService.delList(pks.toArray(new String[pks.size()]));
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
         }

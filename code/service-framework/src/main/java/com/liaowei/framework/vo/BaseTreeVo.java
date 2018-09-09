@@ -82,10 +82,11 @@ public abstract class BaseTreeVo<E extends BaseTreeEntity<E>, V extends BaseTree
     /**
      * 是否有子节点
      */
+    @Getter
     protected Boolean hasChild;
 
     protected BaseTreeVo(String id, String code, String text, String fullCode, String fullText, V parent, List<V> children,
-            Integer orderNum, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+            Integer orderNum, Boolean hasChild, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.code = code;
         this.text = text;
@@ -94,17 +95,6 @@ public abstract class BaseTreeVo<E extends BaseTreeEntity<E>, V extends BaseTree
         this.parent = parent;
         this.children = children;
         this.orderNum = orderNum;
-    }
-
-    /**
-     * 是否有子节点
-     */
-    public Boolean getHasChild() {
-        if (null == children || children.isEmpty()) {
-            this.hasChild = false;
-        } else {
-            this.hasChild = true;
-        }
-        return hasChild;
+        this.hasChild = hasChild;
     }
 }

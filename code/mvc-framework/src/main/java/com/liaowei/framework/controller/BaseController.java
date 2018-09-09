@@ -21,6 +21,7 @@ import com.liaowei.framework.SessionUser;
 import com.liaowei.framework.core.controller.BasisController;
 import com.liaowei.framework.entity.BaseIdEntity;
 import com.liaowei.framework.model.BaseIdModel;
+import com.liaowei.framework.model.BaseModel;
 import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.exception.WhereClauseException;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
@@ -43,10 +44,43 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
         extends BasisController<E, V, M> {
 
     private static final String USER_SESSION_KEY = "USER_SESSION_KEY";
+    protected static final String OPT_COPY = "copy";
 
     @Resource
     protected HttpServletRequest request;
 
+    /**
+     * 配置Model对象，添加当前用户信息
+     * 
+     * @param m 要配置的Model对象
+     */
+    @SuppressWarnings("rawtypes")
+    protected void configModel(M m) {
+        SessionUser sessionUser = getCurUser();
+        String userName = sessionUser.getUserName();
+        if (Strings.isNullOrEmpty(m.getId())) {
+            m.setId(null);
+            if (m instanceof BaseModel) {
+                BaseModel model = (BaseModel) m;
+                model.setValid(Boolean.TRUE);
+                model.setCreator(userName);
+            }
+        }
+        if (m instanceof BaseModel) {
+            BaseModel model = (BaseModel) m;
+            model.setReviser(userName);
+        }
+    }
+
+    /**
+     * 配置Where对象
+     * 
+     * @param where 要配置的Where对象
+     * @param keywords 要做为关键字模糊查询的字段名数组
+     * @param excKeys 要从request parameter中排除做为查询条件的参数名数组
+     * @return
+     * @throws WhereClauseException
+     */
     protected Where configWhere(Where where, String[] keywords, String[] excKeys) throws WhereClauseException {
         Enumeration<String> names = request.getParameterNames();
 
@@ -68,6 +102,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
         excKeyList.add("keyword");
         excKeyList.add("page");
         excKeyList.add("rows");
+        excKeyList.add("_");
         if (null != excKeys && excKeys.length > 0) {
             excKeyList.addAll(Lists.newArrayList(excKeys));
         }

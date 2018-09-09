@@ -51,8 +51,16 @@ public class QueryUtils {
         Query<Long> query = session.createQuery(hql.toString(), Long.class);
         if (null != param && !param.isEmpty()) {
             Set<String> paramKeySet = param.keySet();
+            Object paramValue;
             for (String key : paramKeySet) {
-                query.setParameter(key, param.get(key));
+                paramValue = param.get(key);
+                if (paramValue instanceof List) {
+                    query.setParameterList(key, (List<?>) paramValue);
+                } else if (paramValue instanceof Object[]) {
+                    query.setParameterList(key, (Object[]) paramValue);
+                } else {
+                    query.setParameter(key, paramValue);
+                }
             }
         }
 
@@ -92,8 +100,16 @@ public class QueryUtils {
 
         if (null != param && !param.isEmpty()) {
             Set<String> paramKeySet = param.keySet();
+            Object paramValue;
             for (String key : paramKeySet) {
-                query.setParameter(key, param.get(key));
+                paramValue = param.get(key);
+                if (paramValue instanceof List) {
+                    query.setParameterList(key, (List<?>) paramValue);
+                } else if (paramValue instanceof Object[]) {
+                    query.setParameterList(key, (Object[]) paramValue);
+                } else {
+                    query.setParameter(key, paramValue);
+                }
             }
         }
 

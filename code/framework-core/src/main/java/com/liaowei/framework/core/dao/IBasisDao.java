@@ -5,7 +5,6 @@
 package com.liaowei.framework.core.dao;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.core.exception.ApplicationException;
@@ -31,7 +30,7 @@ public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable>
      * @return
      * @throws ServiceException
      */
-    E findEntity(PK id);
+    E findEntity(PK id) throws ApplicationException;
 
     /**
      * 分页查询数据集合
@@ -50,7 +49,7 @@ public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable>
      * @return
      * @throws ServiceException
      */
-    E addEntity(E entity);
+    E addEntity(E entity) throws ApplicationException;
 
     /**
      * update一个实体对象
@@ -59,15 +58,7 @@ public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable>
      * @return
      * @throws ServiceException
      */
-    E updateEntity(E entity);
-
-    /**
-     * 逻辑删除一条数据
-     * 
-     * @param pk 要逻辑删除数据的主键值
-     * @throws ServiceException
-     */
-    void delEntity(PK id);
+    E updateEntity(E entity) throws ApplicationException;
 
     /**
      * 逻辑删除批量数据
@@ -75,5 +66,5 @@ public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable>
      * @param pks 要逻辑删除数据的主键值集合
      * @throws ServiceException
      */
-    void delList(List<PK> ids);
+    void delList(PK[] id) throws ApplicationException;
 }

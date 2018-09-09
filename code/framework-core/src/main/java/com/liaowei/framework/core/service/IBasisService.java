@@ -5,7 +5,6 @@
 package com.liaowei.framework.core.service;
 
 import java.io.Serializable;
-import java.util.List;
 
 import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.core.exception.ApplicationException;
@@ -62,18 +61,10 @@ public interface IBasisService<E extends IBasisIdEntity<E>, V extends IBasisIdVo
     V updateVo(V vo) throws ApplicationException;
 
     /**
-     * 删除一条数据
-     * 
-     * @param pk
-     * @throws ApplicationException
-     */
-    void delOne(PK id) throws ApplicationException;
-
-    /**
      * 批量删除数据
      * 
      * @param pks
      * @throws ApplicationException
      */
-    void delList(List<PK> ids) throws ApplicationException;
+    void delList(PK[] id) throws ApplicationException;
 }

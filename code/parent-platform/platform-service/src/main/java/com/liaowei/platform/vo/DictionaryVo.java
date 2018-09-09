@@ -4,13 +4,12 @@
  */
 package com.liaowei.platform.vo;
 
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
-import com.google.common.collect.Sets;
 import com.liaowei.framework.vo.BaseTreeVo;
 import com.liaowei.platform.entity.SysDictionary;
 import com.liaowei.platform.enums.DictTypeEnum;
@@ -55,6 +54,17 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
     @Enumerated(value = EnumType.STRING)
     private DictTypeEnum dictType;
 
+    public DictionaryVo(String id, String dictCode, String dictName,
+            DictTypeEnum dictType, String code, String text, String fullCode, String fullText, DictionaryVo parent,
+            List<DictionaryVo> children, Integer orderNum, Boolean hasChild, Boolean valid, String creator,
+            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+        super(id, code, text, fullCode, fullText, parent, children, orderNum, hasChild, valid, creator, createTime, reviser,
+                modifyTime);
+        this.dictCode = dictCode;
+        this.dictName = dictName;
+        this.dictType = dictType;
+    }
+
     @Override
     public void copyForEntity(SysDictionary temp) {
         id = temp.getId();
@@ -68,21 +78,12 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
         fullCode = temp.getFullCode();
         fullText = temp.getFullText();
         orderNum = temp.getOrderNum();
+        hasChild = temp.getHasChild();
 
         SysDictionary pDic = temp.getParent();
         if (null != pDic) {
             parent = new DictionaryVo();
             parent.copyForEntity(pDic);
-        }
-
-        Set<SysDictionary> cDics = temp.getChildren();
-        if (!cDics.isEmpty()) {
-            DictionaryVo child;
-            for (SysDictionary cDic : cDics) {
-                child = new DictionaryVo();
-                child.copyForEntity(cDic);
-                children.add(child);
-            }
         }
 
         dictType = temp.getDictType();
@@ -94,15 +95,8 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
         if (null != parent) {
             parentEntity = copyToEntity(parent);
         }
-        Set<SysDictionary> childrenEntity = null;
-        if (null != children && !children.isEmpty()) {
-            childrenEntity = Sets.newHashSet();
-            for (DictionaryVo child : children) {
-                childrenEntity.add(copyToEntity(child));
-            }
-        }
-        return new SysDictionary(id, dictType, code, text, fullCode, fullText, parentEntity, childrenEntity , orderNum, valid, creator, createTime, reviser,
-                modifyTime);
+        return new SysDictionary(id, dictType, code, text, fullCode, fullText, parentEntity, null, orderNum, valid, creator,
+                createTime, reviser, modifyTime);
     }
 
     @Override
@@ -112,15 +106,8 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
         if (null != parent) {
             parentEntity = copyToEntity(parent);
         }
-        Set<SysDictionary> childrenEntity = null;
-        List<DictionaryVo> children = v.getChildren();
-        if (null != children && !children.isEmpty()) {
-            childrenEntity = Sets.newHashSet();
-            for (DictionaryVo child : children) {
-                childrenEntity.add(copyToEntity(child));
-            }
-        }
-        return new SysDictionary(v.getId(), v.getDictType(), v.getCode(), v.getText(), v.getFullCode(), v.getFullText(), parentEntity, childrenEntity , v.getOrderNum(), v.getValid(), v.getCreator(), v.getCreateTime(), v.getReviser(),
+        return new SysDictionary(v.getId(), v.getDictType(), v.getCode(), v.getText(), v.getFullCode(), v.getFullText(),
+                parentEntity, null, v.getOrderNum(), v.getValid(), v.getCreator(), v.getCreateTime(), v.getReviser(),
                 v.getModifyTime());
     }
 

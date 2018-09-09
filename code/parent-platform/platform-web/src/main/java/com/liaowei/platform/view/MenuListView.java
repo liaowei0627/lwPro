@@ -27,19 +27,45 @@ public class MenuListView {
 
     private MenuModel m;
 
+    /**
+     * 主键
+     */
     public String getId() {
         return m.getId();
     }
 
+    /**
+     * 编号
+     */
+    public String getCode() {
+        return m.getCode();
+    }
+
+    /**
+     * 菜单文本
+     */
     public String getText() {
         return m.getText();
     }
 
+    /**
+     * 菜单地址
+     */
     public String getMenuUrl() {
         return m.getMenuUrl();
     }
 
+    /**
+     * 菜单类型
+     */
     public String getMenuType() {
         return m.getMenuType().name();
+    }
+
+    /**
+     * 排序号
+     */
+    public Integer getOrderNum() {
+        return m.getOrderNum();
     }
 }

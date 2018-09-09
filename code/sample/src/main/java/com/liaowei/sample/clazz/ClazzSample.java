@@ -3,6 +3,7 @@ package com.liaowei.sample.clazz;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Date;
 
 import org.junit.Test;
 
@@ -12,6 +13,16 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ClazzSample {
+
+    @Test
+    public void checkArray() {
+        String[] strArray = new String[5];
+        log.info("String[] strArray = " + String.valueOf(strArray instanceof Object[]));
+        Integer[] intArray = new Integer[5];
+        log.info("Integer[] intArray = " + String.valueOf(intArray instanceof Object[]));
+        Date[] dateArray = new Date[5];
+        log.info("Date[] dateArray = " + String.valueOf(dateArray instanceof Object[]));
+    }
 
     @Test
     public void checkField() {
@@ -29,6 +40,7 @@ public class ClazzSample {
         log.info(String.valueOf(pojo instanceof SampleSuperPojo));
         log.info(String.valueOf(SampleSuperPojo.class.isAssignableFrom(pojo.getClass())));
         log.info(String.valueOf(SamplePojo.class.isAssignableFrom(SampleSuperPojo.class)));
+        log.info(String.valueOf(SampleSuperPojo.class.isAssignableFrom(SamplePojo.class)));
         Class<SamplePojo> c = SamplePojo.class;
         c.cast(pojo);
     }

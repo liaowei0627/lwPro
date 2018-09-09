@@ -4,8 +4,6 @@
  */
 package com.liaowei.platform.view;
 
-import java.time.LocalDateTime;
-
 import com.google.common.base.Strings;
 import com.liaowei.platform.enums.MenuTypeEnum;
 import com.liaowei.platform.model.MenuModel;
@@ -105,27 +103,27 @@ public class MenuView {
     /**
      * 父菜单ID
      */
-    public String getParentId() {
+    public MenuView getParent() {
+        MenuView view = null;
         MenuModel p = m.getParent();
-        String parentId;
         if (null != p) {
-            parentId = p.getParent().getId();
-        } else {
-            parentId = "";
+            view = new MenuView(p);
         }
-        return parentId;
+        return view;
     }
 
     /**
      * 父菜单ID
      */
     public void setParentId(String parentId) {
-        MenuModel p = m.getParent();
-        if (null == p) {
-            p = new MenuModel();
+        if (!Strings.isNullOrEmpty(parentId)) {
+            MenuModel p = m.getParent();
+            if (null == p) {
+                p = new MenuModel();
+            }
+            p.setId(parentId);
+            m.setParent(p);
         }
-        p.setId(parentId);
-        m.setParent(p);
     }
 
     /**
@@ -143,12 +141,6 @@ public class MenuView {
     }
 
     public MenuModel toModel() {
-        if (Strings.isNullOrEmpty(m.getId())) {
-            m.setId(null);
-            m.setValid(Boolean.TRUE);
-            m.setCreateTime(LocalDateTime.now());
-        }
-        m.setModifyTime(LocalDateTime.now());
         return m;
     }
 }

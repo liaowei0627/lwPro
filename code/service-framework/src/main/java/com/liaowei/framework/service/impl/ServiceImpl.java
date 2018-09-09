@@ -31,7 +31,8 @@ import lombok.extern.slf4j.Slf4j;
  * @since jdk1.8
  */
 @Slf4j
-public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>> extends BasisServiceImpl<E, V, String> implements IService<E, V> {
+public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>> extends BasisServiceImpl<E, V, String>
+        implements IService<E, V> {
 
     /**
      * 从子类注入Dao
@@ -54,30 +55,28 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
     @Override
     public V addVo(V v) throws ApplicationException {
         log.debug("DEBUG：新增数据，数据：" + v.toString());
-        
         E e = getDao().addEntity(v.copyToEntity());
-
         return entityToVo(e);
     }
 
     @Override
     public V updateVo(V v) throws ApplicationException {
         log.debug("DEBUG：修改数据，数据：" + v.toString());
-        E entity = getDao().findEntity(v.getId());
-        entity.setEntity(v.copyToEntity());
-        E e = getDao().updateEntity(entity);
+        E e = getDao().updateEntity(v.copyToEntity());
         return entityToVo(e);
     }
 
     @Override
     public Pagination<V> findList(Pagination<V> pagination, Where where) throws ApplicationException {
-        log.debug("DEBUG：查询数据分页列表，查询条件：" + (null == where ? "无条件" : where.toString()) + ",分页信息：" + (null == pagination ? "无分页" : pagination.toString()));
+        log.debug("DEBUG：查询数据分页列表，查询条件：" + (null == where ? "无条件" : where.toString()) + ",分页信息："
+                + (null == pagination ? "无分页" : pagination.toString()));
         List<E> el = Lists.newArrayList();
         Pagination<E> p;
         if (null == pagination) {
             p = new Pagination<E>();
+            p.setPageable(Boolean.FALSE);
         } else {
-            p = new Pagination<E>(pagination.getRows(), pagination.getPage(), pagination.getOrderBy());
+            p = new Pagination<E>(pagination.getRows(), pagination.getPage(), pagination.getOrderBy(), pagination.getPageable());
         }
         p = getDao().findList(p, where);
         el = p.getData();
@@ -89,14 +88,8 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
     }
 
     @Override
-    public void delOne(String id) throws ApplicationException {
-        log.debug("DEBUG：根据主键值删除一条数据对象, 主键：" + id);
-        getDao().delEntity(id);
-    }
-
-    @Override
-    public void delList(List<String> ids) throws ApplicationException {
-        log.debug("DEBUG：根据主键值批量删除数据对象, 主键：" + Joiner.on(",").join(ids));
-        getDao().delList(ids);
+    public void delList(String[] id) throws ApplicationException {
+        log.debug("DEBUG：根据主键值批量删除数据对象, 主键：" + Joiner.on(",").join(id));
+        getDao().delList(id);
     }
 }

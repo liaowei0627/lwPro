@@ -8,8 +8,6 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.google.common.base.Strings;
-import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.service.impl.ServiceImpl;
 import com.liaowei.platform.dao.IMenuDao;
 import com.liaowei.platform.entity.SysMenu;
@@ -49,33 +47,5 @@ public class MenuServiceImpl extends ServiceImpl<SysMenu, MenuVo> implements IMe
         v.copyForEntity(e);
 
         return v;
-    }
-
-    @Override
-    public MenuVo addVo(MenuVo vo) throws ApplicationException {
-        log.debug("DEBUG：新增菜单：" + vo.toString());
-
-        MenuVo parent = vo.getParent();
-        StringBuilder fullCode = new StringBuilder(200);
-        fullCode.append("");
-        StringBuilder fullText = new StringBuilder(200);
-        fullText.append("");
-        if (null != parent) {
-            String parentId = parent.getId();
-            if (!Strings.isNullOrEmpty(parentId)) {
-                SysMenu parentEntity = menuDao.findEntity(parentId);
-                if (null != parentEntity) {
-                    fullCode.append(parentEntity.getFullCode());
-                    fullCode.append("-");
-                    fullText.append(parentEntity.getFullText());
-                    fullText.append("|");
-                }
-            }
-        }
-        fullCode.append(vo.getCode());
-        fullText.append(vo.getText());
-        vo.setFullCode(fullCode.toString());
-        vo.setFullText(fullText.toString());
-        return super.addVo(vo);
     }
 }

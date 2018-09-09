@@ -83,17 +83,6 @@ public abstract class BaseTreeModel<E extends BaseTreeEntity<E>, V extends BaseT
     /**
      * 是否有子节点
      */
+    @Getter
     protected Boolean hasChild;
-
-    /**
-     * 是否有子节点
-     */
-    public Boolean getHasChild() {
-        if (null == children || children.isEmpty()) {
-            this.hasChild = false;
-        } else {
-            this.hasChild = true;
-        }
-        return hasChild;
-    }
 }
