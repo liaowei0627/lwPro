@@ -137,7 +137,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      * 
      * @param sessionUser
      */
-    protected void setCurUser(SessionUser sessionUser) {
+    protected void setCurUser(@SuppressWarnings("rawtypes") SessionUser sessionUser) {
         request.getSession().setAttribute(USER_SESSION_KEY, sessionUser);
     }
 
@@ -146,6 +146,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      * 
      * @return
      */
+    @SuppressWarnings("rawtypes")
     protected SessionUser getCurUser() {
         SessionUser sessionUser = (SessionUser) request.getSession().getAttribute(USER_SESSION_KEY);
         return sessionUser;
@@ -182,7 +183,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      * 返回图片
      * 
      * @param bi
-     * @param response 
+     * @param response
      */
     protected void responseJPEG(BufferedImage bi, HttpServletResponse response) {
         response.setDateHeader("Expires", 0);

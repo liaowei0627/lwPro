@@ -119,9 +119,9 @@ public abstract class BaseTreeEntity<E extends BaseTreeEntity<E>> extends BaseEn
      */
     public Boolean getHasChild() {
         if (null == children || children.isEmpty()) {
-            this.hasChild = false;
+            hasChild = false;
         } else {
-            this.hasChild = true;
+            hasChild = true;
         }
         return hasChild;
     }

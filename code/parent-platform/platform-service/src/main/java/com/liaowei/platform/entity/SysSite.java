@@ -39,13 +39,19 @@ import lombok.ToString;
 public class SysSite extends BaseEntity<SysSite> {
 
     /**
+     * 站点编号
+     */
+    private String siteCode;
+
+    /**
      * 站点名称
      */
     private String siteName;
 
-    public SysSite(String id, String siteName, Boolean valid, String creator, LocalDateTime createTime, String reviser,
+    public SysSite(String id, String siteCode, String siteName, Boolean valid, String creator, LocalDateTime createTime, String reviser,
             LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
+        this.siteCode = siteCode;
         this.siteName = siteName;
     }
 
@@ -54,6 +60,10 @@ public class SysSite extends BaseEntity<SysSite> {
         String id = e.getId();
         if (!Strings.isNullOrEmpty(id)) {
             this.id = id;
+        }
+        String siteCode = e.getSiteCode();
+        if (!Strings.isNullOrEmpty(siteCode)) {
+            this.siteCode = siteCode;
         }
         String siteName = e.getSiteName();
         if (!Strings.isNullOrEmpty(siteName)) {

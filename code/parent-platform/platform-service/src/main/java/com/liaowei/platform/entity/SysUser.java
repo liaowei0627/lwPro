@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -16,6 +18,7 @@ import javax.persistence.Table;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.liaowei.framework.entity.BaseEntity;
+import com.liaowei.platform.enums.PowerTypeEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -54,6 +57,17 @@ public class SysUser extends BaseEntity<SysUser> {
     private String password;
 
     /**
+     * 安全类型：管理员ADMIN、用户USER
+     */
+    @Enumerated(value = EnumType.STRING)
+    private PowerTypeEnum powerType;
+
+    /**
+     * 站点编号
+     */
+    private String siteCode;
+
+    /**
      * 用户角色关系数据集合
      */
     @OneToMany(fetch = FetchType.LAZY)
@@ -67,18 +81,23 @@ public class SysUser extends BaseEntity<SysUser> {
     @JoinColumn(name = "sysUserId")
     private Set<SysUserAuth> sysUserAuths = Sets.<SysUserAuth>newHashSet();
 
-    public SysUser(String id, String userName, String password, Boolean valid, String creator, LocalDateTime createTime,
-            String reviser, LocalDateTime modifyTime) {
+    public SysUser(String id, String userName, String password, PowerTypeEnum powerType, String siteCode, Boolean valid,
+            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
+        this.powerType = powerType;
+        this.siteCode = siteCode;
     }
 
-    public SysUser(String id, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime,
-            String userName, String password, Set<SysUserRole> sysUserRoles, Set<SysUserAuth> sysUserAuths) {
+    public SysUser(String id, String userName, String password, PowerTypeEnum powerType, String siteCode, Boolean valid,
+            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime, Set<SysUserRole> sysUserRoles,
+            Set<SysUserAuth> sysUserAuths) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
+        this.powerType = powerType;
+        this.siteCode = siteCode;
         this.sysUserRoles = sysUserRoles;
         this.sysUserAuths = sysUserAuths;
     }
@@ -96,6 +115,14 @@ public class SysUser extends BaseEntity<SysUser> {
         String password = e.getPassword();
         if (!Strings.isNullOrEmpty(password)) {
             this.password = password;
+        }
+        PowerTypeEnum powerType = e.getPowerType();
+        if (null != powerType) {
+            this.powerType = powerType;
+        }
+        String siteCode = e.getSiteCode();
+        if (!Strings.isNullOrEmpty(siteCode)) {
+            this.siteCode = siteCode;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

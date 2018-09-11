@@ -4,8 +4,12 @@
  */
 package com.liaowei.platform.model;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import com.liaowei.framework.model.BaseModel;
 import com.liaowei.platform.entity.SysUser;
+import com.liaowei.platform.enums.PowerTypeEnum;
 import com.liaowei.platform.vo.UserVo;
 
 import lombok.Getter;
@@ -40,6 +44,17 @@ public class UserModel extends BaseModel<SysUser, UserVo, UserModel> {
      */
     private String password;
 
+    /**
+     * 安全类型：管理员ADMIN、用户USER
+     */
+    @Enumerated(value = EnumType.STRING)
+    private PowerTypeEnum powerType;
+
+    /**
+     * 站点编号
+     */
+    private String siteCode;
+
     @Override
     public void copyForVo(UserVo temp) {
         id = temp.getId();
@@ -51,11 +66,13 @@ public class UserModel extends BaseModel<SysUser, UserVo, UserModel> {
 
         userName = temp.getUserName();
         password = temp.getPassword();
+        powerType = temp.getPowerType();
+        siteCode = temp.getSiteCode();
     }
 
     @Override
     public UserVo copyToVo() {
-        return new UserVo(id, userName, password, valid, creator, createTime, reviser, modifyTime);
+        return new UserVo(id, userName, password, powerType, siteCode, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

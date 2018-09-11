@@ -4,7 +4,10 @@
  */
 package com.liaowei.platform.service;
 
+import java.util.List;
+
 import com.liaowei.framework.core.exception.ApplicationException;
+import com.liaowei.platform.vo.MenuVo;
 import com.liaowei.platform.vo.UserVo;
 
 /**
@@ -18,5 +21,23 @@ import com.liaowei.platform.vo.UserVo;
  */
 public interface ILoginService {
 
-    UserVo findByUserName(String userName) throws ApplicationException;
+    /**
+     * 根据用户名取得用户信息
+     * 
+     * @param userName
+     * @return
+     * @throws ApplicationException
+     */
+    UserVo findUserByUserName(String userName) throws ApplicationException;
+
+    /**
+     * 根据用户id取得所授权的菜单树
+     * 
+     * @param userId 用户id
+     * @param siteCode 站点编号
+     * @param isAdmin 是否系统管理员
+     * @return
+     * @throws ApplicationException
+     */
+    List<MenuVo> findSysMenusByUserId(String userId, String siteCode, boolean isAdmin) throws ApplicationException;
 }

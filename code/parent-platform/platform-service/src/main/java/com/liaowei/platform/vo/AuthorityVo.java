@@ -12,6 +12,7 @@ import javax.persistence.Enumerated;
 import com.liaowei.framework.vo.BaseVo;
 import com.liaowei.platform.entity.SysAuthority;
 import com.liaowei.platform.enums.AuthTypeEnum;
+import com.liaowei.platform.enums.PowerTypeEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -38,6 +39,11 @@ import lombok.ToString;
 public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
 
     /**
+     * 权限编号
+     */
+    private String authCode;
+
+    /**
      * 权限名称
      */
     private String authName;
@@ -47,6 +53,17 @@ public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
      */
     @Enumerated(value = EnumType.STRING)
     private AuthTypeEnum authType;
+
+    /**
+     * 安全类型：管理员ADMIN、用户USER
+     */
+    @Enumerated(value = EnumType.STRING)
+    private PowerTypeEnum powerType;
+
+    /**
+     * 站点编号
+     */
+    private String siteCode;
 
     /**
      * 权限拥有的数据权限集合
@@ -67,13 +84,17 @@ public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
         reviser = temp.getReviser();
         modifyTime = temp.getModifyTime();
 
+        authCode = temp.getAuthCode();
         authName = temp.getAuthName();
         authType = temp.getAuthType();
+        powerType = temp.getPowerType();
+        siteCode = temp.getSiteCode();
     }
 
     @Override
     public SysAuthority copyToEntity() {
-        return new SysAuthority(id, authName, authType, valid, creator, createTime, reviser, modifyTime);
+        return new SysAuthority(id, authCode, authName, authType, powerType, siteCode, valid, creator, createTime, reviser,
+                modifyTime);
     }
 
     @Override

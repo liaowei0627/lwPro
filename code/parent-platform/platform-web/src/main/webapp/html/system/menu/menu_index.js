@@ -1,8 +1,9 @@
 /*
- * 菜单管理列表页JavaScript
+ * 菜单管理页JavaScript
  */
 //$(document).ready(function() {
 engine.onload(document, function() {
+    "use strict";
 
     // 左侧菜单树
     var menuTree = $("#menuTree").tree({

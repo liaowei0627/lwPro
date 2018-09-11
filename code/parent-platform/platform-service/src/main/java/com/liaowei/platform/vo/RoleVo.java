@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 
 import com.liaowei.framework.vo.BaseVo;
 import com.liaowei.platform.entity.SysRole;
+import com.liaowei.platform.enums.PowerTypeEnum;
 import com.liaowei.platform.enums.RoleTypeEnum;
 
 import lombok.Getter;
@@ -36,15 +37,31 @@ import lombok.ToString;
 public class RoleVo extends BaseVo<SysRole, RoleVo> {
 
     /**
+     * 角色编号
+     */
+    private String roleCode;
+
+    /**
      * 角色名称
      */
     private String roleName;
+
+    /**
+     * 站点编号
+     */
+    private String siteCode;
 
     /**
      * 角色类型：管理员ADMINS、用户USERS
      */
     @Enumerated(value = EnumType.STRING)
     private RoleTypeEnum roleType;
+
+    /**
+     * 安全类型：管理员ADMIN、用户USER
+     */
+    @Enumerated(value = EnumType.STRING)
+    private PowerTypeEnum powerType;
 
     /**
      * 角色包含的权限集合
@@ -60,13 +77,16 @@ public class RoleVo extends BaseVo<SysRole, RoleVo> {
         reviser = temp.getReviser();
         modifyTime = temp.getModifyTime();
 
+        roleCode = temp.getRoleCode();
         roleName = temp.getRoleName();
         roleType = temp.getRoleType();
+        powerType = temp.getPowerType();
+        siteCode = temp.getSiteCode();
     }
 
     @Override
     public SysRole copyToEntity() {
-        return new SysRole(id, roleName, roleType, valid, creator, createTime, reviser, modifyTime);
+        return new SysRole(id, roleCode, roleName, roleType, powerType, siteCode, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

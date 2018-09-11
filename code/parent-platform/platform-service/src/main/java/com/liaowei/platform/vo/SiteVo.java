@@ -30,6 +30,11 @@ import lombok.ToString;
 public class SiteVo extends BaseVo<SysSite, SiteVo> {
 
     /**
+     * 站点编号
+     */
+    private String siteCode;
+
+    /**
      * 站点名称
      */
     private String siteName;
@@ -43,12 +48,13 @@ public class SiteVo extends BaseVo<SysSite, SiteVo> {
         reviser = temp.getReviser();
         modifyTime = temp.getModifyTime();
 
+        siteCode = temp.getSiteCode();
         siteName = temp.getSiteName();
     }
 
     @Override
     public SysSite copyToEntity() {
-        return new SysSite(id, siteName, valid, creator, createTime, reviser, modifyTime);
+        return new SysSite(id, siteCode, siteName, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

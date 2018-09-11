@@ -30,9 +30,9 @@ public enum DataAuthTypeEnum {
     /**
      * 属于我角色的FOR_MYROLE（creator为拥有当前用户拥有的角色之一的用户）
      */
-    FOR_MYROLE,
+    FOR_MY_ROLE,
     /**
      * 发送给我角色的TO_MYROLE（submitTo为拥有当前用户拥有的角色之一的用户）
      */
-    TO_MYROLE;
+    TO_MY_ROLE;
 }

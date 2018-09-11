@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.liaowei.framework.entity.BaseEntity;
+import com.liaowei.platform.enums.PowerTypeEnum;
 import com.liaowei.platform.enums.RoleTypeEnum;
 
 import lombok.AllArgsConstructor;
@@ -47,6 +48,11 @@ import lombok.ToString;
 public class SysRole extends BaseEntity<SysRole> {
 
     /**
+     * 角色编号
+     */
+    private String roleCode;
+
+    /**
      * 角色名称
      */
     private String roleName;
@@ -56,6 +62,17 @@ public class SysRole extends BaseEntity<SysRole> {
      */
     @Enumerated(value = EnumType.STRING)
     private RoleTypeEnum roleType;
+
+    /**
+     * 安全类型：管理员ADMIN、用户USER
+     */
+    @Enumerated(value = EnumType.STRING)
+    private PowerTypeEnum powerType;
+
+    /**
+     * 站点编号
+     */
+    private String siteCode;
 
     /**
      * 角色权限关系数据集合
@@ -71,18 +88,25 @@ public class SysRole extends BaseEntity<SysRole> {
     @JoinColumn(name = "sysRoleId")
     private Set<SysUserRole> sysUserRoles = Sets.<SysUserRole>newHashSet();
 
-    public SysRole(String id, String roleName, RoleTypeEnum roleType, Boolean valid, String creator, LocalDateTime createTime,
-            String reviser, LocalDateTime modifyTime) {
+    public SysRole(String id, String roleCode, String roleName, RoleTypeEnum roleType, PowerTypeEnum powerType, String siteCode,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
+        this.roleCode = roleCode;
         this.roleName = roleName;
         this.roleType = roleType;
+        this.powerType = powerType;
+        this.siteCode = siteCode;
     }
 
-    public SysRole(String id, String roleName, RoleTypeEnum roleType, Boolean valid, String creator, LocalDateTime createTime,
-            String reviser, LocalDateTime modifyTime, Set<SysRoleAuth> sysRoleAuths, Set<SysUserRole> sysUserRoles) {
+    public SysRole(String id, String roleCode, String roleName, RoleTypeEnum roleType, PowerTypeEnum powerType, String siteCode,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime,
+            Set<SysRoleAuth> sysRoleAuths, Set<SysUserRole> sysUserRoles) {
         super(id, valid, creator, createTime, reviser, modifyTime);
+        this.roleCode = roleCode;
         this.roleName = roleName;
         this.roleType = roleType;
+        this.powerType = powerType;
+        this.siteCode = siteCode;
         this.sysRoleAuths = sysRoleAuths;
         this.sysUserRoles = sysUserRoles;
     }
@@ -93,6 +117,10 @@ public class SysRole extends BaseEntity<SysRole> {
         if (!Strings.isNullOrEmpty(id)) {
             this.id = id;
         }
+        String roleCode = e.getRoleCode();
+        if (!Strings.isNullOrEmpty(roleCode)) {
+            this.roleCode = roleCode;
+        }
         String roleName = e.getRoleName();
         if (!Strings.isNullOrEmpty(roleName)) {
             this.roleName = roleName;
@@ -100,6 +128,14 @@ public class SysRole extends BaseEntity<SysRole> {
         RoleTypeEnum roleType = e.getRoleType();
         if (null != roleType) {
             this.roleType = roleType;
+        }
+        PowerTypeEnum powerType = e.getPowerType();
+        if (null != powerType) {
+            this.powerType = powerType;
+        }
+        String siteCode = e.getSiteCode();
+        if (!Strings.isNullOrEmpty(siteCode)) {
+            this.siteCode = siteCode;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

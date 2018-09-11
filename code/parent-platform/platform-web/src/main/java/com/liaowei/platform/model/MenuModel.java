@@ -45,6 +45,11 @@ public class MenuModel extends BaseTreeModel<SysMenu, MenuVo, MenuModel> {
     @Enumerated(value = EnumType.STRING)
     private MenuTypeEnum menuType;
 
+    /**
+     * 站点编号
+     */
+    private String siteCode;
+
     @Override
     public void copyForVo(MenuVo temp) {
         id = temp.getId();
@@ -66,8 +71,9 @@ public class MenuModel extends BaseTreeModel<SysMenu, MenuVo, MenuModel> {
             parent.copyForVo(pMenu);
         }
 
-        this.menuUrl = temp.getMenuUrl();
-        this.menuType = temp.getMenuType();
+        menuUrl = temp.getMenuUrl();
+        menuType = temp.getMenuType();
+        siteCode = temp.getSiteCode();
     }
 
     @Override
@@ -76,8 +82,8 @@ public class MenuModel extends BaseTreeModel<SysMenu, MenuVo, MenuModel> {
         if (null != parent) {
             parentVo = copyToVo(parent);
         }
-        return new MenuVo(id, menuUrl, menuType, code, text, fullCode, fullText, parentVo, null, orderNum, null, valid, creator,
-                createTime, reviser, modifyTime);
+        return new MenuVo(id, menuUrl, menuType, siteCode, code, text, fullCode, fullText, parentVo, null, orderNum, null, valid,
+                creator, createTime, reviser, modifyTime);
     }
 
     @Override
@@ -87,9 +93,9 @@ public class MenuModel extends BaseTreeModel<SysMenu, MenuVo, MenuModel> {
         if (null != parent) {
             parentVo = copyToVo(parent);
         }
-        return new MenuVo(model.getId(), model.getMenuUrl(), model.getMenuType(), model.getCode(), model.getText(),
-                model.getFullCode(), model.getFullText(), parentVo, null, model.getOrderNum(), null, model.getValid(),
-                model.getCreator(), model.getCreateTime(), model.getReviser(), model.getModifyTime());
+        return new MenuVo(model.getId(), model.getMenuUrl(), model.getMenuType(), model.getSiteCode(), model.getCode(),
+                model.getText(), model.getFullCode(), model.getFullText(), parentVo, null, model.getOrderNum(), null,
+                model.getValid(), model.getCreator(), model.getCreateTime(), model.getReviser(), model.getModifyTime());
     }
 
     @Override

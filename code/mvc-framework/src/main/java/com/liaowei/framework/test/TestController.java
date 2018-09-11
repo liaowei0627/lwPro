@@ -39,10 +39,11 @@ public abstract class TestController {
     protected MockMvc mockMvc;
     protected MockHttpSession mockSession;
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Before  
     public void setup() {   
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         mockSession = new MockHttpSession(wac.getServletContext(), UUID.randomUUID().toString());
-        mockSession.setAttribute("USER_SESSION_KEY", new SessionUser("E8B470073D4F41A2AA0B1B79DBAE598E", "admin"));
+        mockSession.setAttribute("USER_SESSION_KEY", new SessionUser("E8B470073D4F41A2AA0B1B79DBAE598E", "admin", "001", null));
     }
 }

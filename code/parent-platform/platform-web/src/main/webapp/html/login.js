@@ -1,5 +1,9 @@
-$(document).ready(function() {
+/*
+ * 登录页JavaScript
+ */
+engine.onload(document, function() {
     "use strict";
+
     // 用户名
     var boxUserName = $("#login_form").find("input#userName");
     boxUserName.textbox({

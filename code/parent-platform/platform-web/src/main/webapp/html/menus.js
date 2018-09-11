@@ -1,5 +1,9 @@
-$(document).ready(function() {
+/*
+ * 左侧菜单栏JavaScript
+ */
+engine.onload(document, function() {
     "use strict";
+
     // 菜单栏设置
     $("#menubar").accordion({
         fit: true
@@ -14,6 +18,8 @@ $(document).ready(function() {
     var menu;
     var menuBody;
     // 加载菜单
+    console.info(sessionUser);
+    console.info(currentSystemId);
     if (currentSystemId.length > 0) {
         var menubar = $("#menubar");
         menubar.accordion("add", {

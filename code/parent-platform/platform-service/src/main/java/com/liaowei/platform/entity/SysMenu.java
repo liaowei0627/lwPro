@@ -59,26 +59,33 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
     private MenuTypeEnum menuType;
 
     /**
+     * 站点编号
+     */
+    private String siteCode;
+
+    /**
      * 权限菜单关系中间表数据
      */
     @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "sysMenuId")
     private Set<SysAuthMenu> sysAuthMenus = Sets.<SysAuthMenu>newHashSet();
 
-    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, String code, String text, String fullCode, String fullText,
+    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, String siteCode, String code, String text, String fullCode, String fullText,
             SysMenu parent, Set<SysMenu> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime,
             String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
         this.menuUrl = menuUrl;
         this.menuType = menuType;
+        this.siteCode = siteCode;
     }
 
-    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, Set<SysAuthMenu> sysAuthMenus, String code, String text,
+    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, String siteCode, Set<SysAuthMenu> sysAuthMenus, String code, String text,
             String fullCode, String fullText, SysMenu parent, Set<SysMenu> children, Integer orderNum, Boolean valid,
             String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
         this.menuUrl = menuUrl;
         this.menuType = menuType;
+        this.siteCode = siteCode;
         this.sysAuthMenus = sysAuthMenus;
     }
 
@@ -87,6 +94,18 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
         String id = e.getId();
         if (!Strings.isNullOrEmpty(id)) {
             this.id = id;
+        }
+        String menuUrl = e.getMenuUrl();
+        if (!Strings.isNullOrEmpty(menuUrl)) {
+            this.menuUrl = menuUrl;
+        }
+        MenuTypeEnum menuType = e.getMenuType();
+        if (null != menuType) {
+            this.menuType = menuType;
+        }
+        String siteCode = e.getSiteCode();
+        if (!Strings.isNullOrEmpty(siteCode)) {
+            this.siteCode = siteCode;
         }
         String code = e.getCode();
         if (!Strings.isNullOrEmpty(code)) {
@@ -107,14 +126,6 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
         Integer orderNum = e.getOrderNum();
         if (null != orderNum) {
             this.orderNum = orderNum;
-        }
-        String menuUrl = e.getMenuUrl();
-        if (!Strings.isNullOrEmpty(menuUrl)) {
-            this.menuUrl = menuUrl;
-        }
-        MenuTypeEnum menuType = e.getMenuType();
-        if (null != menuType) {
-            this.menuType = menuType;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

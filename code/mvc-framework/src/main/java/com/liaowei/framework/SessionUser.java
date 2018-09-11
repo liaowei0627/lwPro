@@ -5,6 +5,11 @@
 package com.liaowei.framework;
 
 import java.io.Serializable;
+import java.util.List;
+
+import com.liaowei.framework.entity.BaseTreeEntity;
+import com.liaowei.framework.model.BaseTreeModel;
+import com.liaowei.framework.vo.BaseTreeVo;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,8 +31,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SessionUser implements Serializable {
+public class SessionUser<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>> implements Serializable {
 
     private String id;
     private String userName;
+    private String siteCode;
+    private List<M> menuList;
 }

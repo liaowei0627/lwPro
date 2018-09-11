@@ -8,8 +8,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 import com.liaowei.framework.vo.BaseVo;
 import com.liaowei.platform.entity.SysUser;
+import com.liaowei.platform.enums.PowerTypeEnum;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -44,6 +48,17 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
     private String password;
 
     /**
+     * 安全类型：管理员ADMIN、用户USER
+     */
+    @Enumerated(value = EnumType.STRING)
+    private PowerTypeEnum powerType;
+
+    /**
+     * 站点编号
+     */
+    private String siteCode;
+
+    /**
      * 用户拥有的角色集合
      */
     private List<RoleVo> roles;
@@ -68,19 +83,23 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
      */
     private Set<MenuVo> menus;
 
-    public UserVo(String id, String userName, String password, Boolean valid, String creator, LocalDateTime createTime,
-            String reviser, LocalDateTime modifyTime) {
+    public UserVo(String id, String userName, String password, PowerTypeEnum powerType, String siteCode, Boolean valid,
+            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
+        this.powerType = powerType;
+        this.siteCode = siteCode;
     }
 
-    public UserVo(String id, String userName, String password, List<RoleVo> roles, List<AuthorityVo> authorities,
-            List<SiteVo> sites, List<AuthDataTypeVo> authDataTypes, Set<MenuVo> menus, Boolean valid, String creator,
-            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public UserVo(String id, String userName, String password, PowerTypeEnum powerType, String siteCode, List<RoleVo> roles,
+            List<AuthorityVo> authorities, List<SiteVo> sites, List<AuthDataTypeVo> authDataTypes, Set<MenuVo> menus,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
+        this.powerType = powerType;
+        this.siteCode = siteCode;
         this.roles = roles;
         this.authorities = authorities;
         this.sites = sites;
@@ -99,11 +118,13 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
 
         userName = temp.getUserName();
         password = temp.getPassword();
+        powerType = temp.getPowerType();
+        siteCode = temp.getSiteCode();
     }
 
     @Override
     public SysUser copyToEntity() {
-        return new SysUser(id, userName, password, valid, creator, createTime, reviser, modifyTime);
+        return new SysUser(id, userName, password, powerType, siteCode, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

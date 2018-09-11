@@ -4,11 +4,15 @@
  */
 package com.liaowei.platform.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
 
 import com.liaowei.framework.test.TestService;
+import com.liaowei.framework.util.JSONUtils;
+import com.liaowei.platform.vo.MenuVo;
 import com.liaowei.platform.vo.UserVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -29,10 +33,20 @@ public class LoginTest extends TestService {
     private ILoginService loginService;
 
     @Test
-    public void testLogin() {
+    public void findUserByUserName() {
         try {
-            UserVo user = loginService.findByUserName("test13");
+            UserVo user = loginService.findUserByUserName("test13");
             log.debug(user.toString());
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Test
+    public void findSysMenusByUserId() {
+        try {
+            List<MenuVo> list = loginService.findSysMenusByUserId("E8B470073D4F41A2AA0B1B79DBAE598E", null, true);
+            log.debug(JSONUtils.objectToJSONString(list));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

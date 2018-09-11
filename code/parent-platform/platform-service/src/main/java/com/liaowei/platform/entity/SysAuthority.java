@@ -19,6 +19,7 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.liaowei.framework.entity.BaseEntity;
 import com.liaowei.platform.enums.AuthTypeEnum;
+import com.liaowei.platform.enums.PowerTypeEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,6 +48,11 @@ import lombok.ToString;
 public class SysAuthority extends BaseEntity<SysAuthority> {
 
     /**
+     * 权限编号
+     */
+    private String authCode;
+
+    /**
      * 权限名称
      */
     private String authName;
@@ -56,6 +62,17 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
      */
     @Enumerated(value = EnumType.STRING)
     private AuthTypeEnum authType;
+
+    /**
+     * 安全类型：管理员ADMIN、用户USER
+     */
+    @Enumerated(value = EnumType.STRING)
+    private PowerTypeEnum powerType;
+
+    /**
+     * 站点编号
+     */
+    private String siteCode;
 
     /**
      * 访问权限集合（菜单）
@@ -85,19 +102,26 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
     @JoinColumn(name = "sysAuthId")
     private Set<SysUserAuth> sysUserAuths = Sets.<SysUserAuth>newHashSet();
 
-    public SysAuthority(String id, String authName, AuthTypeEnum authType, Boolean valid, String creator,
-            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public SysAuthority(String id, String authCode, String authName, AuthTypeEnum authType, PowerTypeEnum powerType,
+            String siteCode, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
+        this.authCode = authCode;
         this.authName = authName;
         this.authType = authType;
+        this.powerType = powerType;
+        this.siteCode = siteCode;
     }
 
-    public SysAuthority(String id, String authName, AuthTypeEnum authType, Set<SysAuthMenu> sysAuthMenus,
-            Set<SysAuthDataType> sysAuthDataTypes, Set<SysRoleAuth> sysRoleAuths, Set<SysUserAuth> sysUserAuths, Boolean valid,
-            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public SysAuthority(String id, String authCode, String authName, AuthTypeEnum authType, PowerTypeEnum powerType,
+            String siteCode, Set<SysAuthMenu> sysAuthMenus, Set<SysAuthDataType> sysAuthDataTypes, Set<SysRoleAuth> sysRoleAuths,
+            Set<SysUserAuth> sysUserAuths, Boolean valid, String creator, LocalDateTime createTime, String reviser,
+            LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
+        this.authCode = authCode;
         this.authName = authName;
         this.authType = authType;
+        this.powerType = powerType;
+        this.siteCode = siteCode;
         this.sysAuthMenus = sysAuthMenus;
         this.sysAuthDataTypes = sysAuthDataTypes;
         this.sysRoleAuths = sysRoleAuths;
@@ -110,6 +134,10 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
         if (!Strings.isNullOrEmpty(id)) {
             this.id = id;
         }
+        String authCode = e.getAuthCode();
+        if (!Strings.isNullOrEmpty(authCode)) {
+            this.authCode = authCode;
+        }
         String authName = e.getAuthName();
         if (!Strings.isNullOrEmpty(authName)) {
             this.authName = authName;
@@ -117,6 +145,14 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
         AuthTypeEnum authType = e.getAuthType();
         if (null != authType) {
             this.authType = authType;
+        }
+        PowerTypeEnum powerType = e.getPowerType();
+        if (null != powerType) {
+            this.powerType = powerType;
+        }
+        String siteCode = e.getSiteCode();
+        if (!Strings.isNullOrEmpty(siteCode)) {
+            this.siteCode = siteCode;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

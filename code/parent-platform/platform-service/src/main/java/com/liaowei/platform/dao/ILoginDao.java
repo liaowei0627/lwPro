@@ -4,6 +4,10 @@
  */
 package com.liaowei.platform.dao;
 
+import java.util.List;
+
+import com.liaowei.framework.core.exception.ApplicationException;
+import com.liaowei.platform.entity.SysMenu;
 import com.liaowei.platform.entity.SysUser;
 
 /**
@@ -17,5 +21,23 @@ import com.liaowei.platform.entity.SysUser;
  */
 public interface ILoginDao {
 
+    /**
+     * 根据用户名取得用户信息
+     * 
+     * @param userName
+     * @return
+     * @throws ApplicationException
+     */
     SysUser findByUserName(String userName);
+
+    /**
+     * 根据用户id取得所授权的菜单树
+     * 
+     * @param userId 用户id
+     * @param siteCode 站点编号
+     * @param isAdmin 是否系统管理员
+     * @return
+     * @throws ApplicationException
+     */
+    List<SysMenu> findSysMenusByUserId(String userId, String siteCode, boolean isAdmin);
 }
