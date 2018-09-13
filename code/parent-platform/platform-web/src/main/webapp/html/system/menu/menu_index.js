@@ -1,8 +1,7 @@
 /*
  * 菜单管理页JavaScript
  */
-//$(document).ready(function() {
-engine.onload(document, function() {
+$(document).ready(function() {
     "use strict";
 
     // 左侧菜单树
@@ -34,45 +33,19 @@ engine.onload(document, function() {
     var doRefresh = function() {
         queryParams["_"] = new Date().getTime();
         menuTree.tree("reload", menuTree.tree("getRoot").target);
-        parentIdComboTree.combotree("tree").tree("reload", parentIdComboTree.combotree("tree").tree("getRoot").target);
         menuGrid.datagrid("reload", queryParams);
     };
 
     var doQuery = function() {
         queryParams["keyword"] = menuSearchbox.searchbox("getValue");
-        var menuType = menuSearchbox.searchbox("getName");
-        if ("ALL" == menuType) {
-            menuType = "";
-        };
-        queryParams["menuType"] = menuType;
         queryParams["_"] = new Date().getTime();
         menuGrid.datagrid("reload", queryParams);
     };
 
+    var menuForm;
     // 详情窗口按钮功能
     var doSubmit = function() {
-        var id = menuForm.find(":hidden[name=id]").val();
-        var code = codeText.textbox("getValue");
-        if (code.length > 0) {
-            $.ajax({
-                url: "./sys/menu/checkCode",
-                type: "GET",
-                cache: false,
-                dataType: "json",
-                data: {id: id, code: code},
-                success: function(result, status) {
-                    if (1 == result.stat) {
-                        engine.messager("消息", result.msg);
-                        menuForm.form("submit");
-                    } else {
-                        engine.alert("警告", result.msg, "warning");
-                    };
-                },
-                error: function(request, message, e) {
-                    engine.alert("错误", "系统错误，请联系系统管理员！", "error");
-                }
-            });
-        };
+        menuForm.form("submit");
     };
     var doCancel = function() {
         menuForm.form("clear");
@@ -81,48 +54,47 @@ engine.onload(document, function() {
 
     // 菜单编辑窗口
     var detailDialog = null;
-    var showDetailDialog = function(id, opt) {
-        if (detailDialog) {
-            detailDialog.dialog("open");
-        } else {
-            detailDialog = engine.showDialog({
-                id: "menu_dialog",
-                title: "编辑菜单",
-                width: 400,
-                height: 400,
-                modal: true,
-                buttons: [{
-                    text: "保存",
-                    iconCls: "icon-ok",
-                    handler: doSubmit
-                }, {
-                    text: "取消",
-                    iconCls: "icon-clear",
-                    handler: doCancel
-                }]
-            });
-            detailDialog.dialog("open");
-        };
-        if (id && id.length == 32 && opt) {
-            menuForm.form("load", "./sys/menu/load?id=" + id + "&opt=" + opt);
-        } else if (id && id.length == 32) {
-            menuForm.form("load", "./sys/menu/load?id=" + id);
-        };
+    var showDetailDialog = function() {
+        var url = "./html/system/menu/menu_detail.html";
+        detailDialog = engine.showDialog({
+            id: "menu_dialog",
+            title: "编辑菜单",
+            href: url,
+            width: 400,
+            height: 400,
+            modal: true,
+            buttons: [{
+                text: "保存",
+                iconCls: "icon-ok",
+                handler: doSubmit
+            }, {
+                text: "取消",
+                iconCls: "icon-clear",
+                handler: doCancel
+            }],
+            onLoad: function() {
+                menuForm = $("#menu_dialog").find("form");
+            }
+        });
+        detailDialog.dialog("open");
     };
 
     // 打开新增窗口
     var doNew = function() {
+        engine.setDialogParam();
         showDetailDialog();
     };
 
     // 打开编辑窗口
     var doEdit = function(id) {
-        showDetailDialog(id);
+        engine.setDialogParam({id: id});
+        showDetailDialog();
     };
 
     // 打开编辑窗口
     var doCopy = function(id) {
-        showDetailDialog(id, "copy");
+        engine.setDialogParam({id: id, opt: "copy"});
+        showDetailDialog();
     };
 
     // 打开编辑窗口
@@ -261,121 +233,8 @@ engine.onload(document, function() {
     var menuSearchbox = $("#menuSearchbox");
     menuSearchbox.searchbox({
         prompt: "菜单文本",
-        menu: "#queryMenuType",
         searcher: function(value, name) {
             doQuery();
-        }
-    });
-    // 组装查询条件类型选项
-    var queryMenuType = menuSearchbox.searchbox("menu");
-    $.ajax({
-        url: "./category/map_list",
-        type: "GET",
-        cache: false,
-        dataType: "json",
-        data: {category: "menu"},
-        success: function(result, status) {
-            if (1 == result.stat) {
-                var data = result.data;
-                var name;
-                var text;
-                for (var i = 0; i < data.length; i++) {
-                    name = data[i].name;
-                    text = data[i].text;
-                    queryMenuType.menu("appendItem", {
-                        text: text,
-                        name: name
-                    });
-                };
-            } else {
-                engine.alert("错误", result.msg, "error");
-            };
-        },
-        error: function(request, message, e) {
-            engine.alert("错误", "系统错误，请联系系统管理员！", "error");
-        }
-    });
-
-    // 编辑表单
-    var menuForm = $("#menuForm").form({
-        url: "./sys/menu/save",
-        queryParams: {"_":new Date().getTime()},
-        onLoadSuccess: function(data) {
-            var parent = data.parent;
-            if (parent) {
-                parentIdComboTree.combotree("setValue", {id:parent.id,text:parent.text});
-            } else {
-                parentIdComboTree.combotree("setValue", {id:"",text:"上级菜单"});
-            };
-        },
-        onSubmit: function(param) {
-            engine.progress("open")// 打开进度条
-            var isValid = menuForm.form("validate");
-            if (!isValid) {
-                engine.progress("close");// 隐藏进度条
-            };
-            return isValid; // 如果是false会阻止表单提交
-        },
-        success: function(result) {
-            engine.progress("close");// 隐藏进度条
-            if (result) {
-                var data = JSON.parse(result);
-                engine.messager("消息", data.msg);
-                doRefresh();
-                doCancel();
-            };
-        },
-        error: function() {
-            engine.progress("close");// 隐藏进度条
-            engine.alert("操作失败", "系统错误，请联系系统管理员！", "error");
-        }
-    });
-
-    // 编号
-    var codeText = menuForm.find("input[name=code]");
-    codeText.textbox({
-        required: true,
-        validType: ["length[1,20]", "illeChar"],
-        validateOnCreate:false,
-        validateOnBlur:true
-    });
-
-    // 菜单编辑表单中的菜单类型下拉框
-    var menuTypeCombo = menuForm.find("input[name=menuType]");
-    menuTypeCombo.combobox({
-        required: true,
-        validateOnCreate:false,
-        validateOnBlur:true,
-        editable: false,
-        valueField: "name",
-        textField: "text",
-        method: "get",
-        url: "./category/map_list",
-        queryParams: {category:"menu","_":new Date().getTime()},
-        loadFilter: function(result) {
-            if (1 == result.stat) {
-                return result.data;
-            };
-        }
-    });
-
-    // 菜单编辑表单中的上级菜单下拉树
-    var parentIdComboTree = menuForm.find("input[name=parentId]");
-    parentIdComboTree.combotree({
-        editable: false,
-        valueField: "id",
-        textField: "text",
-        method: "get",
-        url: "./sys/menu/tree",
-        queryParams: {"_":new Date().getTime()},
-        loadFilter: function(result, parent) {
-            if (1 == result.stat) {
-                if (parent) {
-                    return result.data;
-                } else {
-                    return [{id:"",text:"上级菜单",state:"open",children:result.data}];
-                };
-            };
         }
     });
 });

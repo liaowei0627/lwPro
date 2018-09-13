@@ -153,7 +153,7 @@ public class LoginDaoImpl implements ILoginDao {
         List<SysMenu> menuList = menuQuery.list();
         Set<SysMenu> list = null;
         if (!menuList.isEmpty()) {
-            list = Sets.<SysMenu>newHashSet();
+            list = Sets.<SysMenu>newLinkedHashSet();
             Set<SysMenu> children;
             for (SysMenu sysMenu : menuList) {
                 if (sysMenu.getHasChild()) {

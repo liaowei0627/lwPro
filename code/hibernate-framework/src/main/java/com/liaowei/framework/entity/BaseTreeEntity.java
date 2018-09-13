@@ -86,7 +86,7 @@ public abstract class BaseTreeEntity<E extends BaseTreeEntity<E>> extends BaseEn
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
     @Column(name = "parent")
     @OrderBy("orderNum asc")
-    protected Set<E> children = Sets.<E>newHashSet();
+    protected Set<E> children = Sets.<E>newLinkedHashSet();
 
     /**
      * 顺序

@@ -23,6 +23,7 @@ import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.page.Pagination.OrderEnum;
 import com.liaowei.framework.query.Where;
+import com.liaowei.framework.query.exception.DuplicationCodeException;
 import com.liaowei.framework.query.operator.NoValueComparisonOperator;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
 import com.liaowei.framework.response.ResponseData;
@@ -121,8 +122,8 @@ public class MenuController extends BaseController<SysMenu, MenuVo, MenuModel> {
      */
     @RequestMapping(path = {"/tree"}, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData<List<TreeView<SysMenu, MenuVo, MenuModel>>> tree(@RequestParam(name = "id", required = false) String id)
-            throws ApplicationException {
+    public ResponseData<List<TreeView<SysMenu, MenuVo, MenuModel>>> tree(@RequestParam(name = "id", required = false) String id,
+            @RequestParam(name = "excId", required = false) String excId) throws ApplicationException {
         log.debug("DEBUG：取得菜单树，parentId=" + id);
         Map<String, OrderEnum> orderBy = Maps.newHashMap();
         orderBy.put("orderNum", OrderEnum.ASC);
@@ -133,6 +134,9 @@ public class MenuController extends BaseController<SysMenu, MenuVo, MenuModel> {
             where.andWhere("parent", NoValueComparisonOperator.IS_NULL);
         } else {
             where.andWhere("parent.id", OneValueComparisonOperator.EQ, id);
+        }
+        if (!Strings.isNullOrEmpty(excId)) {
+            where.childAndWhere("id", OneValueComparisonOperator.UE, excId);
         }
         pagination = menuService.findList(pagination, where);
         List<MenuVo> data = pagination.getData();
@@ -182,12 +186,21 @@ public class MenuController extends BaseController<SysMenu, MenuVo, MenuModel> {
         MenuModel model = menu.toModel();
         configModel(model);
         MenuVo vo = model.copyToVo();
-        if (Strings.isNullOrEmpty(vo.getId())) {
-            menuService.addVo(vo);
-        } else {
-            menuService.updateVo(vo);
+        try {
+            if (Strings.isNullOrEmpty(vo.getId())) {
+                menuService.addVo(vo);
+            } else {
+                menuService.updateVo(vo);
+            }
+            responseData = new ResponseData<String>(1, "保存成功！");
+        } catch (ApplicationException e) {
+            log.error(e.getMessage(), e);
+            if (e instanceof DuplicationCodeException) {
+                responseData = new ResponseData<>(0, e.getMessage());
+            } else {
+                throw e;
+            }
         }
-        responseData = new ResponseData<String>(1, "保存成功！");
 
         return responseData;
     }

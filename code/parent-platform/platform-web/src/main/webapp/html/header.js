@@ -1,47 +1,53 @@
 /*
  * 头部JavaScript
  */
-engine.onload(document, function() {
+$(document).ready(function() {
     "use strict";
 
     // 导航栏
     var navigationBar = $("#navigationBar");
-    if (sessionUser) {
-        var menuList = sessionUser.menuList;
-        if (menuList && menuList.length > 0) {
-            var menu;
-            var menuCode;
-            var menuText;
-            var menuUrl;
-            var menuLinkbutton;
-            for (var i = 0; i < menuList.length; i++) {
-                menu = menuList[i];
-                menuCode = menu.code;
-                menuText = menu.text;
-                menuUrl = menu.menuUrl;
-                menuLinkbutton = $("<a id=\"sys_" + menuCode + "\">" + menuText + "</a>");
-                navigationBar.append(menuLinkbutton);
-                if ("首页" == menuText) {
-                    menuLinkbutton.linkbutton({
-                        size: "large",
-                        iconAlign: "top",
-                        plain: true,
-                        onClick: function() {
-                            engine.logged();
-                        }
-                    });
-                } else {
-                    menuLinkbutton.linkbutton({
-                        size: "large",
-                        iconAlign: "top",
-                        plain: true,
-                        onClick: function() {
-                            engine.loadSystem(menuUrl, menuText, menuCode);
-                        }
-                    });
+    var loadNavigation = function() {
+        if (sessionUser) {
+            var menuList = sessionUser.menuList;
+            if (menuList && menuList.length > 0) {
+                var menu;
+                var menuCode;
+                var menuText;
+                var menuUrl;
+                var menuLinkbutton;
+                for (var i = 0; i < menuList.length; i++) {
+                    menu = menuList[i];
+                    menuCode = menu.fullCode;
+                    menuText = menu.text;
+                    menuUrl = menu.menuUrl;
+                    menuLinkbutton = $("<a id=\"sys_" + menuCode + "\">" + menuText + "</a>");
+                    navigationBar.append(menuLinkbutton);
+                    if ("首页" == menuText) {
+                        menuLinkbutton.linkbutton({
+                            size: "large",
+                            iconAlign: "top",
+                            plain: true,
+                            onClick: function() {
+                                engine.logged();
+                            }
+                        });
+                    } else {
+                        menuLinkbutton.linkbutton({
+                            size: "large",
+                            iconAlign: "top",
+                            plain: true,
+                            onClick: function() {
+                                engine.loadSystem(menuUrl, menuText, menuCode);
+                            }
+                        });
+                    };
                 };
             };
         };
+    };
+
+    var clearNavigation = function() {
+        navigationBar.empty();
     };
 
     var sessionUserInfo = $("#sessionUserInfo");
@@ -51,12 +57,14 @@ engine.onload(document, function() {
         if (sessionUser) {
             btnUserName.text(sessionUser.userName);
             sessionUserInfo.css("display", "inline-block");
+            loadNavigation();
             navigationBar.css("display", "inline-block");
             btnUserName.splitbutton({
                 menu: "#userMenus"
             });
         } else {
             btnUserName.text("");
+            clearNavigation();
             sessionUserInfo.css("display", "none");
             navigationBar.css("display", "none");
         };

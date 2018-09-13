@@ -1,7 +1,7 @@
 /*
  * 登录页JavaScript
  */
-engine.onload(document, function() {
+$(document).ready(function() {
     "use strict";
 
     // 用户名

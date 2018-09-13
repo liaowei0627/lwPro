@@ -9,14 +9,12 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.liaowei.framework.core.dao.impl.BasisDaoImpl;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.dao.IDao;
@@ -25,7 +23,7 @@ import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.query.QueryUtils;
 import com.liaowei.framework.query.Where;
-import com.liaowei.framework.query.operator.CollectionValueComparisonOperator;
+import com.liaowei.framework.query.exception.DuplicationCodeException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -66,10 +64,6 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
     public E addEntity(E entity) throws ApplicationException {
         log.debug("DEBUG：新增数据，数据：" + entity.toString());
         Session session = getSession();
-        if (entity instanceof BaseTreeEntity) {
-            refreshFullCode(entity, session);
-            refreshOrderNum(entity, session);
-        }
         session.save(entity);
         return entity;
     }
@@ -81,7 +75,7 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
         E entity = session.get(getEntityClass(), entityPojo.getId());
         entity.setEntity(entityPojo);
         if (entity instanceof BaseTreeEntity) {
-            refreshTree(entityPojo, entity, session);
+            refreshTree(entityPojo, entity);
         }
         session.update(entity);
         return entityPojo;
@@ -94,19 +88,13 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
         List<E> resultList = null;
         int total = 0;
 
-        try {
-            Class<E> entityClass = getEntityClass();
-            Session session = getSession();
-            Query<Long> countQuery = QueryUtils.createCountQuery(entityClass, session, where);
-            Long count = countQuery.uniqueResult();
-            total = count.intValue();
-            Query<E> query = QueryUtils.createQuery(pagination, entityClass, session, where);
-            resultList = query.list();
-        } catch (HibernateException e) {
-            log.error(e.getMessage(), e);
-            resultList = Lists.newArrayList();
-            throw new ApplicationException(e);
-        }
+        Class<E> entityClass = getEntityClass();
+        Session session = getSession();
+        Query<Long> countQuery = QueryUtils.createCountQuery(entityClass, session, where);
+        Long count = countQuery.uniqueResult();
+        total = count.intValue();
+        Query<E> query = QueryUtils.createQuery(pagination, entityClass, session, where);
+        resultList = query.list();
 
         if (null == pagination) {
             pagination = new Pagination<>();
@@ -122,17 +110,6 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
         Session session = getSession();
         Class<E> entityClass = getEntityClass();
 
-        if (BaseTreeEntity.class.isAssignableFrom(entityClass)) {
-            Where where = Where.rootWhere("id", CollectionValueComparisonOperator.IN, id);
-            Pagination<E> p = findList(null, where);
-            List<E> list = p.getData();
-            for (E e : list) {
-                @SuppressWarnings("rawtypes")
-                BaseTreeEntity tree = (BaseTreeEntity) e;
-                delChildren(tree.getFullCode() + "-%", session);
-            }
-        }
-
         String hql;
         Query<?> query;
         if (1 == id.length) {
@@ -147,31 +124,64 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
         query.executeUpdate();
     }
 
+    @Override
+    public void delChildren(String fullCodePrefix) throws ApplicationException {
+        Session session = getSession();
+
+        String hql = "delete from " + getEntityClass().getSimpleName() + " t where t.fullCode like :FullCodePrefix_l";
+        Query<?> query = session.createQuery(hql);
+        query.setParameter("FullCodePrefix_l", fullCodePrefix);
+        query.executeUpdate();
+    }
+
     /**
      * 新增数结构数据时，设置fullCode、fullText列值
      * 
      * @param entity
+     * @throws ApplicationException 
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    protected void refreshFullCode(E entity, Session session) {
+    @Override
+    public void refreshFullCode(E entity) throws ApplicationException {
+        Session session = getSession();
+
         BaseTreeEntity tree = (BaseTreeEntity) entity;
         String newCode = tree.getCode();
         String newText = tree.getText();
         BaseTreeEntity parent = tree.getParent();
-        String newFullCode = null;
-        String newFullText = null;
+        String newFullCode = newCode;
+        String newFullText = newText;
+
+        BaseTreeEntity newParent = null;
         if (null != parent) {
             E parentEntity = session.get(getEntityClass(), parent.getId());
-            BaseTreeEntity newParent = (BaseTreeEntity) parentEntity;
-            tree.setParent(newParent);
-            String parentFullCode = newParent.getFullCode();
-            String parentFullText = newParent.getFullText();
-            newFullCode = parentFullCode + "-" + newCode;
-            newFullText = parentFullText + "|" + newText;
-        } else {
-            newFullCode = newCode;
-            newFullText = newText;
+            if (null != parentEntity) {
+                newParent = (BaseTreeEntity) parentEntity;
+                String parentFullCode = newParent.getFullCode();
+                String parentFullText = newParent.getFullText();
+                newFullCode = parentFullCode + "-" + newCode;
+                newFullText = parentFullText + "|" + newText;
+            }
         }
+        tree.setParent(newParent);
+
+        // 检查全路径编号是否重复
+        StringBuilder hql = new StringBuilder();
+        hql.append("select count(*) from " + getEntityClass().getSimpleName() + " t where fullCode = :fullCode");
+        String entityId = entity.getId();
+        if (!Strings.isNullOrEmpty(entityId)) {
+            hql.append(" and id <> :id");
+        }
+        Query<Long> query = session.createQuery(hql.toString(), Long.class);
+        query.setParameter("fullCode", newFullCode);
+        if (!Strings.isNullOrEmpty(entityId)) {
+            query.setParameter("id", entityId);
+        }
+        Long cnt = query.uniqueResult();
+        if (cnt.intValue() > 0) {
+            throw new DuplicationCodeException("全路径编号重复");
+        }
+
         tree.setFullCode(newFullCode);
         tree.setFullText(newFullText);
     }
@@ -181,7 +191,10 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
      * 
      * @param entity
      */
-    protected void refreshOrderNum(E entity, Session session) {
+    @Override
+    public void refreshOrderNum(E entity) throws ApplicationException {
+        Session session = getSession();
+
         @SuppressWarnings("rawtypes")
         BaseTreeEntity tree = (BaseTreeEntity) entity;
         Integer orderNum = tree.getOrderNum();
@@ -203,47 +216,26 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
      * 
      * @param entityPojo
      * @param entity
+     * @throws ApplicationException 
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    protected void refreshTree(E entityPojo, E entity, Session session) {
+    protected void refreshTree(E entityPojo, E entity) throws ApplicationException {
+
         BaseTreeEntity treeEntityPojo = (BaseTreeEntity) entityPojo;
-        String newCode = treeEntityPojo.getCode();
-        String newText = treeEntityPojo.getText();
         BaseTreeEntity parentPojo = treeEntityPojo.getParent();
-        String newFullCode = null;
-        String newFullText = null;
 
         BaseTreeEntity treeEntity = (BaseTreeEntity) entity;
-        BaseTreeEntity oldParent = treeEntity.getParent();
+        treeEntity.setParent(parentPojo);
         Set<E> children = treeEntity.getChildren();
         String oldFullCode = treeEntity.getFullCode();
         String oldFullText = treeEntity.getFullText();
 
-        if (null == parentPojo) {
-            newFullCode = newCode;
-            newFullText = newText;
-        } else {
-            String parentId = parentPojo.getId();
-            if (!Strings.isNullOrEmpty(parentId)) {
-                if (null != oldParent && parentId.equals(oldParent.getId())) {
-                    newFullCode = oldFullCode;
-                    newFullText = oldFullText;
-                } else {
-                    E parent = session.get(getEntityClass(), parentId);
-                    BaseTreeEntity newParent = (BaseTreeEntity) parent;
-                    treeEntity.setParent(newParent);
-                    String parentFullCode = newParent.getFullCode();
-                    String parentFullText = newParent.getFullText();
-                    newFullCode = parentFullCode + "-" + newCode;
-                    newFullText = parentFullText + "|" + newText;
-                }
-            }
-        }
-        treeEntity.setFullCode(newFullCode);
-        treeEntity.setFullText(newFullText);
+        refreshFullCode(entity);
+        String newFullCode = treeEntity.getFullCode();
+        String newFullText = treeEntity.getFullText();
 
         if (!oldFullCode.equals(newFullCode) && null != children && !children.isEmpty()) {
-            refreshChildren(oldFullCode, oldFullText, newFullCode, oldFullText, session);
+            refreshChildren(oldFullCode, oldFullText, newFullCode, newFullText);
         }
     }
 
@@ -256,7 +248,9 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
      * @param newFullTextPrefix
      */
     protected void refreshChildren(String oldFullCodePrefix, String oldFullTextPrefix, String newFullCodePrefix,
-            String newFullTextPrefix, Session session) {
+            String newFullTextPrefix) {
+        Session session = getSession();
+
         String hql = "update " + getEntityClass().getSimpleName() + " t set "
                 + "t.fullCode = concat(:newFullCodePrefix, substring(t.fullCode, (length(:oldFullCodePrefix) + 1), length(t.fullCode))),"
                 + "t.fullText = concat(:newFullTextPrefix, substring(t.fullText, (length(:oldFullTextPrefix) + 1), length(t.fullText))) "
@@ -267,13 +261,6 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
         query.setParameter("newFullTextPrefix", newFullTextPrefix);
         query.setParameter("oldFullTextPrefix", oldFullTextPrefix);
         query.setParameter("oldFullCodePrefix_l", oldFullCodePrefix + "-%");
-        query.executeUpdate();
-    }
-
-    protected void delChildren(String fullCodePrefix, Session session) {
-        String hql = "delete from " + getEntityClass().getSimpleName() + " t where t.fullCode like :FullCodePrefix_l";
-        Query<?> query = session.createQuery(hql);
-        query.setParameter("FullCodePrefix_l", fullCodePrefix);
         query.executeUpdate();
     }
 }

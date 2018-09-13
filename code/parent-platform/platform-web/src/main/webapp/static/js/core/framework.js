@@ -174,28 +174,55 @@ $(document).ready(function() {
         /**
          * 弹窗
          * dialogProp 参数对象
+         * {
+         *     id: 弹窗div标签id,
+         *     title: 弹窗title,
+         *     href: 弹窗页面url,
+         *     width: 弹窗宽,
+         *     height: 弹窗高,
+         *     modal: 是否模式弹窗,
+         *     buttons: 底部按钮,
+         *     onLoad: 弹窗加载后回调函数
+         * }
          */
         this.showDialog = function(dialogProp) {
-            var dialog = $("#" + dialogProp.id);
-            dialog = dialog.dialog({
+            var dialog = $("<div></div>");
+            dialog.attr("id", dialogProp.id);
+            dialog.dialog({
                 title: dialogProp.title,
+                href: dialogProp.href,
+                queryParams: {"_": new Date().getTime()},
                 width: dialogProp.width,
                 height: dialogProp.height,
                 closed: true,
                 cache: false,
                 modal: dialogProp.modal,
-                buttons: dialogProp.buttons
+                buttons: dialogProp.buttons,
+                onLoad: dialogProp.onLoad,
+                onClose: function() {
+                    $(this).dialog('destroy');
+                    dialog.remove();
+                }
             });
             return dialog;
         };
 
-        /**
-         * 页面加载事件
-         * document 被加载的页面文档对象
-         * loadBundle 事件触发时要运行的方法
-         */
-        this.onload = function(document, loadBundle) {
-            $(document).ready(loadBundle);
+        var dialogParam = {};
+        this.setDialogParam = function(param) {
+            console.info(param);
+            if (param) {
+                dialogParam = param;
+            } else {
+                dialogParam = {};
+            };
+        };
+
+        this.getDialogParam = function(key) {
+            var param = dialogParam;
+            console.info(key);
+            console.info(param);
+            console.info(param[key]);
+            return param[key];
         };
     };
     var bodyPanel = $("#body_layout");

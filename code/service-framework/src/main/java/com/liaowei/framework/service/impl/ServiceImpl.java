@@ -12,10 +12,13 @@ import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.core.service.impl.BasisServiceImpl;
 import com.liaowei.framework.dao.IDao;
 import com.liaowei.framework.entity.BaseIdEntity;
+import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.query.Where;
+import com.liaowei.framework.query.operator.CollectionValueComparisonOperator;
 import com.liaowei.framework.service.IService;
 import com.liaowei.framework.vo.BaseIdVo;
+import com.liaowei.framework.vo.BaseTreeVo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,14 +58,24 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
     @Override
     public V addVo(V v) throws ApplicationException {
         log.debug("DEBUG：新增数据，数据：" + v.toString());
-        E e = getDao().addEntity(v.copyToEntity());
+
+        E entity = v.copyToEntity();
+        if (v instanceof BaseTreeVo) {
+            getDao().refreshFullCode(entity);
+            getDao().refreshOrderNum(entity);
+        }
+
+        E e = getDao().addEntity(entity);
         return entityToVo(e);
     }
 
     @Override
     public V updateVo(V v) throws ApplicationException {
         log.debug("DEBUG：修改数据，数据：" + v.toString());
-        E e = getDao().updateEntity(v.copyToEntity());
+
+        E entity = v.copyToEntity();
+        E e = getDao().updateEntity(entity);
+
         return entityToVo(e);
     }
 
@@ -90,6 +103,21 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
     @Override
     public void delList(String[] id) throws ApplicationException {
         log.debug("DEBUG：根据主键值批量删除数据对象, 主键：" + Joiner.on(",").join(id));
-        getDao().delList(id);
+
+        Where where = Where.rootWhere("id", CollectionValueComparisonOperator.IN, id);
+        Pagination<E> p = getDao().findList(null, where);
+        List<E> entityList = p.getData();
+
+        if (!entityList.isEmpty()) {
+            if (BaseTreeEntity.class.isAssignableFrom(entityList.get(0).getClass())) {
+                for (E e : entityList) {
+                    @SuppressWarnings("rawtypes")
+                    BaseTreeEntity tree = (BaseTreeEntity) e;
+                    getDao().delChildren(tree.getFullCode() + "-%");
+                }
+            }
+
+            getDao().delList(id);
+        }
     }
 }

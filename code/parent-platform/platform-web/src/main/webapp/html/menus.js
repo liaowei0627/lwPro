@@ -1,7 +1,7 @@
 /*
  * 左侧菜单栏JavaScript
  */
-engine.onload(document, function() {
+$(document).ready(function() {
     "use strict";
 
     // 菜单栏设置
@@ -18,67 +18,66 @@ engine.onload(document, function() {
     var menu;
     var menuBody;
     // 加载菜单
-    console.info(sessionUser);
-    console.info(currentSystemId);
     if (currentSystemId.length > 0) {
         var menubar = $("#menubar");
-        menubar.accordion("add", {
-            title: "系统设置"
-        });
-        menu = menubar.accordion("getPanel", "系统设置");
-        menuBody = menu.panel("body");
-        menuBody.append("<ul id=\"abcde\"></ul>");
-        $("ul#abcde").tree({
-            data: [{
-                id: "111",
-                text: "数据字典管理",
-                attributes: {
-                    url: "./html/system/dict/dict_index.html"
-                }
-            },{
-                id: "222",
-                text: "站点管理",
-                attributes: {
-                    url: "./html/system/site/site_index.html"
-                }
-            },{
-                id: "333",
-                text: "菜单管理",
-                attributes: {
-                    url: "./html/system/menu/menu_index.html"
-                }
-            }],
-            onClick: doMenuLink
-        });
 
-        menubar.accordion("add", {
-            title: "系统安全"
-        });
-        menu = menubar.accordion("getPanel", "系统安全");
-        menuBody = menu.panel("body");
-        menuBody.append("<ul id=\"fghij\"></ul>");
-        $("ul#fghij").tree({
-            data: [{
-                id: "444",
-                text: "权限管理",
-                attributes: {
-                    url: "./html/system/auth/auth_index.html"
-                }
-            },{
-                id: "555",
-                text: "角色管理",
-                attributes: {
-                    url: "./html/system/role/role_index.html"
-                }
-            },{
-                id: "666",
-                text: "用户管理",
-                attributes: {
-                    url: "./html/system/user/user_index.html"
-                }
-            }],
-            onClick: doMenuLink
-        });
+        var systemVos = sessionUser.menuList;
+        if (systemVos && systemVos.length > 0) {
+            var systemVo;
+            var menuVos;
+            var menuVo;
+            var menuCode;
+            var menuText;
+            var linkVos;
+            var linkVo;
+            var links;
+            var linkCode;
+            var linkText;
+            var linkUrl;
+            for (var i = 0; i < systemVos.length; i++) {
+                systemVo = systemVos[i];
+                if (currentSystemId == systemVo.fullCode) {
+                    menuVos = systemVo.children;
+                    if (menuVos && menuVos.length > 0) {
+                        for (var j = 0; j < menuVos.length; j++) {
+                            menuVo = menuVos[j];
+                            menuCode = menuVo.fullCode;
+                            menuText = menuVo.text;
+                            linkVos = menuVo.children;
+
+                            menubar.accordion("add", {
+                                title: menuText
+                            });
+                            menu = menubar.accordion("getPanel", menuText);
+                            menuBody = menu.panel("body");
+
+                            if (linkVos && linkVos.length > 0) {
+                                links = [];
+                                for (var k = 0; k < linkVos.length; k++) {
+                                    linkVo = linkVos[k];
+                                    linkCode = linkVo.fullCode;
+                                    linkText = linkVo.text;
+                                    linkUrl = linkVo.menuUrl;
+                                    links[k] = {
+                                        id: linkCode,
+                                        text: linkText,
+                                        attributes: {
+                                            url: linkUrl
+                                        }
+                                    };
+                                };
+                            };
+
+                            menuBody.append("<ul id=\"" + menuCode + "\"></ul>");
+                            menubar.find("ul#" + menuCode).tree({
+                                data: links,
+                                onClick: doMenuLink
+                            });
+                        };
+                    };
+                };
+            };
+        };
         menubar.accordion("select", 0);
     };
 });

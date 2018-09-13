@@ -5,6 +5,7 @@
 package com.liaowei.framework.dao;
 
 import com.liaowei.framework.core.dao.IBasisDao;
+import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.entity.BaseIdEntity;
 
 /**
@@ -18,4 +19,10 @@ import com.liaowei.framework.entity.BaseIdEntity;
  * @since jdk1.8
  */
 public interface IDao<E extends BaseIdEntity<E>> extends IBasisDao<E, String> {
+
+    void refreshFullCode(E entity) throws ApplicationException;
+
+    void refreshOrderNum(E entity) throws ApplicationException;
+
+    void delChildren(String fullCodePrefix) throws ApplicationException;
 }
