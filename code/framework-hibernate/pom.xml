@@ -7,25 +7,21 @@
         <artifactId>parent-root</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>sample</artifactId>
-    <name>sample</name>
+
+    <groupId>com.liaowei.framework</groupId>
+    <artifactId>framework-hibernate</artifactId>
+    <name>framework-hibernate</name>
+    <description>数据层hibernate框架扩展</description>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>com.liaowei.framework</groupId>
+            <artifactId>framework-core</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
         </dependency>
     </dependencies>
 

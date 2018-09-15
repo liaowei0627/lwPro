@@ -7,25 +7,29 @@
         <artifactId>parent-root</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>sample</artifactId>
-    <name>sample</name>
+
+    <groupId>com.liaowei.framework</groupId>
+    <artifactId>framework-mvc</artifactId>
+    <name>framework-mvc</name>
+    <description>web层spring mvc框架扩展</description>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
+            <groupId>com.liaowei.framework</groupId>
+            <artifactId>framework-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
     </dependencies>
 

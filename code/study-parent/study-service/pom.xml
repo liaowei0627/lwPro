@@ -3,29 +3,32 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.liaowei</groupId>
-        <artifactId>parent-root</artifactId>
+        <groupId>com.liaowei.study</groupId>
+        <artifactId>study-parent</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>sample</artifactId>
-    <name>sample</name>
+
+    <artifactId>study-service</artifactId>
+    <name>study-service</name>
+    <description>study服务端</description>
 
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjrt</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
+            <groupId>com.liaowei.framework</groupId>
+            <artifactId>framework-service</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
