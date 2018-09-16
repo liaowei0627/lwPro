@@ -65,6 +65,11 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
     private AuthTypeEnum authType;
 
     /**
+     * 是否内置
+     */
+    protected Boolean builtIn;
+
+    /**
      * 访问权限集合（菜单）
      * 
      * @see com.liaowei.platform.entity.SysAuthMenu
@@ -100,21 +105,23 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
     @JoinColumn(name = "sysAuthId")
     private Set<SysUserAuth> sysUserAuths = Sets.<SysUserAuth>newHashSet();
 
-    public SysAuthority(String id, String authCode, String authName, AuthTypeEnum authType, Boolean valid, String creator,
+    public SysAuthority(String id, String authCode, String authName, AuthTypeEnum authType, Boolean builtIn, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.authCode = authCode;
         this.authName = authName;
         this.authType = authType;
+        this.builtIn = builtIn;
     }
 
-    public SysAuthority(String id, String authCode, String authName, AuthTypeEnum authType, Set<SysAuthMenu> sysAuthMenus,
+    public SysAuthority(String id, String authCode, String authName, AuthTypeEnum authType, Boolean builtIn, Set<SysAuthMenu> sysAuthMenus,
             Set<SysAuthDataType> sysAuthDataTypes, Set<SysRoleAuth> sysRoleAuths, Set<SysUserAuth> sysUserAuths, Boolean valid,
             String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.authCode = authCode;
         this.authName = authName;
         this.authType = authType;
+        this.builtIn = builtIn;
         this.sysAuthMenus = sysAuthMenus;
         this.sysAuthDataTypes = sysAuthDataTypes;
         this.sysRoleAuths = sysRoleAuths;
@@ -138,6 +145,10 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
         AuthTypeEnum authType = e.getAuthType();
         if (null != authType) {
             this.authType = authType;
+        }
+        Boolean builtIn = e.getBuiltIn();
+        if (null != builtIn) {
+            this.builtIn = builtIn;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

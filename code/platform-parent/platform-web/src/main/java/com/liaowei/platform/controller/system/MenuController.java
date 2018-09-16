@@ -27,13 +27,13 @@ import com.liaowei.framework.query.exception.DuplicationCodeException;
 import com.liaowei.framework.query.operator.NoValueComparisonOperator;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
 import com.liaowei.framework.response.ResponseData;
+import com.liaowei.framework.view.TreeView;
 import com.liaowei.platform.entity.SysMenu;
 import com.liaowei.platform.enums.MenuTypeEnum;
 import com.liaowei.platform.model.MenuModel;
 import com.liaowei.platform.service.IMenuService;
 import com.liaowei.platform.view.MenuListView;
 import com.liaowei.platform.view.MenuView;
-import com.liaowei.platform.view.TreeView;
 import com.liaowei.platform.vo.MenuVo;
 
 import lombok.extern.slf4j.Slf4j;

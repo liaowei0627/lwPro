@@ -4,6 +4,11 @@
  */
 package com.liaowei.platform.enums;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
+
 /**
  * RoleTypeEnum
  *
@@ -13,14 +18,19 @@ package com.liaowei.platform.enums;
  * @date 2018-04-17 04:40:49
  * @since jdk1.8
  */
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
+@ToString
 public enum RoleTypeEnum {
 
     /**
      * 管理员
      */
-    ADMIN,
+    ADMIN("管理员"),
     /**
      * 用户
      */
-    USER;
+    USER("用户");
+
+    private String text;
 }

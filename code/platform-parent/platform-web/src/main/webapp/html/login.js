@@ -93,6 +93,7 @@ $(document).ready(function() {
                             var stat = rs.stat;
                             if (1 == stat) {
                                 sessionUser = rs.data;
+                                showUserInfo();
                                 engine.logged();
                             } else {
                                 aChangeKaptcha.click();

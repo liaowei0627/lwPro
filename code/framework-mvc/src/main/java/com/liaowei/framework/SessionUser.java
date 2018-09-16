@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.framework.model.BaseTreeModel;
+import com.liaowei.framework.view.TreeView;
 import com.liaowei.framework.vo.BaseTreeVo;
 
 import lombok.AllArgsConstructor;
@@ -36,5 +37,5 @@ public class SessionUser<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>
     private String id;
     private String userName;
     private String siteCode;
-    private List<M> menuList;
+    private List<TreeView<E,V,M>> menuList;
 }

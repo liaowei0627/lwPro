@@ -13,7 +13,7 @@ import javax.persistence.Enumerated;
 
 import com.liaowei.framework.vo.BaseVo;
 import com.liaowei.platform.entity.SysUser;
-import com.liaowei.platform.enums.RoleTypeEnum;
+import com.liaowei.platform.enums.SubSystemEnum;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -48,17 +48,23 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
     private String password;
 
     /**
-     * 角色类型
+     * 分系统
      * 
-     * @see com.liaowei.platform.enums.RoleTypeEnum
+     * @see com.liaowei.platform.enums.SubSystemEnum
      */
     @Enumerated(value = EnumType.STRING)
-    private RoleTypeEnum roleType;
+    private SubSystemEnum subSystem;
+
 
     /**
      * 站点编号
      */
     private String siteCode;
+
+    /**
+     * 是否内置
+     */
+    protected Boolean builtIn;
 
     /**
      * 用户拥有的角色集合
@@ -86,23 +92,25 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
      */
     private Set<MenuVo> menus;
 
-    public UserVo(String id, String userName, String password, RoleTypeEnum roleType, String siteCode, Boolean valid,
+    public UserVo(String id, String userName, String password, SubSystemEnum subSystem, String siteCode, Boolean builtIn, Boolean valid,
             String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
-        this.roleType = roleType;
+        this.subSystem = subSystem;
         this.siteCode = siteCode;
+        this.builtIn = builtIn;
     }
 
-    public UserVo(String id, String userName, String password, RoleTypeEnum roleType, String siteCode, List<RoleVo> roles,
+    public UserVo(String id, String userName, String password, SubSystemEnum subSystem, String siteCode, Boolean builtIn, List<RoleVo> roles,
             List<AuthorityVo> authorities, List<AuthDataTypeVo> authDataTypes, Set<MenuVo> menus, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
-        this.roleType = roleType;
+        this.subSystem = subSystem;
         this.siteCode = siteCode;
+        this.builtIn = builtIn;
         this.roles = roles;
         this.authorities = authorities;
         this.authDataTypes = authDataTypes;
@@ -120,13 +128,14 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
 
         userName = temp.getUserName();
         password = temp.getPassword();
+        subSystem = temp.getSubSystem();
         siteCode = temp.getSiteCode();
-        roleType = temp.getRoleType();
+        builtIn = temp.getBuiltIn();
     }
 
     @Override
     public SysUser copyToEntity() {
-        return new SysUser(id, userName, password, roleType, siteCode, valid, creator, createTime, reviser, modifyTime);
+        return new SysUser(id, userName, password, subSystem, siteCode, builtIn, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

@@ -59,14 +59,14 @@ public class MenuListView {
      * 菜单类型
      */
     public String getMenuType() {
-        return m.getMenuType().name();
+        return m.getMenuType().getText();
     }
 
     /**
      * 分系统
      */
     public String getSubSystem() {
-        return m.getSubSystem().name();
+        return m.getSubSystem().getText();
     }
 
     /**

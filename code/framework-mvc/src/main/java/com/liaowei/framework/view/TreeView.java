@@ -2,8 +2,11 @@
  * platform-web
  * TreeView.java
  */
-package com.liaowei.platform.view;
+package com.liaowei.framework.view;
 
+import java.util.List;
+
+import com.google.common.collect.Lists;
 import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.framework.model.BaseTreeModel;
 import com.liaowei.framework.vo.BaseTreeVo;
@@ -39,6 +42,20 @@ public class TreeView<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M
 
     public String getState() {
         return m.getHasChild() ? "closed" : "open";
+    }
+
+    public List<TreeView<E, V, M>> getChildren() {
+        List<TreeView<E, V, M>> list = null;
+
+        List<M> children = m.getChildren();
+        if (null != children && !children.isEmpty()) {
+            list = Lists.<TreeView<E, V, M>>newArrayList();
+            for (M child : children) {
+                list.add(new TreeView<E, V, M>(child));
+            }
+        }
+
+        return list;
     }
 
     public M getAttributes() {

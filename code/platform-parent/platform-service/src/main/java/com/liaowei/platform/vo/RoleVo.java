@@ -54,6 +54,11 @@ public class RoleVo extends BaseVo<SysRole, RoleVo> {
     private RoleTypeEnum roleType;
 
     /**
+     * 是否内置
+     */
+    protected Boolean builtIn;
+
+    /**
      * 角色包含的权限集合
      */
     private List<AuthorityVo> authorities;
@@ -70,11 +75,12 @@ public class RoleVo extends BaseVo<SysRole, RoleVo> {
         roleCode = temp.getRoleCode();
         roleName = temp.getRoleName();
         roleType = temp.getRoleType();
+        builtIn = temp.getBuiltIn();
     }
 
     @Override
     public SysRole copyToEntity() {
-        return new SysRole(id, roleCode, roleName, roleType, valid, creator, createTime, reviser, modifyTime);
+        return new SysRole(id, roleCode, roleName, roleType, builtIn, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

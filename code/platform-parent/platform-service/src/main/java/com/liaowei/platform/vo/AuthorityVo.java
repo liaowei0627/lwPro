@@ -56,6 +56,11 @@ public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
     private AuthTypeEnum authType;
 
     /**
+     * 是否内置
+     */
+    protected Boolean builtIn;
+
+    /**
      * 权限拥有的数据权限集合
      * 
      * @see com.liaowei.platform.vo.AuthDataTypeVo
@@ -79,11 +84,12 @@ public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
         authCode = temp.getAuthCode();
         authName = temp.getAuthName();
         authType = temp.getAuthType();
+        builtIn = temp.getBuiltIn();
     }
 
     @Override
     public SysAuthority copyToEntity() {
-        return new SysAuthority(id, authCode, authName, authType, valid, creator, createTime, reviser, modifyTime);
+        return new SysAuthority(id, authCode, authName, authType, builtIn, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

@@ -93,7 +93,6 @@ $(document).ready(function() {
          */
         this.logged = function() {
             this.removeMenus();
-            showUserInfo();
             this.mainPanel.panel("setTitle", "首页");
             this.mainPanel.panel("refresh", "./html/home.html?_=" + new Date().getTime());
 //            isInLoginPage = false;
@@ -207,9 +206,15 @@ $(document).ready(function() {
             return dialog;
         };
 
+        /**
+         * 弹窗传递参数
+         */
         var dialogParam = {};
+
+        /**
+         * 设置弹窗参数
+         */
         this.setDialogParam = function(param) {
-            console.info(param);
             if (param) {
                 dialogParam = param;
             } else {
@@ -217,11 +222,11 @@ $(document).ready(function() {
             };
         };
 
+        /**
+         * 取得弹窗参数
+         */
         this.getDialogParam = function(key) {
             var param = dialogParam;
-            console.info(key);
-            console.info(param);
-            console.info(param[key]);
             return param[key];
         };
     };

@@ -65,6 +65,11 @@ public class SysRole extends BaseEntity<SysRole> {
     private RoleTypeEnum roleType;
 
     /**
+     * 是否内置
+     */
+    protected Boolean builtIn;
+
+    /**
      * 角色权限关系数据集合
      * 
      * @see com.liaowei.platform.entity.SysRoleAuth
@@ -82,21 +87,23 @@ public class SysRole extends BaseEntity<SysRole> {
     @JoinColumn(name = "sysRoleId")
     private Set<SysUserRole> sysUserRoles = Sets.<SysUserRole>newHashSet();
 
-    public SysRole(String id, String roleCode, String roleName, RoleTypeEnum roleType, Boolean valid, String creator,
+    public SysRole(String id, String roleCode, String roleName, RoleTypeEnum roleType, Boolean builtIn, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.roleCode = roleCode;
         this.roleName = roleName;
         this.roleType = roleType;
+        this.builtIn = builtIn;
     }
 
-    public SysRole(String id, String roleCode, String roleName, RoleTypeEnum roleType, Boolean valid, String creator,
+    public SysRole(String id, String roleCode, String roleName, RoleTypeEnum roleType, Boolean builtIn, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime, Set<SysRoleAuth> sysRoleAuths,
             Set<SysUserRole> sysUserRoles) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.roleCode = roleCode;
         this.roleName = roleName;
         this.roleType = roleType;
+        this.builtIn = builtIn;
         this.sysRoleAuths = sysRoleAuths;
         this.sysUserRoles = sysUserRoles;
     }
@@ -118,6 +125,10 @@ public class SysRole extends BaseEntity<SysRole> {
         RoleTypeEnum roleType = e.getRoleType();
         if (null != roleType) {
             this.roleType = roleType;
+        }
+        Boolean builtIn = e.getBuiltIn();
+        if (null != builtIn) {
+            this.builtIn = builtIn;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

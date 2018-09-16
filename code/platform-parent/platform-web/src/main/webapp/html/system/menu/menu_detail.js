@@ -5,46 +5,11 @@ $(document).ready(function() {
     "use strict";
 
     var id = engine.getDialogParam("id");
+    var curParent = engine.getDialogParam("parent");
     var opt = engine.getDialogParam("opt");
 
     // 编辑表单
-    var curParent;
-    var menuForm = $("#menuForm").form({
-        url: "./system/menu/save",
-        queryParams: {"_":new Date().getTime()},
-        onLoadSuccess: function(data) {
-            curParent = null;
-            var parent = data.parent;
-            if (parent && parent != "") {
-                curParent = parent;
-            };
-        },
-        onSubmit: function(param) {
-            engine.progress("open")// 打开进度条
-            var isValid = menuForm.form("validate");
-            if (!isValid) {
-                engine.progress("close");// 隐藏进度条
-            };
-            return isValid; // 如果是false会阻止表单提交
-        },
-        success: function(result, state) {
-            engine.progress("close");// 隐藏进度条
-            if (result) {
-                var data = JSON.parse(result);
-                if (1 == data.stat) {
-                    engine.messager("消息", data.msg);
-                    doRefresh();
-                    doCancel();
-                } else {
-                    engine.alert("操作失败", data.msg, "error");
-                };
-            };
-        },
-        error: function(result, state, e) {
-            engine.progress("close");// 隐藏进度条
-            engine.alert("操作失败", "系统错误，请联系系统管理员！", "error");
-        }
-    });
+    var menuForm = $("#menuForm");
 
     // 菜单编辑表单中的菜单类型下拉框
     var menuTypeCombo = menuForm.find("input[name=menuType]");
@@ -109,7 +74,7 @@ $(document).ready(function() {
             };
         },
         onLoadSuccess: function(node, data) {
-            if (curParent) {
+            if (id && id.length == 32 && curParent) {
                 parentIdComboTree.combotree("setValue", {id: curParent.id, text: curParent.text});
             } else {
                 parentIdComboTree.combotree("setValue", {id: "", text: "上级菜单"});
@@ -119,7 +84,7 @@ $(document).ready(function() {
 
     if (id && id.length == 32 && opt) {
         menuForm.form("load", "./system/menu/load?id=" + id + "&opt=" + opt);
-    } else if (id && id.length == 32) {console.info(id);
+    } else if (id && id.length == 32) {
         menuForm.form("load", "./system/menu/load?id=" + id);
     };
 });

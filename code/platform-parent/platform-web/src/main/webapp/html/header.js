@@ -8,22 +8,24 @@ $(document).ready(function() {
     var navigationBar = $("#navigationBar");
     var loadNavigation = function() {
         if (sessionUser) {
-            var menuList = sessionUser.menuList;
-            if (menuList && menuList.length > 0) {
-                var menu;
-                var menuCode;
-                var menuText;
-                var menuUrl;
-                var menuLinkbutton;
-                for (var i = 0; i < menuList.length; i++) {
-                    menu = menuList[i];
-                    menuCode = menu.fullCode;
-                    menuText = menu.text;
-                    menuUrl = menu.menuUrl;
-                    menuLinkbutton = $("<a id=\"sys_" + menuCode + "\">" + menuText + "</a>");
-                    navigationBar.append(menuLinkbutton);
-                    if ("首页" == menuText) {
-                        menuLinkbutton.linkbutton({
+            var navigationList = sessionUser.menuList;
+            if (navigationList && navigationList.length > 0) {
+                var navigation;
+                var attributes;
+                var navigationCode;
+                var navigationText;
+                var navigationUrl;
+                var navigationLinkbutton;
+                for (var i = 0; i < navigationList.length; i++) {
+                    navigation = navigationList[i];
+                    attributes = navigation.attributes;
+                    navigationCode = attributes.fullCode;
+                    navigationText = navigation.text;
+                    navigationUrl = attributes.menuUrl;
+                    navigationLinkbutton = $("<a id=\"sys_" + navigationCode + "\">" + navigationText + "</a>");
+                    navigationBar.append(navigationLinkbutton);
+                    if ("首页" == navigationText) {
+                        navigationLinkbutton.linkbutton({
                             size: "large",
                             iconAlign: "top",
                             plain: true,
@@ -32,12 +34,12 @@ $(document).ready(function() {
                             }
                         });
                     } else {
-                        menuLinkbutton.linkbutton({
+                        navigationLinkbutton.linkbutton({
                             size: "large",
                             iconAlign: "top",
                             plain: true,
                             onClick: function() {
-                                engine.loadSystem(menuUrl, menuText, menuCode);
+                                engine.loadSystem(navigationUrl, navigationText, navigationCode);
                             }
                         });
                     };
@@ -59,7 +61,9 @@ $(document).ready(function() {
             sessionUserInfo.css("display", "inline-block");
             loadNavigation();
             navigationBar.css("display", "inline-block");
-            btnUserName.splitbutton({
+            btnUserName.menubutton({
+                size: "large",
+                iconCls: "icon-man",
                 menu: "#userMenus"
             });
         } else {

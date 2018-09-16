@@ -7,6 +7,6 @@
 <!-- 来自本站 -->
 <script type="text/javascript" src="./static/thirdpart/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="./static/js/easyuiExtension/layoutCollapsedTitle.js"></script>
+<script type="text/javascript" src="./static/js/easyuiExtension/extendValidateboxRules.js"></script>
 <script type="text/javascript" src="./static/thirdpart/easyui/locale/easyui-lang-zh_CN.js"></script>
-<script type="text/javascript" src="./static/js/core/extendValidateboxRules.js"></script>
 <script type="text/javascript" src="./static/js/core/framework.js"></script>

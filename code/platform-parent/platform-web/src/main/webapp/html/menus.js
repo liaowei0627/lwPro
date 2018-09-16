@@ -10,68 +10,74 @@ $(document).ready(function() {
     });
 
     // 菜单链接点击事件
-    var doMenuLink = function(node) {
-        var data = node.attributes;
-        engine.loadModel(data.url, node.text, node.id);
+    var doMenuClick = function(node) {
+        var attributes = node.attributes;
+        engine.loadModel(attributes.url, node.text, node.id);
     };
 
-    var menu;
-    var menuBody;
+    var menuGroup;
+    var menuGroupBody;
     // 加载菜单
     if (currentSystemId.length > 0) {
         var menubar = $("#menubar");
 
-        var systemVos = sessionUser.menuList;
-        if (systemVos && systemVos.length > 0) {
-            var systemVo;
+        var navigationVos = sessionUser.menuList;
+        if (navigationVos && navigationVos.length > 0) {
+            var navigationVo;
+            var navigationAttributes;
+            var menuGroupVos;
+            var menuGroupVo;
+            var menuGroupAttributes;
+            var menuGroupCode;
+            var menuGroupText;
             var menuVos;
             var menuVo;
+            var menuAttributes;
             var menuCode;
             var menuText;
-            var linkVos;
-            var linkVo;
-            var links;
-            var linkCode;
-            var linkText;
-            var linkUrl;
-            for (var i = 0; i < systemVos.length; i++) {
-                systemVo = systemVos[i];
-                if (currentSystemId == systemVo.fullCode) {
-                    menuVos = systemVo.children;
-                    if (menuVos && menuVos.length > 0) {
-                        for (var j = 0; j < menuVos.length; j++) {
-                            menuVo = menuVos[j];
-                            menuCode = menuVo.fullCode;
-                            menuText = menuVo.text;
-                            linkVos = menuVo.children;
+            var menuUrl;
+            var menus;
+            for (var i = 0; i < navigationVos.length; i++) {
+                navigationVo = navigationVos[i];
+                navigationAttributes = navigationVo.attributes;
+                if (currentSystemId == navigationAttributes.fullCode) {
+                    menuGroupVos = navigationVo.children;
+                    if (menuGroupVos && menuGroupVos.length > 0) {
+                        for (var j = 0; j < menuGroupVos.length; j++) {
+                            menuGroupVo = menuGroupVos[j];
+                            menuGroupAttributes = menuGroupVo.attributes;
+                            menuGroupCode = menuGroupAttributes.fullCode;
+                            menuGroupText = menuGroupVo.text;
+                            menuVos = menuGroupVo.children;
 
                             menubar.accordion("add", {
-                                title: menuText
+                                title: menuGroupText
                             });
-                            menu = menubar.accordion("getPanel", menuText);
-                            menuBody = menu.panel("body");
+                            menuGroup = menubar.accordion("getPanel", menuGroupText);
+                            menuGroupBody = menuGroup.panel("body");
 
-                            if (linkVos && linkVos.length > 0) {
-                                links = [];
-                                for (var k = 0; k < linkVos.length; k++) {
-                                    linkVo = linkVos[k];
-                                    linkCode = linkVo.fullCode;
-                                    linkText = linkVo.text;
-                                    linkUrl = linkVo.menuUrl;
-                                    links[k] = {
-                                        id: linkCode,
-                                        text: linkText,
+                            if (menuVos && menuVos.length > 0) {
+                                menus = [];
+                                for (var k = 0; k < menuVos.length; k++) {
+                                    menuVo = menuVos[k];
+                                    menuAttributes = menuVo.attributes;
+                                    menuCode = menuAttributes.fullCode;
+                                    menuText = menuVo.text;
+                                    menuUrl = menuAttributes.menuUrl;
+                                    menus[k] = {
+                                        id: menuCode,
+                                        text: menuText,
                                         attributes: {
-                                            url: linkUrl
+                                            url: menuUrl
                                         }
                                     };
                                 };
                             };
 
-                            menuBody.append("<ul id=\"" + menuCode + "\"></ul>");
-                            menubar.find("ul#" + menuCode).tree({
-                                data: links,
-                                onClick: doMenuLink
+                            menuGroupBody.append("<ul id=\"" + menuGroupCode + "\"></ul>");
+                            menubar.find("ul#" + menuGroupCode).tree({
+                                data: menus,
+                                onClick: doMenuClick
                             });
                         };
                     };

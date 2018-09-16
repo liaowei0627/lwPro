@@ -25,8 +25,8 @@ import com.liaowei.framework.core.model.IBasisModel;
 import com.liaowei.framework.core.vo.IBasisIdVo;
 import com.liaowei.framework.response.ResponseData;
 import com.liaowei.framework.util.CryptoUtils;
+import com.liaowei.framework.view.TreeView;
 import com.liaowei.platform.entity.SysMenu;
-import com.liaowei.platform.enums.RoleTypeEnum;
 import com.liaowei.platform.model.MenuModel;
 import com.liaowei.platform.service.ILoginService;
 import com.liaowei.platform.util.SeedUtils;
@@ -137,10 +137,9 @@ public class IndexController extends BaseController {
         sessionUser.setUserName(user.getUserName());
         sessionUser.setSiteCode(siteCode);
 
-        List<MenuVo> menus = loginService.findSysMenusByUserId(userId, siteCode,
-                RoleTypeEnum.ADMIN.equals(user.getRoleType()));
+        List<MenuVo> menus = loginService.findSysMenusByUserId(userId, siteCode, true);
         if (null != menus && !menus.isEmpty()) {
-            List<MenuModel> list = Lists.<MenuModel>newArrayList();
+            List<TreeView<SysMenu, MenuVo, MenuModel>> list = Lists.<TreeView<SysMenu, MenuVo, MenuModel>>newArrayList();
             MenuModel model;
             List<MenuVo> children;
             for (MenuVo vo : menus) {
@@ -150,7 +149,7 @@ public class IndexController extends BaseController {
                     children = vo.getChildren();
                     model.setChildren(menuChilrenVoToModel(children));
                 }
-                list.add(model);
+                list.add(new TreeView<SysMenu, MenuVo, MenuModel>(model));
             }
             sessionUser.setMenuList(list);
         }
@@ -181,11 +180,11 @@ public class IndexController extends BaseController {
      */
     @RequestMapping(path = {"/loadMenus"}, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData<List<MenuModel>> loadMenus() throws ApplicationException {
+    public ResponseData<List<TreeView<SysMenu, MenuVo, MenuModel>>> loadMenus() throws ApplicationException {
         @SuppressWarnings("unchecked")
         SessionUser<SysMenu, MenuVo, MenuModel> sessionUser = getCurUser();
-        List<MenuModel> list = sessionUser.getMenuList();
-        return new ResponseData<List<MenuModel>>(1, "登出成功", list);
+        List<TreeView<SysMenu, MenuVo, MenuModel>> list = sessionUser.getMenuList();
+        return new ResponseData<List<TreeView<SysMenu, MenuVo, MenuModel>>>(1, "登出成功", list);
     }
 
     @Override

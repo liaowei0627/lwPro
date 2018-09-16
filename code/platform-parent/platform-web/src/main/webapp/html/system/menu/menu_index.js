@@ -45,7 +45,35 @@ $(document).ready(function() {
     var menuForm;
     // 详情窗口按钮功能
     var doSubmit = function() {
-        menuForm.form("submit");
+        menuForm.form("submit", {
+            url: "./system/menu/save",
+            queryParams: {"_":new Date().getTime()},
+            onSubmit: function(param) {
+                engine.progress("open")// 打开进度条
+                var isValid = menuForm.form("validate");
+                if (!isValid) {
+                    engine.progress("close");// 隐藏进度条
+                };
+                return isValid; // 如果是false会阻止表单提交
+            },
+            success: function(result, state) {
+                engine.progress("close");// 隐藏进度条
+                if (result) {
+                    var data = JSON.parse(result);
+                    if (1 == data.stat) {
+                        engine.messager("消息", data.msg);
+                        doRefresh();
+                        doCancel();
+                    } else {
+                        engine.alert("操作失败", data.msg, "error");
+                    };
+                };
+            },
+            error: function(result, state, e) {
+                engine.progress("close");// 隐藏进度条
+                engine.alert("操作失败", "系统错误，请联系系统管理员！", "error");
+            }
+        });
     };
     var doCancel = function() {
         menuForm.form("clear");
@@ -61,7 +89,7 @@ $(document).ready(function() {
             title: "编辑菜单",
             href: url,
             width: 400,
-            height: 400,
+            height: 280,
             modal: true,
             buttons: [{
                 text: "保存",
@@ -87,13 +115,15 @@ $(document).ready(function() {
 
     // 打开编辑窗口
     var doEdit = function(id) {
-        engine.setDialogParam({id: id});
+        var parent = menuTree.tree("getSelected");
+        
+        engine.setDialogParam({id: id, parent: parent});
         showDetailDialog();
     };
 
     // 打开编辑窗口
     var doCopy = function(id) {
-        engine.setDialogParam({id: id, opt: "copy"});
+        engine.setDialogParam({id: id, parent: parent, opt: "copy"});
         showDetailDialog();
     };
 
@@ -204,6 +234,12 @@ $(document).ready(function() {
         },{
             field: "menuType",
             title: "菜单类型",
+            width: 100,
+            halign: "center",
+            align: "center"
+        },{
+            field: "subSystem",
+            title: "分系统",
             width: 100,
             halign: "center",
             align: "center"

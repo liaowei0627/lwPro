@@ -18,7 +18,7 @@ import javax.persistence.Table;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import com.liaowei.framework.entity.BaseEntity;
-import com.liaowei.platform.enums.RoleTypeEnum;
+import com.liaowei.platform.enums.SubSystemEnum;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -57,17 +57,22 @@ public class SysUser extends BaseEntity<SysUser> {
     private String password;
 
     /**
-     * 角色类型
+     * 分系统
      * 
-     * @see com.liaowei.platform.enums.RoleTypeEnum
+     * @see com.liaowei.platform.enums.SubSystemEnum
      */
     @Enumerated(value = EnumType.STRING)
-    private RoleTypeEnum roleType;
+    private SubSystemEnum subSystem;
 
     /**
      * 站点编号
      */
     private String siteCode;
+
+    /**
+     * 是否内置
+     */
+    protected Boolean builtIn;
 
     /**
      * 用户角色关系数据集合
@@ -87,23 +92,25 @@ public class SysUser extends BaseEntity<SysUser> {
     @JoinColumn(name = "sysUserId")
     private Set<SysUserAuth> sysUserAuths = Sets.<SysUserAuth>newHashSet();
 
-    public SysUser(String id, String userName, String password, RoleTypeEnum roleType, String siteCode, Boolean valid,
-            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public SysUser(String id, String userName, String password, SubSystemEnum subSystem, String siteCode, Boolean builtIn,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
-        this.roleType = roleType;
+        this.subSystem = subSystem;
         this.siteCode = siteCode;
+        this.builtIn = builtIn;
     }
 
-    public SysUser(String id, String userName, String password, RoleTypeEnum roleType, String siteCode, Boolean valid,
-            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime, Set<SysUserRole> sysUserRoles,
-            Set<SysUserAuth> sysUserAuths) {
+    public SysUser(String id, String userName, String password, SubSystemEnum subSystem, String siteCode, Boolean builtIn,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime,
+            Set<SysUserRole> sysUserRoles, Set<SysUserAuth> sysUserAuths) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
-        this.roleType = roleType;
+        this.subSystem = subSystem;
         this.siteCode = siteCode;
+        this.builtIn = builtIn;
         this.sysUserRoles = sysUserRoles;
         this.sysUserAuths = sysUserAuths;
     }
@@ -122,13 +129,17 @@ public class SysUser extends BaseEntity<SysUser> {
         if (!Strings.isNullOrEmpty(password)) {
             this.password = password;
         }
-        RoleTypeEnum roleType = e.getRoleType();
-        if (null != roleType) {
-            this.roleType = roleType;
+        SubSystemEnum subSystem = e.getSubSystem();
+        if (null != subSystem) {
+            this.subSystem = subSystem;
         }
         String siteCode = e.getSiteCode();
         if (!Strings.isNullOrEmpty(siteCode)) {
             this.siteCode = siteCode;
+        }
+        Boolean builtIn = e.getBuiltIn();
+        if (null != builtIn) {
+            this.builtIn = builtIn;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

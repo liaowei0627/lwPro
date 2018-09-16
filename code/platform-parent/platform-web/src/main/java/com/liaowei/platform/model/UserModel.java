@@ -9,7 +9,7 @@ import javax.persistence.Enumerated;
 
 import com.liaowei.framework.model.BaseModel;
 import com.liaowei.platform.entity.SysUser;
-import com.liaowei.platform.enums.RoleTypeEnum;
+import com.liaowei.platform.enums.SubSystemEnum;
 import com.liaowei.platform.vo.UserVo;
 
 import lombok.Getter;
@@ -45,17 +45,22 @@ public class UserModel extends BaseModel<SysUser, UserVo, UserModel> {
     private String password;
 
     /**
-     * 角色类型
+     * 分系统
      * 
-     * @see com.liaowei.platform.enums.RoleTypeEnum
+     * @see com.liaowei.platform.enums.SubSystemEnum
      */
     @Enumerated(value = EnumType.STRING)
-    private RoleTypeEnum roleType;
+    private SubSystemEnum subSystem;
 
     /**
      * 站点编号
      */
     private String siteCode;
+
+    /**
+     * 是否内置
+     */
+    protected Boolean builtIn;
 
     @Override
     public void copyForVo(UserVo temp) {
@@ -68,13 +73,14 @@ public class UserModel extends BaseModel<SysUser, UserVo, UserModel> {
 
         userName = temp.getUserName();
         password = temp.getPassword();
-        roleType = temp.getRoleType();
+        subSystem = temp.getSubSystem();
         siteCode = temp.getSiteCode();
+        builtIn = temp.getBuiltIn();
     }
 
     @Override
     public UserVo copyToVo() {
-        return new UserVo(id, userName, password, roleType, siteCode, valid, creator, createTime, reviser, modifyTime);
+        return new UserVo(id, userName, password, subSystem, siteCode, builtIn, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override
