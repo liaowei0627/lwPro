@@ -23,7 +23,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-18 22:46:02
- * @see com.liaowei.framework.entity.BaseIdEntity
+ * @see com.liaowei.framework.entity.BaseIdEntity<SysUserAuth>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

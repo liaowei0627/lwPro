@@ -21,11 +21,11 @@ import com.google.common.collect.Maps;
 import com.liaowei.framework.controller.BaseController;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.page.Pagination;
-import com.liaowei.framework.page.Pagination.OrderEnum;
 import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.exception.DuplicationCodeException;
 import com.liaowei.framework.query.operator.NoValueComparisonOperator;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
+import com.liaowei.framework.query.order.OrderEnum;
 import com.liaowei.framework.response.ResponseData;
 import com.liaowei.framework.view.TreeView;
 import com.liaowei.platform.entity.SysMenu;
@@ -45,7 +45,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 23:18:54
- * @see com.liaowei.framework.controller.BaseController<MenuModel, MenuVo>
+ * @see com.liaowei.framework.controller.BaseController<SysMenu, MenuVo, MenuModel>
  * @since jdk1.8
  */
 @Controller
@@ -79,8 +79,7 @@ public class MenuController extends BaseController<SysMenu, MenuVo, MenuModel> {
     @RequestMapping(path = {"/list"}, method = RequestMethod.GET)
     @ResponseBody
     public Pagination<MenuListView> list(@RequestParam(name = "parentId", required = true) String parentId,
-            @RequestParam(name = "menuType", required = false) String menuType)
-            throws ApplicationException {
+            @RequestParam(name = "menuType", required = false) String menuType) throws ApplicationException {
         log.debug("DEBUG：查询菜单数据列表，parentId=" + parentId);
         Map<String, OrderEnum> orderBy = Maps.newHashMap();
         orderBy.put("orderNum", OrderEnum.ASC);
@@ -107,7 +106,7 @@ public class MenuController extends BaseController<SysMenu, MenuVo, MenuModel> {
         Pagination<?> p = configPagination();
         Pagination<MenuVo> pagination = menuService.findList(new Pagination<MenuVo>(p.getRows(), p.getPage(), orderBy), where);
         List<MenuVo> data = pagination.getData();
-        List<MenuListView> list = Lists.newArrayList();
+        List<MenuListView> list = Lists.<MenuListView>newArrayList();
         for (MenuVo menuVo : data) {
             list.add(new MenuListView(voToModel(menuVo)));
         }

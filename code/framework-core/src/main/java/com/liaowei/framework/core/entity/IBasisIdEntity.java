@@ -9,8 +9,8 @@ import java.io.Serializable;
 /**
  * IBasisEntity
  * 
- * 实体类顶层主键接口
- * Entity用于数据层与服务层传递数据
+ * 实体类顶层主键接口<br>
+ * Entity用于数据层与服务层传递数据<br>
  * 不论用何种实体层框架，其实体类均需继承此接口
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)

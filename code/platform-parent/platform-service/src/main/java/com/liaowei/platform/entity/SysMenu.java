@@ -35,7 +35,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-16 11:50:56
- * @see com.liaowei.framework.entity.BaseEntity
+ * @see com.liaowei.framework.entity.BaseTreeEntity<SysMenu>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

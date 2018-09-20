@@ -13,10 +13,10 @@ import org.junit.Test;
 
 import com.google.common.collect.Maps;
 import com.liaowei.framework.page.Pagination;
-import com.liaowei.framework.page.Pagination.OrderEnum;
 import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.operator.NoValueComparisonOperator;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
+import com.liaowei.framework.query.order.OrderEnum;
 import com.liaowei.framework.test.TestService;
 import com.liaowei.platform.enums.MenuTypeEnum;
 import com.liaowei.platform.vo.MenuVo;

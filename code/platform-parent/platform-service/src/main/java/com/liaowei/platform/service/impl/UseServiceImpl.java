@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-30 18:49:03
  * @see com.liaowei.platform.service.IUserService
- * @see com.liaowei.framework.service.impl.ServiceImpl<UserVo, SysUser, String>
+ * @see com.liaowei.framework.service.impl.ServiceImpl<SysUser, UserVo>
  * @since jdk1.8
  */
 @Service("userService")

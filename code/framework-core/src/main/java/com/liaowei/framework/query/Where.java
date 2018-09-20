@@ -1,3 +1,7 @@
+/**
+ * framework-core
+ * Where.java
+ */
 package com.liaowei.framework.query;
 
 import java.util.Collection;
@@ -25,7 +29,6 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-08-31 22:25:33
- * @see com.liaowei.framework.query.IBasisWhere
  * @since jdk1.8
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -33,16 +36,26 @@ import lombok.ToString;
 @ToString
 public class Where {
 
-    /** 别名 */
+    /**
+     * 别名
+     */
     public static final String ALIAS = "t";
 
-    /** 属性名 */
+    /**
+     * 属性名
+     */
     private String propertyName;
-    /** 条件操作符 */
+    /**
+     * 条件操作符
+     */
     private Enum<?> operator;
-    /** 值 */
+    /**
+     * 值
+     */
     private Object value;
-    /** 值2（可选，between这种需要两个值的条件时使用） */
+    /**
+     * 值2（可选，between这种需要两个值的条件时使用）
+     */
     private Object value2;
 
     /**
@@ -112,7 +125,8 @@ public class Where {
      * @return
      * @throws WhereClauseException
      */
-    public static Where rootWhere(String propertyName, OneValueComparisonOperator operator, Object value) throws WhereClauseException {
+    public static Where rootWhere(String propertyName, OneValueComparisonOperator operator, Object value)
+            throws WhereClauseException {
         Where where = new Where(propertyName, operator, value);
         return where;
     }
@@ -190,7 +204,8 @@ public class Where {
      * @return
      * @throws WhereClauseException
      */
-    public void andWhere(String propertyName, TwoValueComparisonOperator operator, Object value, Object value2) throws WhereClauseException {
+    public void andWhere(String propertyName, TwoValueComparisonOperator operator, Object value, Object value2)
+            throws WhereClauseException {
         if (null == nextWhere) {
             addNextWhere(PredicateOperator.AND, propertyName, operator, value, value2);
         } else {
@@ -207,7 +222,8 @@ public class Where {
      * @return
      * @throws WhereClauseException
      */
-    public void andWhere(String propertyName, CollectionValueComparisonOperator operator, Object value) throws WhereClauseException {
+    public void andWhere(String propertyName, CollectionValueComparisonOperator operator, Object value)
+            throws WhereClauseException {
         if (null == nextWhere) {
             addNextWhere(PredicateOperator.AND, propertyName, operator, value);
         } else {
@@ -258,7 +274,8 @@ public class Where {
      * @return
      * @throws WhereClauseException
      */
-    public void orWhere(String propertyName, TwoValueComparisonOperator operator, Object value, Object value2) throws WhereClauseException {
+    public void orWhere(String propertyName, TwoValueComparisonOperator operator, Object value, Object value2)
+            throws WhereClauseException {
         if (null == nextWhere) {
             addNextWhere(PredicateOperator.OR, propertyName, operator, value, value2);
         } else {
@@ -275,7 +292,8 @@ public class Where {
      * @return
      * @throws WhereClauseException
      */
-    public void orWhere(String propertyName, CollectionValueComparisonOperator operator, Object value) throws WhereClauseException {
+    public void orWhere(String propertyName, CollectionValueComparisonOperator operator, Object value)
+            throws WhereClauseException {
         if (null == nextWhere) {
             addNextWhere(PredicateOperator.OR, propertyName, operator, value);
         } else {
@@ -304,7 +322,8 @@ public class Where {
      * @return 这个新增的条件语句对象
      * @throws WhereClauseException
      */
-    public Where childAndWhere(String propertyName, OneValueComparisonOperator operator, Object value) throws WhereClauseException {
+    public Where childAndWhere(String propertyName, OneValueComparisonOperator operator, Object value)
+            throws WhereClauseException {
         return addChildWhere(PredicateOperator.AND, propertyName, operator, value);
     }
 
@@ -318,7 +337,8 @@ public class Where {
      * @return 这个新增的条件语句对象
      * @throws WhereClauseException
      */
-    public Where childAndWhere(String propertyName, TwoValueComparisonOperator operator, Object value, Object value2) throws WhereClauseException {
+    public Where childAndWhere(String propertyName, TwoValueComparisonOperator operator, Object value, Object value2)
+            throws WhereClauseException {
         return addChildWhere(PredicateOperator.AND, propertyName, operator, value, value2);
     }
 
@@ -331,7 +351,8 @@ public class Where {
      * @return 这个新增的条件语句对象
      * @throws WhereClauseException
      */
-    public Where childAndWhere(String propertyName, CollectionValueComparisonOperator operator, Object value) throws WhereClauseException {
+    public Where childAndWhere(String propertyName, CollectionValueComparisonOperator operator, Object value)
+            throws WhereClauseException {
         return addChildWhere(PredicateOperator.AND, propertyName, operator, value);
     }
 
@@ -356,7 +377,8 @@ public class Where {
      * @return 这个新增的条件语句对象
      * @throws WhereClauseException
      */
-    public Where childOrWhere(String propertyName, OneValueComparisonOperator operator, Object value) throws WhereClauseException {
+    public Where childOrWhere(String propertyName, OneValueComparisonOperator operator, Object value)
+            throws WhereClauseException {
         return addChildWhere(PredicateOperator.OR, propertyName, operator, value);
     }
 
@@ -370,7 +392,8 @@ public class Where {
      * @return 这个新增的条件语句对象
      * @throws WhereClauseException
      */
-    public Where childOrWhere(String propertyName, TwoValueComparisonOperator operator, Object value, Object value2) throws WhereClauseException {
+    public Where childOrWhere(String propertyName, TwoValueComparisonOperator operator, Object value, Object value2)
+            throws WhereClauseException {
         return addChildWhere(PredicateOperator.OR, propertyName, operator, value, value2);
     }
 
@@ -383,7 +406,8 @@ public class Where {
      * @return 这个新增的条件语句对象
      * @throws WhereClauseException
      */
-    public Where childOrWhere(String propertyName, CollectionValueComparisonOperator operator, Object value) throws WhereClauseException {
+    public Where childOrWhere(String propertyName, CollectionValueComparisonOperator operator, Object value)
+            throws WhereClauseException {
         return addChildWhere(PredicateOperator.OR, propertyName, operator, value);
     }
 
@@ -424,8 +448,8 @@ public class Where {
      * @param value 值
      * @throws WhereClauseException
      */
-    private void addNextWhere(PredicateOperator predicateOperator, String propertyName, OneValueComparisonOperator operator, Object value)
-            throws WhereClauseException {
+    private void addNextWhere(PredicateOperator predicateOperator, String propertyName, OneValueComparisonOperator operator,
+            Object value) throws WhereClauseException {
         nextWhereOperator = predicateOperator;
         nextWhere = new Where(propertyName, operator, value);
     }
@@ -440,8 +464,8 @@ public class Where {
      * @param value 值
      * @throws WhereClauseException
      */
-    private void addNextWhere(PredicateOperator predicateOperator, String propertyName, TwoValueComparisonOperator operator, Object value,
-            Object value2) throws WhereClauseException {
+    private void addNextWhere(PredicateOperator predicateOperator, String propertyName, TwoValueComparisonOperator operator,
+            Object value, Object value2) throws WhereClauseException {
         nextWhereOperator = predicateOperator;
         nextWhere = new Where(propertyName, operator, value, value2);
     }
@@ -455,7 +479,8 @@ public class Where {
      * @param value 值
      * @throws WhereClauseException
      */
-    private void addNextWhere(PredicateOperator predicateOperator, String propertyName, CollectionValueComparisonOperator operator, Object value) throws WhereClauseException {
+    private void addNextWhere(PredicateOperator predicateOperator, String propertyName,
+            CollectionValueComparisonOperator operator, Object value) throws WhereClauseException {
         nextWhereOperator = predicateOperator;
         nextWhere = new Where(propertyName, operator, value);
     }
@@ -523,8 +548,8 @@ public class Where {
      * @param value 值
      * @throws WhereClauseException
      */
-    private Where addChildWhere(PredicateOperator predicateOperator, String propertyName, CollectionValueComparisonOperator operator,
-            Object value) throws WhereClauseException {
+    private Where addChildWhere(PredicateOperator predicateOperator, String propertyName,
+            CollectionValueComparisonOperator operator, Object value) throws WhereClauseException {
         Map<PredicateOperator, Where> child = Maps.newHashMap();
         Where childWhere = new Where(propertyName, operator, value);
         child.put(predicateOperator, childWhere);

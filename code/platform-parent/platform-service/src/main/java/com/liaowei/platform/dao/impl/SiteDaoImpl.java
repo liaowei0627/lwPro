@@ -18,7 +18,7 @@ import com.liaowei.platform.entity.SysSite;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-19 21:11:05
  * @see com.liaowei.platform.dao.ISiteDao
- * @see com.liaowei.framework.dao.impl.DaoImpl<SysSite, String>
+ * @see com.liaowei.framework.dao.impl.DaoImpl<SysSite>
  * @since jdk1.8
  */
 @Repository("siteDao")

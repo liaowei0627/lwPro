@@ -14,7 +14,7 @@ import com.liaowei.platform.entity.SysRole;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-19 21:15:06
- * @see com.liaowei.framework.dao.IDao<SysRole, String>
+ * @see com.liaowei.framework.dao.IDao<SysRole>
  * @since jdk1.8
  */
 public interface IRoleDao extends IDao<SysRole> {

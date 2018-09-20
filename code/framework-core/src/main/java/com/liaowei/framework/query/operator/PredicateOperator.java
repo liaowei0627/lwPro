@@ -12,7 +12,9 @@ import lombok.NoArgsConstructor;
 /**
  * PredicateOperator
  *
- * HQL Where子句操作符枚举
+ * HQL Where子句操作符枚举<br>
+ * and<br>
+ * or
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-08-27 23:50:02

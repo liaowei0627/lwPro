@@ -1,5 +1,5 @@
 /**
- * platform-web
+ * framework-mvc
  * SessionUser.java
  */
 package com.liaowei.framework;
@@ -23,7 +23,7 @@ import lombok.Setter;
  * 当前登录用户对象
  *
  * @author liaowei
- * @date 创建时间：2018年4月6日 下午6:14:17 
+ * @date 创建时间：2018年4月6日 下午6:14:17
  * @see java.io.Serializable
  * @since jdk1.8
  */
@@ -32,10 +32,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class SessionUser<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>> implements Serializable {
+public class SessionUser<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>>
+        implements Serializable {
 
     private String id;
     private String userName;
     private String siteCode;
-    private List<TreeView<E,V,M>> menuList;
+    private List<TreeView<E, V, M>> menuList;
 }

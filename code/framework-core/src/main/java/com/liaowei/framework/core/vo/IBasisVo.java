@@ -15,7 +15,7 @@ import com.liaowei.framework.core.entity.IBasisEntity;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:25:25
- * @see com.liaowei.framework.core.vo.IBasisIdVo
+ * @see com.liaowei.framework.core.vo.IBasisIdVo<E, V>
  * @since jdk1.8
  */
 public interface IBasisVo<E extends IBasisEntity<E>, V extends IBasisVo<E, V>> extends IBasisIdVo<E, V> {

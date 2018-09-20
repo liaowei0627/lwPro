@@ -10,9 +10,9 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.collect.Maps;
+import com.liaowei.framework.query.order.OrderEnum;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -58,7 +58,8 @@ public class Pagination<E> implements Serializable {
     private int rows = 20;
 
     /**
-     * 页号从1开始
+     * 页号<br>
+     * 从1开始
      */
     @JsonIgnore
     @Getter
@@ -66,7 +67,7 @@ public class Pagination<E> implements Serializable {
     private int page = 1;
 
     /**
-     * 查询起始记录下标
+     * 查询起始记录下标<br>
      * 从0开始
      */
     @JsonIgnore
@@ -78,7 +79,7 @@ public class Pagination<E> implements Serializable {
     @JsonIgnore
     @Getter
     @Setter
-    private Map<String, OrderEnum> orderBy = null;
+    private Map<String, OrderEnum> orderBy = Maps.<String, OrderEnum>newLinkedHashMap();
 
     /**
      * 数据
@@ -130,29 +131,5 @@ public class Pagination<E> implements Serializable {
             startPosition = page * rows - rows;
         }
         return startPosition;
-    }
-
-    /**
-     * OrderEnum
-     *
-     * 排序枚举
-     *
-     * @author 廖维(EmailTo：liaowei-0627@163.com)
-     * @date 2018-04-26 09:39:43
-     * @since jdk1.8
-     */
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
-    @Getter
-    public enum OrderEnum {
-        /**
-         * 升序
-         */
-        ASC("asc"),
-        /**
-         * 降序
-         */
-        DESC("desc");
-
-        private String text;
     }
 }

@@ -1,10 +1,11 @@
 /**
- * service-framework
+ * framework-service
  * ServiceImpl.java
  */
 package com.liaowei.framework.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
@@ -16,6 +17,7 @@ import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.operator.CollectionValueComparisonOperator;
+import com.liaowei.framework.query.order.OrderEnum;
 import com.liaowei.framework.service.IService;
 import com.liaowei.framework.vo.BaseIdVo;
 import com.liaowei.framework.vo.BaseTreeVo;
@@ -30,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:40:39
  * @see com.liaowei.framework.service.IService<V, E>
- * @see com.liaowei.framework.core.service.impl.BasisServiceImpl<V, E>
+ * @see com.liaowei.framework.core.service.impl.BasisServiceImpl<E, V, String>
  * @since jdk1.8
  */
 @Slf4j
@@ -80,10 +82,23 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
     }
 
     @Override
+    public List<V> findList(Where where, Map<String, OrderEnum> orderBy) throws ApplicationException {
+        log.debug("DEBUG：查询数据列表，查询条件：" + (null == where ? "无条件" : where.toString()));
+
+        List<E> el = getDao().findList(where, orderBy);
+        List<V> vl = Lists.<V>newArrayList();
+        for (E e : el) {
+            vl.add(entityToVo(e));
+        }
+
+        return vl;
+    }
+
+    @Override
     public Pagination<V> findList(Pagination<V> pagination, Where where) throws ApplicationException {
         log.debug("DEBUG：查询数据分页列表，查询条件：" + (null == where ? "无条件" : where.toString()) + ",分页信息："
                 + (null == pagination ? "无分页" : pagination.toString()));
-        List<E> el = Lists.newArrayList();
+        List<E> el = Lists.<E>newArrayList();
         Pagination<E> p;
         if (null == pagination) {
             p = new Pagination<E>();
@@ -93,7 +108,7 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
         }
         p = getDao().findList(p, where);
         el = p.getData();
-        List<V> vl = Lists.newArrayList();
+        List<V> vl = Lists.<V>newArrayList();
         for (E e : el) {
             vl.add(entityToVo(e));
         }

@@ -10,6 +10,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.Map;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -26,9 +28,10 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 /**
  * CustomerOM
  *
- * 自定义FasterXML Jackson JSON ObjectMapper
- * 设定对日期格式化的处理
- * 并加入JDK1.8中java.time下新的日期时间类型的格式化处理
+ * 自定义FasterXML Jackson JSON ObjectMapper<br>
+ * 设定对日期格式化的处理<br>
+ * 加入JDK1.8中java.time下新的日期时间类型的格式化处理<br>
+ * 对null对象的处理
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:25:25
@@ -56,8 +59,10 @@ public class CustomOM extends ObjectMapper {
         module.addSerializer(LocalTime.class, new LocalTimeSerializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
         module.addDeserializer(LocalTime.class, new LocalTimeDeserializer(DateTimeFormatter.ofPattern("HH:mm:ss")));
         // 序列化与反序列化LocalDateTime类型格式
-        module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        module.addSerializer(LocalDateTime.class,
+                new LocalDateTimeSerializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        module.addDeserializer(LocalDateTime.class,
+                new LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         registerModule(module);
         // 旧日期类型支持
         DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM);
@@ -67,9 +72,13 @@ public class CustomOM extends ObjectMapper {
 
             @Override
             public void serialize(Object value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
-                gen.writeString("");
+                if (value instanceof Collection || value instanceof Map) {
+                    gen.writeNull();
+                } else {
+                    gen.writeString("");
+                }
             }
-            
+
         });
     }
 }

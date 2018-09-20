@@ -1,5 +1,5 @@
 /**
- * framework-core
+ * framework-hibernate
  * IDao.java
  */
 package com.liaowei.framework.dao;
@@ -20,9 +20,26 @@ import com.liaowei.framework.entity.BaseIdEntity;
  */
 public interface IDao<E extends BaseIdEntity<E>> extends IBasisDao<E, String> {
 
+    /**
+     * 新增数结构数据时，设置fullCode、fullText列值
+     * 
+     * @param entity
+     * @throws ApplicationException 
+     */
     void refreshFullCode(E entity) throws ApplicationException;
 
+    /**
+     * 新增树结构数据时，设置orderNum列值
+     * 
+     * @param entity
+     */
     void refreshOrderNum(E entity) throws ApplicationException;
 
+    /**
+     * 批量删除节点树
+     * 
+     * @param fullCodePrefix 全路径编号前缀
+     * @throws ApplicationException
+     */
     void delChildren(String fullCodePrefix) throws ApplicationException;
 }

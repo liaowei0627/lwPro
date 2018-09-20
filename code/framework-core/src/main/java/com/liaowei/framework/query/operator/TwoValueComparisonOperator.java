@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 /**
  * TwoValueComparisonOperator
  *
- * 两个值的运算符枚举
+ * 两个值的运算符枚举<br>
+ * between
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-09-01 22:22:38

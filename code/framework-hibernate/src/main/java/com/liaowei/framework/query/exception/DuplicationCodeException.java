@@ -1,5 +1,5 @@
 /**
- * hibernate-framework
+ * framework-hibernate
  * DuplicationTreeCodeException.java
  */
 package com.liaowei.framework.query.exception;

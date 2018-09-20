@@ -5,11 +5,14 @@
 package com.liaowei.framework.core.dao;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.query.Where;
+import com.liaowei.framework.query.order.OrderEnum;
 
 /**
  * IBasisDao
@@ -18,7 +21,6 @@ import com.liaowei.framework.query.Where;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:25:25
- * @see java.io.Serializable
  * @since jdk1.8
  */
 public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable> {
@@ -28,17 +30,27 @@ public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable>
      * 
      * @param pk 主键值
      * @return
-     * @throws ServiceException
+     * @throws ApplicationException
      */
     E findEntity(PK id) throws ApplicationException;
 
     /**
-     * 分页查询数据集合
+     * 查询数据列表
+     * 
+     * @param where hql查询条件对象
+     * @param orderBy 排序字段
+     * @return
+     * @throws ApplicationException
+     */
+    List<E> findList(Where where, Map<String, OrderEnum> orderBy) throws ApplicationException;
+
+    /**
+     * 分页查询数据列表
      * 
      * @param pagination 分页对象
      * @param where hql查询条件对象
      * @return
-     * @throws ServiceException
+     * @throws ApplicationException
      */
     Pagination<E> findList(Pagination<E> pagination, Where where) throws ApplicationException;
 
@@ -47,7 +59,7 @@ public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable>
      * 
      * @param entity
      * @return
-     * @throws ServiceException
+     * @throws ApplicationException
      */
     E addEntity(E entity) throws ApplicationException;
 
@@ -56,7 +68,7 @@ public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable>
      * 
      * @param entity
      * @return
-     * @throws ServiceException
+     * @throws ApplicationException
      */
     E updateEntity(E entity) throws ApplicationException;
 
@@ -64,7 +76,7 @@ public interface IBasisDao<E extends IBasisIdEntity<E>, PK extends Serializable>
      * 逻辑删除批量数据
      * 
      * @param pks 要逻辑删除数据的主键值集合
-     * @throws ServiceException
+     * @throws ApplicationException
      */
     void delList(PK[] id) throws ApplicationException;
 }

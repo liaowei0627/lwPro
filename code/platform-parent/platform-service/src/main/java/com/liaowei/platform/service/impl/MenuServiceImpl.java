@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 23:40:19
  * @see com.liaowei.platform.service.IMenuService
- * @see com.liaowei.framework.service.impl.ServiceImpl<MenuVo, SysMenu, String>
+ * @see com.liaowei.framework.service.impl.ServiceImpl<MenuVo, SysMenu>
  * @since jdk1.8
  */
 @Service("menuService")

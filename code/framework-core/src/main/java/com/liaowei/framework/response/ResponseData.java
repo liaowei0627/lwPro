@@ -1,6 +1,6 @@
 /**
  * framework-core
- * Pagination.java
+ * ResponseData.java
  */
 package com.liaowei.framework.response;
 
@@ -28,14 +28,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ResponseData<T> implements Serializable {
+public class ResponseData<View> implements Serializable {
 
     // 返回状态
     private int stat;
     // 返回信息
     private String msg;
     // 返回数据
-    private T data;
+    private View data;
 
     public ResponseData(int stat, String msg) {
         this.stat = stat;

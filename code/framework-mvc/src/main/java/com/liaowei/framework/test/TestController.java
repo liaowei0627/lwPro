@@ -1,5 +1,5 @@
 /**
- * framework-core
+ * framework-mvc
  * TestController.java
  */
 package com.liaowei.framework.test;
@@ -40,8 +40,8 @@ public abstract class TestController {
     protected MockHttpSession mockSession;
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    @Before  
-    public void setup() {   
+    @Before
+    public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         mockSession = new MockHttpSession(wac.getServletContext(), UUID.randomUUID().toString());
         mockSession.setAttribute("USER_SESSION_KEY", new SessionUser("E8B470073D4F41A2AA0B1B79DBAE598E", "admin", "001", null));

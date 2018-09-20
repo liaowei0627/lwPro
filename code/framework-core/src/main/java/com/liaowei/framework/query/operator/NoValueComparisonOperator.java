@@ -12,7 +12,11 @@ import lombok.NoArgsConstructor;
 /**
  * NoValueComparisonOperator
  *
- * 没有值的运算符枚举
+ * 没有值的运算符枚举<br>
+ * is null<br>
+ * is not null<br>
+ * is empty<br>
+ * is not empty
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-09-01 22:22:38

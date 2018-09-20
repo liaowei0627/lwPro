@@ -12,7 +12,8 @@ import lombok.NoArgsConstructor;
 /**
  * CollectionOperator
  *
- * 集合运算符枚举
+ * 集合运算符枚举<br>
+ * in
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-08-27 23:50:02

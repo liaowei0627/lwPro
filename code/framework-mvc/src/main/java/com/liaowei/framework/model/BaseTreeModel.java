@@ -1,5 +1,5 @@
 /**
- * mvc-framework
+ * framework-mvc
  * BaseTreeModel.java
  */
 package com.liaowei.framework.model;
@@ -23,14 +23,15 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 23:55:17
- * @see com.liaowei.framework.core.model.IBasisTreeModel<M>
- * @see com.liaowei.framework.model.BaseModel
+ * @see com.liaowei.framework.core.model.IBasisTreeModel<E, V, M>
+ * @see com.liaowei.framework.model.BaseModel<E, V, M>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true)
-public abstract class BaseTreeModel<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>> extends BaseModel<E, V, M> implements IBasisTreeModel<E, V, M> {
+public abstract class BaseTreeModel<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>>
+        extends BaseModel<E, V, M> implements IBasisTreeModel<E, V, M> {
 
     /**
      * 编号
@@ -46,14 +47,16 @@ public abstract class BaseTreeModel<E extends BaseTreeEntity<E>, V extends BaseT
     protected String text;
 
     /**
-     * 全路径编号：上级全路径编号-编号
+     * 全路径编号<br>
+     * 上级全路径编号-编号
      */
     @Getter
     @Setter
     protected String fullCode;
 
     /**
-     * 全路径名称：上级全路径名称|名称
+     * 全路径名称<br>
+     * 上级全路径名称|名称
      */
     @Getter
     @Setter

@@ -16,7 +16,7 @@ import com.liaowei.framework.core.vo.IBasisTreeVo;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-17 03:39:01
- * @see com.liaowei.framework.core.entity.IBasisEntity
+ * @see com.liaowei.framework.core.model.IBasisModel<E, V, M>
  * @since jdk1.8
  */
 public interface IBasisTreeModel<E extends IBasisTreeEntity<E>, V extends IBasisTreeVo<E, V>, M extends IBasisTreeModel<E, V, M>>

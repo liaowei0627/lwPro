@@ -1,5 +1,5 @@
 /**
- * service-framework
+ * framework-service
  * BaseIdVo.java
  */
 package com.liaowei.framework.vo;
@@ -21,7 +21,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 00:57:58
- * @see com.liaowei.framework.core.vo.IBasisIdVo
+ * @see com.liaowei.framework.core.vo.IBasisIdVo<E, V>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

@@ -1,10 +1,11 @@
 /**
- * framework-core
+ * framework-hibernate
  * DaoImpl.java
  */
 package com.liaowei.framework.dao.impl;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
@@ -24,6 +25,7 @@ import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.query.QueryUtils;
 import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.exception.DuplicationCodeException;
+import com.liaowei.framework.query.order.OrderEnum;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,8 +36,8 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:33:14
- * @see com.liaowei.framework.dao.IDao<E, PK>
- * @see com.liaowei.framework.core.dao.impl.BasisDaoImpl<E, PK>
+ * @see com.liaowei.framework.dao.IDao<E>
+ * @see com.liaowei.framework.core.dao.impl.BasisDaoImpl<E, String>
  * @since jdk1.8
  */
 @Slf4j
@@ -82,18 +84,31 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
     }
 
     @Override
+    public List<E> findList(Where where, Map<String, OrderEnum> orderBy) throws ApplicationException {
+        log.debug("DEBUG：查询数据列表，查询条件：" + (null == where ? "无条件" : where.toString()));
+        List<E> resultList = null;
+
+        Class<E> entityClass = getEntityClass();
+        Session session = getSession();
+        Query<E> query = QueryUtils.<E>createQuery(entityClass, session, where, orderBy);
+        resultList = query.list();
+
+        return resultList;
+    }
+
+    @Override
     public Pagination<E> findList(Pagination<E> pagination, Where where) throws ApplicationException {
-        log.debug("DEBUG：查询数据分页列表，查询条件：" + (null == where ? "无条件" : where.toString()) + ",分页信息："
+        log.debug("DEBUG：查询数据分页列表，查询条件：" + (null == where ? "无条件" : where.toString()) + "，分页信息："
                 + (null == pagination ? "无分页" : pagination.toString()));
         List<E> resultList = null;
         int total = 0;
 
         Class<E> entityClass = getEntityClass();
         Session session = getSession();
-        Query<Long> countQuery = QueryUtils.createCountQuery(entityClass, session, where);
+        Query<Long> countQuery = QueryUtils.<E>createCountQuery(entityClass, session, where);
         Long count = countQuery.uniqueResult();
         total = count.intValue();
-        Query<E> query = QueryUtils.createQuery(pagination, entityClass, session, where);
+        Query<E> query = QueryUtils.<E>createQuery(pagination, entityClass, session, where);
         resultList = query.list();
 
         if (null == pagination) {
@@ -134,12 +149,6 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
         query.executeUpdate();
     }
 
-    /**
-     * 新增数结构数据时，设置fullCode、fullText列值
-     * 
-     * @param entity
-     * @throws ApplicationException 
-     */
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void refreshFullCode(E entity) throws ApplicationException {
@@ -186,11 +195,6 @@ public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E,
         tree.setFullText(newFullText);
     }
 
-    /**
-     * 新增树结构数据时，设置orderNum列值
-     * 
-     * @param entity
-     */
     @Override
     public void refreshOrderNum(E entity) throws ApplicationException {
         Session session = getSession();

@@ -1,3 +1,7 @@
+/**
+ * framework-hibernate
+ * QueryUtils.java
+ */
 package com.liaowei.framework.query;
 
 import java.util.Date;
@@ -11,12 +15,12 @@ import org.hibernate.query.Query;
 
 import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.page.Pagination;
-import com.liaowei.framework.page.Pagination.OrderEnum;
 import com.liaowei.framework.query.operator.CollectionValueComparisonOperator;
 import com.liaowei.framework.query.operator.NoValueComparisonOperator;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
 import com.liaowei.framework.query.operator.PredicateOperator;
 import com.liaowei.framework.query.operator.TwoValueComparisonOperator;
+import com.liaowei.framework.query.order.OrderEnum;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -35,6 +39,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class QueryUtils {
 
+    /**
+     * 创建count查询Query对象
+     * 
+     * @param entityClass 实体类Class
+     * @param session 当前session
+     * @param where 查询条件对象
+     * @return
+     */
     public static <E extends IBasisIdEntity<E>> Query<Long> createCountQuery(Class<E> entityClass, Session session, Where where) {
         log.debug("DEBUG：HQL总数查询器构建");
         StringBuilder hql = new StringBuilder();
@@ -67,7 +79,73 @@ public class QueryUtils {
         return query;
     }
 
-    public static <E extends IBasisIdEntity<E>> Query<E> createQuery(Pagination<E> pagination, Class<E> entityClass, Session session, Where where) {
+    /**
+     * 创建列表查询Query对象
+     * 
+     * @param entityClass 实体类Class
+     * @param session 当前session
+     * @param where 查询条件对象
+     * @param orderBy 排序对象
+     * @return
+     */
+    public static <E extends IBasisIdEntity<E>> Query<E> createQuery(Class<E> entityClass, Session session, Where where,
+            Map<String, OrderEnum> orderBy) {
+        log.debug("DEBUG：HQL列表查询器构建");
+        StringBuilder hql = new StringBuilder();
+        hql.append("from " + entityClass.getSimpleName() + " " + Where.ALIAS + " ");
+
+        Map<String, Object> param = null;
+        if (null != where) {
+            WhereClause whereClause = toWhereClause(where);
+            param = whereClause.getParam();
+            hql.append(whereClause.getWhereClause());
+        }
+
+        if (null != orderBy && !orderBy.isEmpty()) {
+            hql.append("order by ");
+            Set<String> orderKeySet = orderBy.keySet();
+            StringBuilder orderbyClause = new StringBuilder();
+            for (String key : orderKeySet) {
+                if (orderbyClause.length() > 0) {
+                    orderbyClause.append(",");
+                }
+                orderbyClause.append(Where.ALIAS + "." + key + " " + orderBy.get(key).getText());
+            }
+            hql.append(orderbyClause);
+        }
+
+        log.debug("DEBUG：HQL：" + hql.toString());
+        Query<E> query = session.createQuery(hql.toString(), entityClass);
+
+        if (null != param && !param.isEmpty()) {
+            Set<String> paramKeySet = param.keySet();
+            Object paramValue;
+            for (String key : paramKeySet) {
+                paramValue = param.get(key);
+                if (paramValue instanceof List) {
+                    query.setParameterList(key, (List<?>) paramValue);
+                } else if (paramValue instanceof Object[]) {
+                    query.setParameterList(key, (Object[]) paramValue);
+                } else {
+                    query.setParameter(key, paramValue);
+                }
+            }
+        }
+
+        return query;
+    }
+
+    /**
+     * 创建分页查询Query对象
+     * 
+     * @param pagination 分页对象
+     * @param entityClass 实体类Class
+     * @param session 当前session
+     * @param where 查询条件对象
+     * @return
+     */
+    public static <E extends IBasisIdEntity<E>> Query<E> createQuery(Pagination<E> pagination, Class<E> entityClass,
+            Session session, Where where) {
         log.debug("DEBUG：HQL列表查询器构建");
         StringBuilder hql = new StringBuilder();
         hql.append("from " + entityClass.getSimpleName() + " " + Where.ALIAS + " ");
@@ -120,7 +198,7 @@ public class QueryUtils {
             }
             query.setMaxResults(pagination.getRows());
         }
-        
+
         return query;
     }
 
@@ -163,7 +241,8 @@ public class QueryUtils {
             sb.append(Where.ALIAS + "." + propertyName + " " + operator.getText() + " ");
         } else if (operatorEnum instanceof OneValueComparisonOperator) {
             OneValueComparisonOperator operator = (OneValueComparisonOperator) operatorEnum;
-            if (operator.equals(OneValueComparisonOperator.MEMBER_OF) || operator.equals(OneValueComparisonOperator.NOT_MEMBER_OF)) {
+            if (operator.equals(OneValueComparisonOperator.MEMBER_OF)
+                    || operator.equals(OneValueComparisonOperator.NOT_MEMBER_OF)) {
                 sb.append(":" + paramKey + " " + operator.getText() + " " + Where.ALIAS + "." + propertyName + " ");
                 param.put(paramKey, value);
             } else {

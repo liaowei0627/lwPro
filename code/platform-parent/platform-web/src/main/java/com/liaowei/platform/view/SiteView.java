@@ -4,6 +4,7 @@
  */
 package com.liaowei.platform.view;
 
+import com.liaowei.framework.core.view.IView;
 import com.liaowei.platform.model.SiteModel;
 
 import lombok.AllArgsConstructor;
@@ -16,11 +17,13 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-26 09:17:39
+ * @see com.liaowei.framework.core.view.IView
  * @since jdk1.8
  */
+@SuppressWarnings("serial")
 @AllArgsConstructor
 @ToString
-public class SiteView {
+public class SiteView implements IView {
 
     private SiteModel m;
 

@@ -1,5 +1,5 @@
 /**
- * mvc-framework
+ * framework-mvc
  * BaseController.java
  */
 package com.liaowei.framework.controller;
@@ -26,6 +26,7 @@ import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.query.Where;
 import com.liaowei.framework.query.exception.WhereClauseException;
 import com.liaowei.framework.query.operator.OneValueComparisonOperator;
+import com.liaowei.framework.util.SeedUtils;
 import com.liaowei.framework.vo.BaseIdVo;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,17 +34,19 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * BaseController
  *
- * spring mvc controller基类 处理异常，公共方法
+ * spring mvc controller基类<br>
+ * 处理异常，公共方法
  *
  * @author liaowei
  * @date 创建时间：2018年4月3日 下午10:42:34
- * @see com.liaowei.framework.core.controller.BasisController<M, V, E>
+ * @see com.liaowei.framework.core.controller.BasisController<E, V, M>
  * @since jdk1.8
  */
 @Slf4j
 public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>, M extends BaseIdModel<E, V, M>>
         extends BasisController<E, V, M> {
 
+    private static final String PWD_SEED = "pwdSeed";
     private static final String USER_SESSION_KEY = "USER_SESSION_KEY";
     protected static final String OPT_COPY = "copy";
 
@@ -193,6 +196,34 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
     }
 
     /**
+     * session中添加当前登录用户信息
+     * 
+     * @param sessionUser
+     */
+    protected String setPwdSeed() {
+        String seed = SeedUtils.getRandomString(6);
+        request.getSession().setAttribute(PWD_SEED, seed);
+        return seed;
+    }
+
+    /**
+     * session中获取当前登录用户信息
+     * 
+     * @return
+     */
+    protected String getPwdSeed() {
+        String pwdSeed = String.valueOf(request.getSession().getAttribute(PWD_SEED));
+        return pwdSeed;
+    }
+
+    /**
+     * session中删除当前登录用户信息
+     */
+    protected void removePwdSeed() {
+        request.getSession().removeAttribute(PWD_SEED);
+    }
+
+    /**
      * 添加session属性
      * 
      * @param key
@@ -210,6 +241,15 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      */
     protected Object getSessionAttr(String key) {
         return request.getSession().getAttribute(key);
+    }
+
+    /**
+     * 删除session属性
+     * 
+     * @param key
+     */
+    protected void removeSessionAttr(String key) {
+        request.getSession().removeAttribute(key);
     }
 
     /**

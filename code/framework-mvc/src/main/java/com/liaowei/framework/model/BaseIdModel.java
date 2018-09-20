@@ -1,6 +1,6 @@
 /**
- * mvc-framework
- * BaseModel.java
+ * framework-mvc
+ * BaseIdModel.java
  */
 package com.liaowei.framework.model;
 
@@ -15,13 +15,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * BaseModel
+ * BaseIdModel
  *
  * Spring MVC 控制层向前端页面传递ID数据用封装类的基类
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:36:26
- * @see com.liaowei.framework.core.model.IBasisModel<V, E>
+ * @see com.liaowei.framework.core.model.IBasisIdModel<E, V, M>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
@@ -29,7 +29,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public abstract class BaseIdModel<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>, M extends BaseIdModel<E, V, M>> implements IBasisIdModel<E, V, M> {
+public abstract class BaseIdModel<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>, M extends BaseIdModel<E, V, M>>
+        implements IBasisIdModel<E, V, M> {
 
     /**
      * 主键

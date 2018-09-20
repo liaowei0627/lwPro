@@ -29,7 +29,6 @@ import com.liaowei.framework.view.TreeView;
 import com.liaowei.platform.entity.SysMenu;
 import com.liaowei.platform.model.MenuModel;
 import com.liaowei.platform.service.ILoginService;
-import com.liaowei.platform.util.SeedUtils;
 import com.liaowei.platform.vo.MenuVo;
 import com.liaowei.platform.vo.UserVo;
 
@@ -42,6 +41,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author liaowei
  * @date 创建时间：2018年4月6日 下午10:18:45
+ * @see com.liaowei.framework.controller.BaseController
  * @since jdk1.8
  */
 @SuppressWarnings("rawtypes")
@@ -85,8 +85,7 @@ public class IndexController extends BaseController {
     @RequestMapping(path = {"/seed"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<String> seed() {
-        String seed = SeedUtils.getRandomString(6);
-        setSessionAttr("pwdSeed", seed);
+        String seed = setPwdSeed();
         return new ResponseData<String>(1, "seed生成成功", seed);
     }
 
@@ -120,7 +119,7 @@ public class IndexController extends BaseController {
         }
 
         // 比较密码
-        String pwdSeed = String.valueOf(getSessionAttr("pwdSeed"));
+        String pwdSeed = getPwdSeed();
         String serverCiphertext = user.getPassword();
         serverCiphertext = CryptoUtils.toMD5(serverCiphertext + pwdSeed);
         String clientCiphertext = CryptoUtils.base64Deconder(password);
@@ -128,6 +127,7 @@ public class IndexController extends BaseController {
             log.debug("用户登录：用户名=" + userName + "，密码错误");
             return new ResponseData<>(3, "密码错误！");
         }
+        removePwdSeed();
 
         // 用户信息
         String userId = user.getId();

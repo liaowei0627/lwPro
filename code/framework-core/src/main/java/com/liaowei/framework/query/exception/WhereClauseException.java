@@ -9,6 +9,7 @@ import com.liaowei.framework.core.exception.ApplicationException;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-09-01 12:05:36
+ * @see com.liaowei.framework.core.exception.ApplicationException
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

@@ -5,6 +5,7 @@
 package com.liaowei.platform.view;
 
 import com.google.common.base.Strings;
+import com.liaowei.framework.core.view.IView;
 import com.liaowei.platform.enums.MenuTypeEnum;
 import com.liaowei.platform.enums.SubSystemEnum;
 import com.liaowei.platform.model.MenuModel;
@@ -19,11 +20,13 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-26 09:17:39
+ * @see com.liaowei.framework.core.view.IView
  * @since jdk1.8
  */
+@SuppressWarnings("serial")
 @AllArgsConstructor
 @ToString
-public class MenuView {
+public class MenuView implements IView {
 
     private MenuModel m;
 

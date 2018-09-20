@@ -250,6 +250,18 @@ $(document).ready(function() {
             halign: "center",
             align: "left"
         },{
+            field: "fullCode",
+            title: "全路径编号",
+            width: 100,
+            halign: "center",
+            align: "center"
+        },{
+            field: "fullText",
+            title: "全路径文本",
+            width: 100,
+            halign: "center",
+            align: "center"
+        },{
             field: "orderNum",
             title: "排序号",
             width: 100,

@@ -18,7 +18,7 @@ import com.liaowei.platform.entity.SysUser;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-19 21:00:20
  * @see com.liaowei.platform.dao.IUserDao
- * @see com.liaowei.framework.dao.impl.DaoImpl<SysUser, String>
+ * @see com.liaowei.framework.dao.impl.DaoImpl<SysUser>
  * @since jdk1.8
  */
 @Repository("userDao")

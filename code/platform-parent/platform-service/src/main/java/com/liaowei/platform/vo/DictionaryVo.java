@@ -7,14 +7,9 @@ package com.liaowei.platform.vo;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-
 import com.liaowei.framework.vo.BaseTreeVo;
 import com.liaowei.platform.entity.SysDictionary;
-import com.liaowei.platform.enums.DictTypeEnum;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -27,44 +22,21 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-19 22:48:56
- * @see com.liaowei.framework.vo.BaseTreeVo<DictionaryVo>
+ * @see com.liaowei.framework.vo.BaseTreeVo<SysDictionary, DictionaryVo>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @ToString(callSuper = true)
 public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
 
-    /**
-     * 字典编号
-     */
-    private String dictCode;
-
-    /**
-     * 字典名称
-     */
-    private String dictName;
-
-    /**
-     * 字典类型
-     * 
-     * @see com.liaowei.platform.enums.DictTypeEnum
-     */
-    @Enumerated(value = EnumType.STRING)
-    private DictTypeEnum dictType;
-
-    public DictionaryVo(String id, String dictCode, String dictName,
-            DictTypeEnum dictType, String code, String text, String fullCode, String fullText, DictionaryVo parent,
-            List<DictionaryVo> children, Integer orderNum, Boolean hasChild, Boolean valid, String creator,
+    public DictionaryVo(String id, String code, String text, String fullCode, String fullText,
+            DictionaryVo parent, List<DictionaryVo> children, Integer orderNum, Boolean hasChild, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, hasChild, valid, creator, createTime, reviser,
                 modifyTime);
-        this.dictCode = dictCode;
-        this.dictName = dictName;
-        this.dictType = dictType;
     }
 
     @Override
@@ -87,8 +59,6 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
             parent = new DictionaryVo();
             parent.copyForEntity(pDic);
         }
-
-        dictType = temp.getDictType();
     }
 
     @Override
@@ -97,7 +67,7 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
         if (null != parent) {
             parentEntity = copyToEntity(parent);
         }
-        return new SysDictionary(id, dictType, code, text, fullCode, fullText, parentEntity, null, orderNum, valid, creator,
+        return new SysDictionary(id, code, text, fullCode, fullText, parentEntity, null, orderNum, valid, creator,
                 createTime, reviser, modifyTime);
     }
 
@@ -108,7 +78,7 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
         if (null != parent) {
             parentEntity = copyToEntity(parent);
         }
-        return new SysDictionary(v.getId(), v.getDictType(), v.getCode(), v.getText(), v.getFullCode(), v.getFullText(),
+        return new SysDictionary(v.getId(), v.getCode(), v.getText(), v.getFullCode(), v.getFullText(),
                 parentEntity, null, v.getOrderNum(), v.getValid(), v.getCreator(), v.getCreateTime(), v.getReviser(),
                 v.getModifyTime());
     }

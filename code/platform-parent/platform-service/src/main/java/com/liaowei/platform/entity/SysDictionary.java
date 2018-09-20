@@ -8,15 +8,11 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 import com.google.common.base.Strings;
 import com.liaowei.framework.entity.BaseTreeEntity;
-import com.liaowei.platform.enums.DictTypeEnum;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,27 +30,17 @@ import lombok.ToString;
  */
 @SuppressWarnings("serial")
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@ToString(callSuper = true)
+@ToString(callSuper = false)
 @Entity
 @Table(name = "SYS_DICTIONARIES")
 public class SysDictionary extends BaseTreeEntity<SysDictionary> {
 
-    /**
-     * 字典类型
-     * 
-     * @see com.liaowei.platform.enums.DictTypeEnum
-     */
-    @Enumerated(value = EnumType.STRING)
-    private DictTypeEnum dictType;
-
-    public SysDictionary(String id, DictTypeEnum dictType, String code, String text, String fullCode, String fullText,
+    public SysDictionary(String id, String code, String text, String fullCode, String fullText,
             SysDictionary parent, Set<SysDictionary> children, Integer orderNum, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
-        this.dictType = dictType;
     }
 
     @Override
@@ -70,10 +56,6 @@ public class SysDictionary extends BaseTreeEntity<SysDictionary> {
         String text = e.getText();
         if (!Strings.isNullOrEmpty(text)) {
             this.text = text;
-        }
-        DictTypeEnum dictType = e.getDictType();
-        if (null != dictType) {
-            this.dictType = dictType;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

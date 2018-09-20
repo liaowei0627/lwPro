@@ -4,6 +4,7 @@
  */
 package com.liaowei.platform.view;
 
+import com.liaowei.framework.core.view.IView;
 import com.liaowei.platform.model.SiteModel;
 
 import lombok.AccessLevel;
@@ -18,12 +19,14 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-22 00:57:23
+ * @see com.liaowei.framework.core.view.IView
  * @since jdk1.8
  */
+@SuppressWarnings("serial")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
-public class SiteListView {
+public class SiteListView implements IView {
 
     private SiteModel m;
 

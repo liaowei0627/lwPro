@@ -1,5 +1,5 @@
 /**
- * mvc-framework
+ * framework-mvc
  * BaseModel.java
  */
 package com.liaowei.framework.model;
@@ -23,7 +23,8 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:36:26
- * @see com.liaowei.framework.core.model.IBasisModel<V, E>
+ * @see com.liaowei.framework.core.model.IBasisModel<E, V, M>
+ * @see com.liaowei.framework.model.BaseIdModel<E, V, M>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
@@ -31,7 +32,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString(callSuper = true)
-public abstract class BaseModel<E extends BaseEntity<E>, V extends BaseVo<E, V>, M extends BaseModel<E, V, M>> extends BaseIdModel<E, V, M> implements IBasisModel<E, V, M> {
+public abstract class BaseModel<E extends BaseEntity<E>, V extends BaseVo<E, V>, M extends BaseModel<E, V, M>>
+        extends BaseIdModel<E, V, M> implements IBasisModel<E, V, M> {
 
     /**
      * 是否有效

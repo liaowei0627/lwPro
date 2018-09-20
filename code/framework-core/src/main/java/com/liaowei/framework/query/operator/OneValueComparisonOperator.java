@@ -12,7 +12,16 @@ import lombok.NoArgsConstructor;
 /**
  * OneValueComparisonOperator
  *
- * 一个值的运算符枚举
+ * 一个值的运算符枚举<br>
+ * <![CDATA[=]]><br>
+ * <![CDATA[>]]><br>
+ * <![CDATA[>=]]><br>
+ * <![CDATA[<]]><br>
+ * <![CDATA[<=]]><br>
+ * <![CDATA[<>]]><br>
+ * like<br>
+ * member of<br>
+ * not member of
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-09-01 22:22:38
@@ -24,27 +33,27 @@ import lombok.NoArgsConstructor;
 public enum OneValueComparisonOperator {
 
     /**
-     * =
+     * <![CDATA[=]]>
      */
     EQ("="),
     /**
-     * >
+     * <![CDATA[>]]>
      */
     GT(">"),
     /**
-     * >=
+     * <![CDATA[>=]]>
      */
     EG(">="),
     /**
-     * <
+     * <![CDATA[<]]>
      */
     LT("<"),
     /**
-     * <=
+     * <![CDATA[<=]]>
      */
     EL("<="),
     /**
-     * <>
+     * <![CDATA[<>]]>
      */
     UE("<>"),
     /**

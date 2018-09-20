@@ -1,6 +1,6 @@
 /**
- * hibernate-framework
- * BaseEntity.java
+ * framework-hibernate
+ * BaseIdEntity.java
  */
 package com.liaowei.framework.entity;
 
@@ -20,13 +20,13 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * BaseEntity
+ * BaseIdEntity
  * 
  * hibernate实体类的主键超类
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:33:14
- * @see com.liaowei.framework.core.entity.IBasisIdEntity
+ * @see com.liaowei.framework.core.entity.IBasisIdEntity<E>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

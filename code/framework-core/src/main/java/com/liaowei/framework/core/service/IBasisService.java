@@ -5,12 +5,15 @@
 package com.liaowei.framework.core.service;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import com.liaowei.framework.core.entity.IBasisIdEntity;
 import com.liaowei.framework.core.exception.ApplicationException;
 import com.liaowei.framework.core.vo.IBasisIdVo;
 import com.liaowei.framework.page.Pagination;
 import com.liaowei.framework.query.Where;
+import com.liaowei.framework.query.order.OrderEnum;
 
 /**
  * IBasisService
@@ -31,6 +34,16 @@ public interface IBasisService<E extends IBasisIdEntity<E>, V extends IBasisIdVo
      * @throws ApplicationException
      */
     V findVo(PK id) throws ApplicationException;
+
+    /**
+     * 查询数据列表
+     * 
+     * @param where hql查询条件对象
+     * @param orderBy 排序字段
+     * @return
+     * @throws ApplicationException
+     */
+    List<V> findList(Where where, Map<String, OrderEnum> orderBy) throws ApplicationException;
 
     /**
      * 查询数据分页列表

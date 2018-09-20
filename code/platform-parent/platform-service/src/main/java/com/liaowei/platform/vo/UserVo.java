@@ -27,7 +27,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-09 22:35:43
- * @see com.liaowei.framework.service.vo.BaseVo
+ * @see com.liaowei.framework.vo.BaseVo<SysUser, UserVo>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

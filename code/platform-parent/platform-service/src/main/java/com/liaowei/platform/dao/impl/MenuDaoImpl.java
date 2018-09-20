@@ -18,7 +18,7 @@ import com.liaowei.platform.entity.SysMenu;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 23:42:25
  * @see com.liaowei.platform.dao.IMenuDao
- * @see com.liaowei.framework.dao.impl.DaoImpl<SysMenu, String>
+ * @see com.liaowei.framework.dao.impl.DaoImpl<SysMenu>
  * @since jdk1.8
  */
 @Repository("menuDao")

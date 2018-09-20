@@ -18,7 +18,7 @@ import com.liaowei.platform.entity.SysDictionary;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-19 21:08:09
  * @see com.liaowei.platform.dao.IDictionaryDao
- * @see com.liaowei.framework.dao.impl.DaoImpl<SysDictionary, String>
+ * @see com.liaowei.framework.dao.impl.DaoImpl<SysDictionary>
  * @since jdk1.8
  */
 @Repository("dictionaryDao")

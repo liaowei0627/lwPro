@@ -1,5 +1,5 @@
 /**
- * platform-web
+ * framework-mvc
  * TreeView.java
  */
 package com.liaowei.framework.view;
@@ -7,6 +7,7 @@ package com.liaowei.framework.view;
 import java.util.List;
 
 import com.google.common.collect.Lists;
+import com.liaowei.framework.core.view.IView;
 import com.liaowei.framework.entity.BaseTreeEntity;
 import com.liaowei.framework.model.BaseTreeModel;
 import com.liaowei.framework.vo.BaseTreeVo;
@@ -23,12 +24,15 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-26 21:05:48
+ * @see com.liaowei.framework.core.view.IView
  * @since jdk1.8
  */
+@SuppressWarnings("serial")
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
-public class TreeView<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>> {
+public class TreeView<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>, M extends BaseTreeModel<E, V, M>>
+        implements IView {
 
     private M m;
 

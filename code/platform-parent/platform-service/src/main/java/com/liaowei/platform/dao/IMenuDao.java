@@ -14,7 +14,7 @@ import com.liaowei.platform.entity.SysMenu;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 23:41:12
- * @see com.liaowei.framework.dao.IDao<SysMenu, String>
+ * @see com.liaowei.framework.dao.IDao<SysMenu>
  * @since jdk1.8
  */
 public interface IMenuDao extends IDao<SysMenu> {

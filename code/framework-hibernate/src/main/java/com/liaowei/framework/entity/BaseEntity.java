@@ -1,5 +1,5 @@
 /**
- * hibernate-framework
+ * framework-hibernate
  * BaseEntity.java
  */
 package com.liaowei.framework.entity;
@@ -24,8 +24,8 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:33:14
- * @see com.liaowei.framework.core.entity.IBasisEntity
- * @see com.liaowei.framework.entity.BaseIdEntity
+ * @see com.liaowei.framework.core.entity.IBasisEntity<E>
+ * @see com.liaowei.framework.entity.BaseIdEntity<E>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

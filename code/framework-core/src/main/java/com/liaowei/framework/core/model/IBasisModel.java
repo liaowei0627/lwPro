@@ -16,7 +16,7 @@ import com.liaowei.framework.core.vo.IBasisVo;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:25:25
- * @see java.io.Serializable
+ * @see com.liaowei.framework.core.model.IBasisIdModel<E, V, M>
  * @since jdk1.8
  */
 public interface IBasisModel<E extends IBasisEntity<E>, V extends IBasisVo<E, V>, M extends IBasisModel<E, V, M>>

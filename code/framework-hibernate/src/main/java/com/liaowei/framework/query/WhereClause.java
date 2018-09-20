@@ -1,5 +1,5 @@
 /**
- * framework-core
+ * framework-hibernate
  * WhereClause.java
  */
 package com.liaowei.framework.query;
