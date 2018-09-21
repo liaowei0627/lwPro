@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.flyhaze</groupId>
+        <artifactId>flyhaze-parent</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <groupId>com.flyhaze.framework</groupId>
+    <artifactId>flyhaze-framework</artifactId>
+    <packaging>pom</packaging>
+    <name>flyhaze-framework</name>
+    <description>飞岚系统项目框架</description>
+
+    <modules>
+        <module>framework-core</module>
+        <module>framework-hibernate</module>
+        <module>framework-service</module>
+        <module>framework-mvc</module>
+    </modules>
+</project>
