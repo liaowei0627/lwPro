@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<div data-options="region:'center',fit:true">
+    <form id="siteForm" method="post" style="width: 350px;">
+        <input type="hidden" name="id" />
+        <table align="center">
+            <tr>
+                <th align="right">站点编号：</th>
+                <td align="left">
+                    <input class="easyui-textbox" name="siteCode" data-options="required:true,validType:['length[1,20]','illeChar'],validateOnCreate:false,validateOnBlur:true" style="width: 200px;" />
+                </td>
+            </tr>
+            <tr>
+                <th align="right">站点名称：</th>
+                <td align="left">
+                    <input class="easyui-textbox" name="siteName" data-options="required:true,validType:['length[1,20]','illeChar'],validateOnCreate:false,validateOnBlur:true" style="width: 200px;" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="./html/system/site/site_detail.js"></script>
