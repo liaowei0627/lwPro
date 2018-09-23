@@ -155,7 +155,6 @@ public class IndexController extends BaseController {
     @RequestMapping(path = {"/logout"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<String> logout() {
-        log.debug("用户登出");
         removeCurUser();
         return new ResponseData<String>(1, "登出成功");
     }
