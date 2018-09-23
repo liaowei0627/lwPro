@@ -15,8 +15,6 @@ import com.flyhaze.platform.entity.SysUser;
 import com.flyhaze.platform.service.IUserService;
 import com.flyhaze.platform.vo.UserVo;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * UseServiceImpl
  *
@@ -29,7 +27,6 @@ import lombok.extern.slf4j.Slf4j;
  * @since jdk1.8
  */
 @Service("userService")
-@Slf4j
 public class UseServiceImpl extends ServiceImpl<SysUser, UserVo> implements IUserService {
 
     @Resource(name = "userDao")
@@ -42,7 +39,6 @@ public class UseServiceImpl extends ServiceImpl<SysUser, UserVo> implements IUse
 
     @Override
     protected UserVo entityToVo(SysUser e) {
-        log.debug("DEBUG：Entity转换Vo：" + e);
 
         UserVo v = new UserVo();
         v.copyForEntity(e);

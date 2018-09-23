@@ -36,7 +36,7 @@ public class LoginTest extends TestService {
     public void findUserByUserName() {
         try {
             UserVo user = loginService.findUserByUserName("admin");
-            log.debug(user.toString());
+            log.info(user.toString());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -46,7 +46,7 @@ public class LoginTest extends TestService {
     public void findSysMenusByUserId() {
         try {
             List<MenuVo> list = loginService.findSysMenusByUserId("E8B470073D4F41A2AA0B1B79DBAE598E", null, true);
-            log.debug(JSONUtils.objectToJSONString(list));
+            log.info(JSONUtils.objectToJSONString(list));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

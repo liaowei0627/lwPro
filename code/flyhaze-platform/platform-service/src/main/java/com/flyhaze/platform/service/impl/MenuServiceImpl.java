@@ -14,8 +14,6 @@ import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.service.IMenuService;
 import com.flyhaze.platform.vo.MenuVo;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * MenuServiceImpl
  *
@@ -28,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
  * @since jdk1.8
  */
 @Service("menuService")
-@Slf4j
 public class MenuServiceImpl extends ServiceImpl<SysMenu, MenuVo> implements IMenuService {
 
     @Resource(name = "menuDao")
@@ -41,7 +38,6 @@ public class MenuServiceImpl extends ServiceImpl<SysMenu, MenuVo> implements IMe
 
     @Override
     protected MenuVo entityToVo(SysMenu e) {
-        log.debug("DEBUG：Entity转换Vo：" + e);
 
         MenuVo v = new MenuVo();
         v.copyForEntity(e);

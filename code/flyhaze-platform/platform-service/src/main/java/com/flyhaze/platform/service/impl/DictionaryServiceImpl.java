@@ -14,8 +14,6 @@ import com.flyhaze.platform.entity.SysDictionary;
 import com.flyhaze.platform.service.IDictionaryService;
 import com.flyhaze.platform.vo.DictionaryVo;
 
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * DictionaryServiceImpl
  *
@@ -28,7 +26,6 @@ import lombok.extern.slf4j.Slf4j;
  * @since jdk1.8
  */
 @Service("dictionaryService")
-@Slf4j
 public class DictionaryServiceImpl extends ServiceImpl<SysDictionary, DictionaryVo> implements IDictionaryService {
 
     @Resource(name = "dictionaryDao")
@@ -41,7 +38,6 @@ public class DictionaryServiceImpl extends ServiceImpl<SysDictionary, Dictionary
 
     @Override
     protected DictionaryVo entityToVo(SysDictionary e) {
-        log.debug("DEBUG：Entity转换Vo：" + e);
 
         DictionaryVo v = new DictionaryVo();
         v.copyForEntity(e);

@@ -69,6 +69,6 @@
     <logger name="com.flyhaze" level="DEBUG" />
     <logger name="org.springframework" level="ERROR" />
     <logger name="org.hibernate" level="ERROR" />
-    <logger name="org.hibernate.engine.spi.QueryParameters" level="TRACE" />
-    <logger name="org.hibernate.engine.query.spi.HQLQueryPlan" level="TRACE" />
+    <!-- <logger name="org.hibernate.engine.spi.QueryParameters" level="TRACE" />
+    <logger name="org.hibernate.engine.query.spi.HQLQueryPlan" level="TRACE" /> -->
 </configuration>

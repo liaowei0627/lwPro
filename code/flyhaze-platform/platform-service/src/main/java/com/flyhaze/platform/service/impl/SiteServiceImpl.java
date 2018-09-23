@@ -19,9 +19,6 @@ import com.flyhaze.platform.dao.ISiteDao;
 import com.flyhaze.platform.entity.SysSite;
 import com.flyhaze.platform.service.ISiteService;
 import com.flyhaze.platform.vo.SiteVo;
-import com.google.common.base.Joiner;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * SiteServiceImpl
@@ -35,7 +32,6 @@ import lombok.extern.slf4j.Slf4j;
  * @since jdk1.8
  */
 @Service("siteService")
-@Slf4j
 public class SiteServiceImpl extends ServiceImpl<SysSite, SiteVo> implements ISiteService {
 
     @Resource(name = "siteDao")
@@ -48,7 +44,6 @@ public class SiteServiceImpl extends ServiceImpl<SysSite, SiteVo> implements ISi
 
     @Override
     protected SiteVo entityToVo(SysSite e) {
-        log.debug("DEBUG：Entity转换Vo：" + e);
 
         SiteVo v = new SiteVo();
         v.copyForEntity(e);
@@ -58,7 +53,6 @@ public class SiteServiceImpl extends ServiceImpl<SysSite, SiteVo> implements ISi
 
     @Override
     public SiteVo addVo(SiteVo v) throws ApplicationException {
-        log.debug("DEBUG：新增站点：" + v);
 
         Where where = Where.rootWhere("siteCode", OneValueComparisonOperator.EQ, v.getSiteCode());
         Pagination<SysSite> p = siteDao.findList(null, where);
@@ -71,7 +65,6 @@ public class SiteServiceImpl extends ServiceImpl<SysSite, SiteVo> implements ISi
 
     @Override
     public SiteVo updateVo(SiteVo v) throws ApplicationException {
-        log.debug("DEBUG：修改站点：" + v);
 
         Where where = Where.rootWhere("siteCode", OneValueComparisonOperator.EQ, v.getSiteCode());
         where.andWhere("id", OneValueComparisonOperator.UE, v.getId());
@@ -85,7 +78,6 @@ public class SiteServiceImpl extends ServiceImpl<SysSite, SiteVo> implements ISi
 
     @Override
     public void delList(String[] id) throws ApplicationException {
-        log.debug("DEBUG：根据主键值批量删除数据对象, 主键：" + Joiner.on(",").join(id));
 
         if (siteDao.canDel(id)) {
             super.delList(id);

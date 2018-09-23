@@ -15,7 +15,7 @@
 
     <!-- 定义受环境影响易变的变量 -->
     <context:property-placeholder ignore-unresolvable="true" local-override="true" location="classpath*:application-db.properties" />
-    <context:component-scan base-package="com.flyhaze.**.dao">
+    <context:component-scan base-package="com.flyhaze.**.dao.impl">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Repository" />
     </context:component-scan>
 

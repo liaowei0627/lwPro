@@ -36,14 +36,14 @@ public class UserTest {
     @Test
     public void testTimezone() {
         ZoneId defaultZone = ZoneId.systemDefault();
-        log.debug(defaultZone.getId());
+        log.info(defaultZone.getId());
     }
 
     @Test
     public void testFind() {
         try {
             UserVo vo = userService.findVo("CE77BDD4409B42F4AE0F8D54E68E6FB5");
-            log.debug(vo.toString());
+            log.info(vo.toString());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -59,7 +59,7 @@ public class UserTest {
             vo.setCreator("admin");
             vo.setReviser("admin");
             vo = userService.addVo(vo);
-            log.debug(vo.toString());
+            log.info(vo.toString());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -69,11 +69,11 @@ public class UserTest {
     public void testUpdate() {
         try {
             UserVo vo = userService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
-            log.debug(vo.toString());
+            log.info(vo.toString());
             vo.setPassword(CryptoUtils.toMD5("test789"));
             userService.updateVo(vo);
             vo = userService.findVo("9E3BAC7DDF5141E592621E50F68618C9");
-            log.debug(vo.toString());
+            log.info(vo.toString());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -88,7 +88,7 @@ public class UserTest {
             page.setPageable(false);
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
             Pagination<UserVo> pagination = userService.findList(page, where);
-            log.debug(pagination.toString());
+            log.info(pagination.toString());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -102,7 +102,7 @@ public class UserTest {
             Pagination<UserVo> page = new Pagination<UserVo>(5, 2, orderBy);
             Where where = Where.rootWhere("valid", OneValueComparisonOperator.EQ, Boolean.TRUE);
             Pagination<UserVo> pagination = userService.findList(page, where);
-            log.debug(pagination.toString());
+            log.info(pagination.toString());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
@@ -127,7 +127,7 @@ public class UserTest {
     public void testLogin() {
         try {
             UserVo user = loginService.findByUserName("admin");
-            log.debug(user.toString());
+            log.info(user.toString());
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

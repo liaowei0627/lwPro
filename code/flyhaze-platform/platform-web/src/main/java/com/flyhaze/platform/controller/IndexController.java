@@ -106,7 +106,6 @@ public class IndexController extends BaseController {
     public ResponseData<SessionUser> doLogin(@RequestParam(name = "userName", required = true) String userName,
             @RequestParam(name = "password", required = true) String password)
             throws ApplicationException, NoSuchAlgorithmException, UnsupportedEncodingException {
-        log.debug("用户登录：用户名=" + userName);
 
         // 查询用户对象
         UserVo user = loginService.findUserByUserName(userName);
