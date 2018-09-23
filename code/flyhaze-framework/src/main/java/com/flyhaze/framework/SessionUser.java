@@ -33,6 +33,8 @@ import lombok.Setter;
 @Setter
 public class SessionUser<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>> implements Serializable {
 
+    public static final String USER_SESSION_KEY = "USER_SESSION_KEY";
+
     private String id;
     private String userName;
     private String siteCode;

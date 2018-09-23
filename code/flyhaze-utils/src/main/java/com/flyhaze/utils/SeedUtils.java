@@ -15,6 +15,8 @@ package com.flyhaze.utils;
  */
 public class SeedUtils {
 
+    public static final String PWD_SEED = "pwdSeed";
+
     private SeedUtils() {
     }
 

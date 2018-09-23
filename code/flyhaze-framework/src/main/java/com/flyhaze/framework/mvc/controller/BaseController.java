@@ -44,8 +44,6 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>> extends BasisController<E, V> {
 
-    private static final String PWD_SEED = "pwdSeed";
-    private static final String USER_SESSION_KEY = "USER_SESSION_KEY";
     protected static final String OPT_COPY = "copy";
 
     @Resource
@@ -127,15 +125,27 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
             if (!excKeyList.contains(key)) {
                 value = request.getParameter(key);
                 if (!Strings.isNullOrEmpty(value)) {
-                    if (null == where) {
-                        if (key.endsWith("_l")) {
+                    if (key.endsWith("_l")) {
+                        if (null == where) {
                             where = Where.rootWhere(key.replace("_l", ""), OneValueComparisonOperator.LIKE, value);
                         } else {
-                            where = Where.rootWhere(key, OneValueComparisonOperator.EQ, value);
+                            where.childAndWhere(key.replace("_l", ""), OneValueComparisonOperator.LIKE, value);
+                        }
+                    } else if (key.endsWith("_s")) {
+                        if (null == where) {
+                            where = Where.rootWhere(key.replace("_s", ""), OneValueComparisonOperator.GE, value);
+                        } else {
+                            where.childAndWhere(key.replace("_s", ""), OneValueComparisonOperator.GE, value);
+                        }
+                    } else if (key.endsWith("_e")) {
+                        if (null == where) {
+                            where = Where.rootWhere(key.replace("_e", ""), OneValueComparisonOperator.LE, value);
+                        } else {
+                            where.childAndWhere(key.replace("_e", ""), OneValueComparisonOperator.LE, value);
                         }
                     } else {
-                        if (key.endsWith("_l")) {
-                            where.childAndWhere(key.replace("_l", ""), OneValueComparisonOperator.LIKE, value);
+                        if (null == where) {
+                            where = Where.rootWhere(key, OneValueComparisonOperator.EQ, value);
                         } else {
                             where.childAndWhere(key, OneValueComparisonOperator.EQ, value);
                         }
@@ -172,7 +182,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      * @param sessionUser
      */
     protected void setCurUser(@SuppressWarnings("rawtypes") SessionUser sessionUser) {
-        request.getSession().setAttribute(USER_SESSION_KEY, sessionUser);
+        request.getSession().setAttribute(SessionUser.USER_SESSION_KEY, sessionUser);
     }
 
     /**
@@ -182,7 +192,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      */
     @SuppressWarnings("rawtypes")
     protected SessionUser getCurUser() {
-        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute(USER_SESSION_KEY);
+        SessionUser sessionUser = (SessionUser) request.getSession().getAttribute(SessionUser.USER_SESSION_KEY);
         return sessionUser;
     }
 
@@ -190,7 +200,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      * session中删除当前登录用户信息
      */
     protected void removeCurUser() {
-        request.getSession().removeAttribute(USER_SESSION_KEY);
+        request.getSession().removeAttribute(SessionUser.USER_SESSION_KEY);
     }
 
     /**
@@ -200,7 +210,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      */
     protected String setPwdSeed() {
         String seed = SeedUtils.getRandomString(6);
-        request.getSession().setAttribute(PWD_SEED, seed);
+        request.getSession().setAttribute(SeedUtils.PWD_SEED, seed);
         return seed;
     }
 
@@ -210,7 +220,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      * @return
      */
     protected String getPwdSeed() {
-        String pwdSeed = String.valueOf(request.getSession().getAttribute(PWD_SEED));
+        String pwdSeed = String.valueOf(request.getSession().getAttribute(SeedUtils.PWD_SEED));
         return pwdSeed;
     }
 
@@ -218,7 +228,7 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
      * session中删除当前登录用户信息
      */
     protected void removePwdSeed() {
-        request.getSession().removeAttribute(PWD_SEED);
+        request.getSession().removeAttribute(SeedUtils.PWD_SEED);
     }
 
     /**

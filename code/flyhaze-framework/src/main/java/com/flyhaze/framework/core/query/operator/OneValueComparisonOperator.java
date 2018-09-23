@@ -33,27 +33,27 @@ import lombok.NoArgsConstructor;
 public enum OneValueComparisonOperator {
 
     /**
-     * <![CDATA[=]]>
+     * 等于
      */
     EQ("="),
     /**
-     * <![CDATA[>]]>
+     * 大于
      */
     GT(">"),
     /**
-     * <![CDATA[>=]]>
+     * 大于等于
      */
-    EG(">="),
+    GE(">="),
     /**
-     * <![CDATA[<]]>
+     * 小于
      */
     LT("<"),
     /**
-     * <![CDATA[<=]]>
+     * 小于等于
      */
-    EL("<="),
+    LE("<="),
     /**
-     * <![CDATA[<>]]>
+     * 不等于
      */
     UE("<>"),
     /**
