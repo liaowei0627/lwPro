@@ -4,6 +4,7 @@
  */
 package com.flyhaze.platform.service;
 
+import com.flyhaze.framework.core.exception.ApplicationException;
 import com.flyhaze.framework.service.IService;
 import com.flyhaze.platform.entity.SysUser;
 import com.flyhaze.platform.vo.UserVo;
@@ -19,4 +20,13 @@ import com.flyhaze.platform.vo.UserVo;
  * @since jdk1.8
  */
 public interface IUserService extends IService<SysUser, UserVo> {
+
+    /**
+     * 根据用户名取得用户信息
+     * 
+     * @param userName
+     * @return
+     * @throws ApplicationException
+     */
+    UserVo findUserByUserName(String userName) throws ApplicationException;
 }

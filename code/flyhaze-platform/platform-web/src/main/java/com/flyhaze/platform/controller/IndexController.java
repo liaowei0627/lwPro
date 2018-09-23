@@ -18,16 +18,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.flyhaze.framework.SessionUser;
 import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.framework.exception.LoginException;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
 import com.flyhaze.framework.mvc.view.TreeView;
 import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.service.ILoginService;
 import com.flyhaze.platform.vo.MenuVo;
-import com.flyhaze.platform.vo.UserVo;
-import com.flyhaze.utils.CryptoUtils;
-import com.google.common.base.Objects;
-import com.google.common.collect.Lists;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -105,41 +102,23 @@ public class IndexController extends BaseController {
     @ResponseBody
     public ResponseData<SessionUser> doLogin(@RequestParam(name = "userName", required = true) String userName,
             @RequestParam(name = "password", required = true) String password)
-            throws ApplicationException, NoSuchAlgorithmException, UnsupportedEncodingException {
-
-        // 查询用户对象
-        UserVo user = loginService.findUserByUserName(userName);
-        if (null == user) {
-            log.debug("用户登录：用户名=" + userName + "，用户不存在");
-            return new ResponseData<>(2, "用户不存在！");
-        }
+            throws ApplicationException {
 
         // 比较密码
         String pwdSeed = getPwdSeed();
-        String serverCiphertext = user.getPassword();
-        serverCiphertext = CryptoUtils.toMD5(serverCiphertext + pwdSeed);
-        String clientCiphertext = CryptoUtils.base64Deconder(password);
-        if (!Objects.equal(serverCiphertext, clientCiphertext)) {
-            log.debug("用户登录：用户名=" + userName + "，密码错误");
-            return new ResponseData<>(3, "密码错误！");
-        }
         removePwdSeed();
 
-        // 用户信息
-        String userId = user.getId();
-        String siteCode = user.getSiteCode();
-        SessionUser<SysMenu, MenuVo> sessionUser = new SessionUser<SysMenu, MenuVo>();
-        sessionUser.setId(userId);
-        sessionUser.setUserName(user.getUserName());
-        sessionUser.setSiteCode(siteCode);
-
-        List<MenuVo> menus = loginService.findSysMenusByUserId(userId, siteCode, true);
-        if (null != menus && !menus.isEmpty()) {
-            List<TreeView<SysMenu, MenuVo>> list = Lists.<TreeView<SysMenu, MenuVo>>newArrayList();
-            for (MenuVo vo : menus) {
-                list.add(new TreeView<SysMenu, MenuVo>(vo));
+        // 用户登录对象
+        SessionUser<SysMenu, MenuVo> sessionUser;
+        try {
+            sessionUser = loginService.login(userName, password, pwdSeed);
+            if (null == sessionUser) {
+                return new ResponseData<>(2, "用户不存在！");
             }
-            sessionUser.setMenuList(list);
+        } catch (LoginException e) {
+            String msg = e.getMessage();
+            log.error(msg, e);
+            return new ResponseData<>(3, msg);
         }
 
         setCurUser(sessionUser);

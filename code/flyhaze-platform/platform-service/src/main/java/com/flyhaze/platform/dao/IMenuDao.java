@@ -4,6 +4,9 @@
  */
 package com.flyhaze.platform.dao;
 
+import java.util.List;
+
+import com.flyhaze.framework.core.exception.ApplicationException;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.platform.entity.SysMenu;
 
@@ -18,4 +21,15 @@ import com.flyhaze.platform.entity.SysMenu;
  * @since jdk1.8
  */
 public interface IMenuDao extends IDao<SysMenu> {
+
+    /**
+     * 根据用户id取得所授权的菜单树
+     * 
+     * @param userId 用户id
+     * @param siteCode 站点编号
+     * @param isAdmin 是否系统管理员
+     * @return
+     * @throws ApplicationException
+     */
+    List<SysMenu> findSysMenusByUserId(String userId, String siteCode, boolean isAdmin);
 }

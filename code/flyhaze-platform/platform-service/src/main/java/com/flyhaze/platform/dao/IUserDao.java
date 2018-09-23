@@ -18,4 +18,13 @@ import com.flyhaze.platform.entity.SysUser;
  * @since jdk1.8
  */
 public interface IUserDao extends IDao<SysUser> {
+
+    /**
+     * 根据用户名取得用户信息
+     * 
+     * @param userName
+     * @return
+     * @throws ApplicationException
+     */
+    SysUser findByUserName(String userName);
 }

@@ -4,22 +4,29 @@
  */
 package com.flyhaze.platform.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Set;
 
 import javax.annotation.Resource;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import com.flyhaze.framework.SessionUser;
 import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.platform.dao.ILoginDao;
+import com.flyhaze.framework.exception.LoginException;
+import com.flyhaze.framework.mvc.view.TreeView;
 import com.flyhaze.platform.entity.SysMenu;
-import com.flyhaze.platform.entity.SysUser;
 import com.flyhaze.platform.service.ILoginService;
+import com.flyhaze.platform.service.IMenuService;
+import com.flyhaze.platform.service.IUserService;
 import com.flyhaze.platform.vo.MenuVo;
 import com.flyhaze.platform.vo.UserVo;
+import com.flyhaze.utils.CryptoUtils;
+import com.google.common.base.Objects;
 import com.google.common.collect.Lists;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * LoginServiceImpl
@@ -32,60 +39,55 @@ import com.google.common.collect.Lists;
  * @since jdk1.8
  */
 @Service("loginService")
+@Slf4j
 public class LoginServiceImpl implements ILoginService {
 
-    @Resource(name = "loginDao")
-    private ILoginDao loginDao;
+    @Resource(name = "userService")
+    private IUserService userService;
+    @Resource(name = "menuService")
+    private IMenuService menuService;
 
     @Override
-    public UserVo findUserByUserName(String userName) throws ApplicationException {
-        SysUser sysUser = loginDao.findByUserName(userName);
-        UserVo userVo = null;
-        if (null != sysUser) {
-            userVo = new UserVo();
-            BeanUtils.copyProperties(sysUser, userVo);
+    public SessionUser<SysMenu, MenuVo> login(String userName, String password, String pwdSeed) throws ApplicationException {
+
+        // 查询用户对象
+        UserVo user = userService.findUserByUserName(userName);
+        if (null == user) {
+            log.info("用户登录：用户名=" + userName + "，用户不存在");
+            return null;
         }
-        return userVo;
-    }
 
-    @Override
-    public List<MenuVo> findSysMenusByUserId(String userId, String siteCode, boolean isAdmin) throws ApplicationException {
-        List<MenuVo> list = null;
+        // 比较密码
+        String serverCiphertext = user.getPassword();
+        try {
+            serverCiphertext = CryptoUtils.toMD5(serverCiphertext + pwdSeed);
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            log.error(e.getMessage(), e);
+            throw new ApplicationException(e);
+        }
+        String clientCiphertext = CryptoUtils.base64Deconder(password);
+        if (!Objects.equal(serverCiphertext, clientCiphertext)) {
+            log.info("用户登录：用户名=" + userName + "，" + LoginException.PASSWORD_WRONG);
+            throw new LoginException(LoginException.PASSWORD_WRONG);
+        }
 
-        List<SysMenu> menuList = loginDao.findSysMenusByUserId(userId, siteCode, isAdmin);
-        if (null != menuList && !menuList.isEmpty()) {
-            list = Lists.<MenuVo>newArrayList();
-            MenuVo vo;
-            Set<SysMenu> children;
-            for (SysMenu menu : menuList) {
-                vo = new MenuVo();
-                vo.copyForEntity(menu);
-                if (menu.getHasChild()) {
-                    children = menu.getChildren();
-                    vo.setChildren(menuChilrenEntityToVo(children));
-                }
-                list.add(vo);
+        // 用户信息
+        String userId = user.getId();
+        String siteCode = user.getSiteCode();
+        SessionUser<SysMenu, MenuVo> sessionUser = new SessionUser<SysMenu, MenuVo>();
+        sessionUser.setId(userId);
+        sessionUser.setUserName(user.getUserName());
+        sessionUser.setSiteCode(siteCode);
+
+        List<MenuVo> menus = menuService.findSysMenusByUserId(userId, siteCode, true);
+        if (null != menus && !menus.isEmpty()) {
+            List<TreeView<SysMenu, MenuVo>> list = Lists.<TreeView<SysMenu, MenuVo>>newArrayList();
+            for (MenuVo vo : menus) {
+                list.add(new TreeView<SysMenu, MenuVo>(vo));
             }
+            sessionUser.setMenuList(list);
         }
 
-        return list;
-    }
-
-    private List<MenuVo> menuChilrenEntityToVo(Set<SysMenu> children) {
-        List<MenuVo> list = Lists.<MenuVo>newArrayList();
-
-        MenuVo childVo;
-        Set<SysMenu> c;
-        for (SysMenu child : children) {
-            childVo = new MenuVo();
-            childVo.copyForEntity(child);
-            if (child.getHasChild()) {
-                c = child.getChildren();
-                childVo.setChildren(menuChilrenEntityToVo(c));
-            }
-            list.add(childVo);
-        }
-
-        return list;
+        return sessionUser;
     }
 }

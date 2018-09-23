@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.flyhaze.framework.core.exception.ApplicationException;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.framework.service.impl.ServiceImpl;
 import com.flyhaze.platform.dao.IUserDao;
@@ -39,10 +40,19 @@ public class UseServiceImpl extends ServiceImpl<SysUser, UserVo> implements IUse
 
     @Override
     protected UserVo entityToVo(SysUser e) {
-
         UserVo v = new UserVo();
         v.copyForEntity(e);
-
         return v;
+    }
+
+    @Override
+    public UserVo findUserByUserName(String userName) throws ApplicationException {
+        SysUser sysUser = userDao.findByUserName(userName);
+        UserVo userVo = null;
+        if (null != sysUser) {
+            userVo = new UserVo();
+            userVo.copyForEntity(sysUser);
+        }
+        return userVo;
     }
 }

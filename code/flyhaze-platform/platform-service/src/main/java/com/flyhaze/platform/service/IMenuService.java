@@ -4,6 +4,9 @@
  */
 package com.flyhaze.platform.service;
 
+import java.util.List;
+
+import com.flyhaze.framework.core.exception.ApplicationException;
 import com.flyhaze.framework.service.IService;
 import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.vo.MenuVo;
@@ -19,4 +22,15 @@ import com.flyhaze.platform.vo.MenuVo;
  * @since jdk1.8
  */
 public interface IMenuService extends IService<SysMenu, MenuVo> {
+
+    /**
+     * 根据用户id取得所授权的菜单树
+     * 
+     * @param userId 用户id
+     * @param siteCode 站点编号
+     * @param isAdmin 是否系统管理员
+     * @return
+     * @throws ApplicationException
+     */
+    List<MenuVo> findSysMenusByUserId(String userId, String siteCode, boolean isAdmin) throws ApplicationException;
 }

@@ -4,11 +4,10 @@
  */
 package com.flyhaze.platform.service;
 
-import java.util.List;
-
+import com.flyhaze.framework.SessionUser;
 import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.vo.MenuVo;
-import com.flyhaze.platform.vo.UserVo;
 
 /**
  * ILoginService
@@ -22,22 +21,12 @@ import com.flyhaze.platform.vo.UserVo;
 public interface ILoginService {
 
     /**
-     * 根据用户名取得用户信息
+     * 取得用户登录信息
      * 
      * @param userName
+     * @param pwdSeed 
      * @return
      * @throws ApplicationException
      */
-    UserVo findUserByUserName(String userName) throws ApplicationException;
-
-    /**
-     * 根据用户id取得所授权的菜单树
-     * 
-     * @param userId 用户id
-     * @param siteCode 站点编号
-     * @param isAdmin 是否系统管理员
-     * @return
-     * @throws ApplicationException
-     */
-    List<MenuVo> findSysMenusByUserId(String userId, String siteCode, boolean isAdmin) throws ApplicationException;
+    SessionUser<SysMenu, MenuVo> login(String userName, String password, String pwdSeed) throws ApplicationException;
 }
