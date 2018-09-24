@@ -38,17 +38,24 @@ public class DictionaryListView implements IView {
     }
 
     /**
-     * 编号
+     * 字典编号
      */
     public String getCode() {
         return v.getCode();
     }
 
     /**
-     * 文本
+     * 字典文本
      */
     public String getText() {
         return v.getText();
+    }
+
+    /**
+     * 备注
+     */
+    public String getRemark() {
+        return v.getRemark();
     }
 
     /**

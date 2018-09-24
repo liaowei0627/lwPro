@@ -48,11 +48,17 @@ public class SysSite extends BaseEntity<SysSite> {
      */
     private String siteName;
 
-    public SysSite(String id, String siteCode, String siteName, Boolean valid, String creator, LocalDateTime createTime, String reviser,
-            LocalDateTime modifyTime) {
+    /**
+     * 备注
+     */
+    private String remark;
+
+    public SysSite(String id, String siteCode, String siteName, String remark, Boolean valid, String creator,
+            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.siteCode = siteCode;
         this.siteName = siteName;
+        this.remark = remark;
     }
 
     @Override
@@ -68,6 +74,10 @@ public class SysSite extends BaseEntity<SysSite> {
         String siteName = e.getSiteName();
         if (!Strings.isNullOrEmpty(siteName)) {
             this.siteName = siteName;
+        }
+        String remark = e.getRemark();
+        if (!Strings.isNullOrEmpty(remark)) {
+            this.remark = remark;
         }
         Boolean valid = e.getValid();
         if (null != valid) {

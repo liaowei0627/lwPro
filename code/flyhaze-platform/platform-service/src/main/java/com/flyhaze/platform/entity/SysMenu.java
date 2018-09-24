@@ -49,6 +49,11 @@ import lombok.ToString;
 public class SysMenu extends BaseTreeEntity<SysMenu> {
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 菜单地址
      */
     private String menuUrl;
@@ -78,19 +83,22 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
     @JoinColumn(name = "sysMenuId")
     private Set<SysAuthMenu> sysAuthMenus = Sets.<SysAuthMenu>newHashSet();
 
-    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, SubSystemEnum subSystem, String code, String text,
-            String fullCode, String fullText, SysMenu parent, Set<SysMenu> children, Integer orderNum, Boolean valid,
+    public SysMenu(String id, String remark, String menuUrl, MenuTypeEnum menuType, SubSystemEnum subSystem, String code,
+            String text, String fullCode, String fullText, SysMenu parent, Set<SysMenu> children, Integer orderNum, Boolean valid,
             String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
+        this.remark = remark;
         this.menuUrl = menuUrl;
         this.menuType = menuType;
         this.subSystem = subSystem;
     }
 
-    public SysMenu(String id, String menuUrl, MenuTypeEnum menuType, SubSystemEnum subSystem, Set<SysAuthMenu> sysAuthMenus,
-            String code, String text, String fullCode, String fullText, SysMenu parent, Set<SysMenu> children, Integer orderNum,
-            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public SysMenu(String id, String remark, String menuUrl, MenuTypeEnum menuType, SubSystemEnum subSystem,
+            Set<SysAuthMenu> sysAuthMenus, String code, String text, String fullCode, String fullText, SysMenu parent,
+            Set<SysMenu> children, Integer orderNum, Boolean valid, String creator, LocalDateTime createTime, String reviser,
+            LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
+        this.remark = remark;
         this.menuUrl = menuUrl;
         this.menuType = menuType;
         this.subSystem = subSystem;
@@ -102,6 +110,10 @@ public class SysMenu extends BaseTreeEntity<SysMenu> {
         String id = e.getId();
         if (!Strings.isNullOrEmpty(id)) {
             this.id = id;
+        }
+        String remark = e.getRemark();
+        if (!Strings.isNullOrEmpty(remark)) {
+            this.remark = remark;
         }
         String menuUrl = e.getMenuUrl();
         if (!Strings.isNullOrEmpty(menuUrl)) {

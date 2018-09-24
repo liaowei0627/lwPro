@@ -8,7 +8,6 @@ import com.flyhaze.framework.core.vo.IBasisIdVo;
 import com.flyhaze.framework.hibernate.entity.BaseIdEntity;
 
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,12 +25,18 @@ import lombok.ToString;
  */
 @SuppressWarnings("serial")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Setter
 @ToString
 public abstract class BaseIdVo<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>> implements IBasisIdVo<E, V> {
 
+    // 消息
+    protected String msg;
+
     // 主键
     protected String id;
+
+    public BaseIdVo(String id) {
+        this.id = id;
+    }
 }

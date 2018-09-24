@@ -52,6 +52,13 @@ public class MenuListView implements IView {
     }
 
     /**
+     * 备注
+     */
+    public String getRemark() {
+        return v.getRemark();
+    }
+
+    /**
      * 菜单地址
      */
     public String getMenuUrl() {

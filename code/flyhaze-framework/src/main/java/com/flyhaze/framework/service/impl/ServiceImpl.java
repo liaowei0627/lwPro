@@ -8,10 +8,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.flyhaze.framework.core.constants.I18nKeyConstants;
 import com.flyhaze.framework.core.exception.ApplicationException;
 import com.flyhaze.framework.core.page.Pagination;
 import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.exception.DuplicationCodeException;
 import com.flyhaze.framework.core.query.operator.CollectionValueComparisonOperator;
 import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
 import com.flyhaze.framework.core.query.order.OrderBy;
@@ -47,40 +47,58 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
 
     @Override
     public V findVo(String id) throws ApplicationException {
-
         E entity = getDao().findEntity(id);
         V vo = null;
         if (null != entity) {
             vo = entityToVo(entity);
         }
-
         return vo;
     }
 
     @Override
     public V addVo(V v) throws ApplicationException {
-
-        E entity = v.copyToEntity();
-        if (v instanceof BaseTreeVo) {
-            refreshFullCode(entity);
+        V vo;
+        if (validSave(v)) {
+            E entity = v.copyToEntity();
+            if (v instanceof BaseTreeVo) {
+                boolean hasDupFullCode = refreshFullCode(entity);
+                if (!hasDupFullCode) {
+                    vo = entityToVo(null);
+                    vo.setMsg(msg);
+                    return vo;
+                }
+            }
+            E e = getDao().addEntity(entity);
+            vo = entityToVo(e);
+        } else {
+            vo = entityToVo(null);
+            vo.setMsg(msg);
         }
-
-        E e = getDao().addEntity(entity);
-        return entityToVo(e);
+        return vo;
     }
 
     @Override
     public V updateVo(V v) throws ApplicationException {
-
-        E entityPojo = v.copyToEntity();
-        E entity = getDao().findEntity(v.getId());
-        entity.setEntity(entityPojo);
-        if (entity instanceof BaseTreeEntity) {
-            refreshTree(entityPojo, entity);
+        V vo;
+        if (validSave(v)) {
+            E entityPojo = v.copyToEntity();
+            E entity = getDao().findEntity(v.getId());
+            entity.setEntity(entityPojo);
+            if (entity instanceof BaseTreeEntity) {
+                boolean hasDupFullCode = refreshTree(entityPojo, entity);
+                if (!hasDupFullCode) {
+                    vo = entityToVo(null);
+                    vo.setMsg(msg);
+                    return vo;
+                }
+            }
+            E e = getDao().updateEntity(entity);
+            vo = entityToVo(e);
+        } else {
+            vo = entityToVo(null);
+            vo.setMsg(msg);
         }
-        E e = getDao().updateEntity(entity);
-
-        return entityToVo(e);
+        return vo;
     }
 
     @Override
@@ -115,23 +133,25 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
     }
 
     @Override
-    public void delList(String[] id) throws ApplicationException {
+    public void delList(String[] ids) throws ApplicationException {
 
-        Where where = Where.rootWhere("id", CollectionValueComparisonOperator.IN, id);
-        List<E> entityList = getDao().findList(where, null);
+        if (validDel(ids)) {
+            Where where = Where.rootWhere("id", CollectionValueComparisonOperator.IN, ids);
+            List<E> entityList = getDao().findList(where, null);
 
-        if (!entityList.isEmpty()) {
-            @SuppressWarnings("unchecked")
-            Class<E> cls = (Class<E>) entityList.get(0).getClass();
-            if (BaseTreeEntity.class.isAssignableFrom(cls)) {
-                for (E e : entityList) {
-                    @SuppressWarnings("rawtypes")
-                    BaseTreeEntity tree = (BaseTreeEntity) e;
-                    delChildren(tree.getFullCode(), cls);
+            if (!entityList.isEmpty()) {
+                @SuppressWarnings("unchecked")
+                Class<E> cls = (Class<E>) entityList.get(0).getClass();
+                if (BaseTreeEntity.class.isAssignableFrom(cls)) {
+                    for (E e : entityList) {
+                        @SuppressWarnings("rawtypes")
+                        BaseTreeEntity tree = (BaseTreeEntity) e;
+                        delChildren(tree.getFullCode(), cls);
+                    }
                 }
-            }
 
-            getDao().delList(id);
+                getDao().delList(ids);
+            }
         }
     }
 
@@ -158,7 +178,7 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
      * @throws ApplicationException
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void refreshTree(E entityPojo, E entity) throws ApplicationException {
+    private boolean refreshTree(E entityPojo, E entity) throws ApplicationException {
 
         BaseTreeEntity treeEntityPojo = (BaseTreeEntity) entityPojo;
         BaseTreeEntity parentPojo = treeEntityPojo.getParent();
@@ -169,13 +189,17 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
         String oldFullCode = treeEntity.getFullCode();
         String oldFullText = treeEntity.getFullText();
 
-        refreshFullCode(entity);
+        boolean hasDupFullCode = refreshFullCode(entity);
+        if (!hasDupFullCode) {
+            return false;
+        }
         String newFullCode = treeEntity.getFullCode();
         String newFullText = treeEntity.getFullText();
 
         if (!oldFullCode.equals(newFullCode) && null != children && !children.isEmpty()) {
             refreshChildren(oldFullCode, oldFullText, newFullCode, newFullText, (Class<E>) entity.getClass());
         }
+        return true;
     }
 
     /**
@@ -185,7 +209,7 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
      * @throws ApplicationException
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    private void refreshFullCode(E entity) throws ApplicationException {
+    private boolean refreshFullCode(E entity) throws ApplicationException {
 
         BaseTreeEntity tree = (BaseTreeEntity) entity;
         String newCode = tree.getCode();
@@ -215,11 +239,14 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
         }
         Long cnt = getDao().findCount(where);
         if (cnt.intValue() > 0) {
-            throw new DuplicationCodeException("全路径编号重复");
+            msg = I18nKeyConstants.KEY_SAVE_FULLCODE;
+            return false;
         }
 
         tree.setFullCode(newFullCode);
         tree.setFullText(newFullText);
+
+        return true;
     }
 
     /**

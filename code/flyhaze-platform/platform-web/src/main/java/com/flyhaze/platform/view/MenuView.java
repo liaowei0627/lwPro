@@ -49,14 +49,14 @@ public class MenuView implements IView {
     }
 
     /**
-     * 编号
+     * 菜单编号
      */
     public String getCode() {
         return v.getCode();
     }
 
     /**
-     * 编号
+     * 菜单编号
      */
     public void setCode(String code) {
         v.setCode(code);
@@ -74,6 +74,20 @@ public class MenuView implements IView {
      */
     public void setText(String text) {
         v.setText(text);
+    }
+
+    /**
+     * 备注
+     */
+    public String getRemark() {
+        return v.getRemark();
+    }
+
+    /**
+     * 备注
+     */
+    public void setRemark(String remark) {
+        v.setRemark(remark);
     }
 
     /**

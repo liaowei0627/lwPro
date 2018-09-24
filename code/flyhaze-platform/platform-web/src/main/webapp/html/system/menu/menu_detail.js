@@ -5,14 +5,46 @@ $(document).ready(function() {
     "use strict";
 
     var id = engine.getDialogParam("id");
-    var curParent = engine.getDialogParam("parent");
     var opt = engine.getDialogParam("opt");
 
     // 编辑表单
-    var menuForm = $("#menuForm");
+    var menuForm = $("#menuForm").form({
+        onBeforeLoad: function(param) {
+            param["id"] = id;
+            if (opt) {
+                param["opt"] = opt;
+            };
+            param["_"] = new Date().getTime();
+        },
+        onLoadSuccess: function(data) {
+            if (data) {
+                if (1 == data.stat) {
+                    engine.messager("消息", data.msg);
+                    var view = data.data;
+                    menuForm.find(":hidden[name=id]").val(view.id);
+                    menuForm.find("input#code").textbox("setValue", view.code);
+                    menuForm.find("input#text").textbox("setValue", view.text);
+                    menuTypeCombo.combobox("setValue", view.menuType);
+                    subSystemCombo.combobox("setValue", view.subSystem);
+                    var parent = view.parent;
+                    if (parent) {
+                        parentIdComboTree.combotree("setValue", {id: parent.id, text: parent.text});
+                    } else {
+                        parentIdComboTree.combotree("setValue", {id: "", text: "上级字典"});
+                    };
+                    menuForm.find("input#orderNum").numberbox("setValue", view.orderNum);
+                    menuForm.find("input#remark").textbox("setValue", view.remark);
+                } else if (0 == data.stat){
+                    engine.alert("操作失败", data.msg, "error");
+                } else {
+                    engine.messager("警告", data.msg);
+                };
+            };
+        }
+    });
 
     // 菜单编辑表单中的菜单类型下拉框
-    var menuTypeCombo = menuForm.find("input[name=menuType]");
+    var menuTypeCombo = menuForm.find("select[name=menuType]");
     menuTypeCombo.combobox({
         required: true,
         validateOnCreate:false,
@@ -31,8 +63,8 @@ $(document).ready(function() {
     });
 
     // 菜单编辑表单中的分系统下拉框
-    var menuTypeCombo = menuForm.find("input[name=subSystem]");
-    menuTypeCombo.combobox({
+    var subSystemCombo = menuForm.find("select[name=subSystem]");
+    subSystemCombo.combobox({
         required: true,
         validateOnCreate:false,
         validateOnBlur:true,
@@ -50,7 +82,7 @@ $(document).ready(function() {
     });
 
     // 菜单编辑表单中的上级菜单下拉树
-    var parentIdComboTree = menuForm.find("input[name=parentId]");
+    var parentIdComboTree = menuForm.find("select[name=parentId]");
     parentIdComboTree.combotree({
         required: true,
         editable: false,
@@ -72,19 +104,10 @@ $(document).ready(function() {
                     return [{id: "", text: "上级菜单", state: "open", checked: true, children: result.data}];
                 };
             };
-        },
-        onLoadSuccess: function(node, data) {
-            if (id && id.length == 32 && curParent) {
-                parentIdComboTree.combotree("setValue", {id: curParent.id, text: curParent.text});
-            } else {
-                parentIdComboTree.combotree("setValue", {id: "", text: "上级菜单"});
-            };
         }
     });
 
-    if (id && id.length == 32 && opt) {
-        menuForm.form("load", "./system/menu/load?id=" + id + "&opt=" + opt);
-    } else if (id && id.length == 32) {
-        menuForm.form("load", "./system/menu/load?id=" + id);
+    if (id && id.length == 32) {
+        menuForm.form("load", "./system/menu/load");
     };
 });

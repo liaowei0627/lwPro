@@ -1,6 +1,6 @@
 /**
  * platform-service
- * SiteServiceImpl.java
+ * AuthorityServiceImpl.java
  */
 package com.flyhaze.platform.service.impl;
 
@@ -14,51 +14,49 @@ import com.flyhaze.framework.core.query.Where;
 import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.framework.service.impl.ServiceImpl;
-import com.flyhaze.platform.dao.ISiteDao;
-import com.flyhaze.platform.entity.SysSite;
-import com.flyhaze.platform.service.ISiteService;
-import com.flyhaze.platform.vo.SiteVo;
+import com.flyhaze.platform.dao.IAuthorityDao;
+import com.flyhaze.platform.entity.SysAuthority;
+import com.flyhaze.platform.service.IAuthorityService;
+import com.flyhaze.platform.vo.AuthorityVo;
 import com.google.common.base.Strings;
 
 /**
- * SiteServiceImpl
+ * AuthorityServiceImpl
  *
- * 站点管理服务实现
+ * 权限管理服务实现
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
- * @date 2018-09-14 23:26:08
- * @see com.flyhaze.platform.service.ISiteService
- * @see com.flyhaze.framework.service.impl.ServiceImpl<SysSite, SiteVo>
+ * @date 2018-09-24 02:35:45
+ * @see com.flyhaze.platform.service.IAuthorityService
+ * @see com.flyhaze.framework.service.impl.ServiceImpl<SysAuthority, AuthorityVo>
  * @since jdk1.8
  */
-@Service("siteService")
-public class SiteServiceImpl extends ServiceImpl<SysSite, SiteVo> implements ISiteService {
+@Service("authorityService")
+public class AuthorityServiceImpl extends ServiceImpl<SysAuthority, AuthorityVo> implements IAuthorityService {
 
-    @Resource(name = "siteDao")
-    private ISiteDao siteDao;
+    @Resource(name = "authorityDao")
+    private IAuthorityDao authorityDao;
 
     @Override
-    protected IDao<SysSite> getDao() {
-        return siteDao;
+    protected IDao<SysAuthority> getDao() {
+        return authorityDao;
     }
 
     @Override
-    protected SiteVo entityToVo(SysSite e) {
-        SiteVo v = new SiteVo();
-        if (null != e) {
-            v.copyForEntity(e);
-        }
+    protected AuthorityVo entityToVo(SysAuthority e) {
+        AuthorityVo v = new AuthorityVo();
+        v.copyForEntity(e);
         return v;
     }
 
     @Override
-    protected boolean validSave(SiteVo vo) throws ApplicationException {
+    protected boolean validSave(AuthorityVo vo) throws ApplicationException {
         boolean rs = true;
-        Where where = Where.rootWhere("siteCode", OneValueComparisonOperator.EQ, vo.getSiteCode());
+        Where where = Where.rootWhere("authCode", OneValueComparisonOperator.EQ, vo.getAuthCode());
         if (!Strings.isNullOrEmpty(vo.getId())) {
             where.andWhere("id", OneValueComparisonOperator.UE, vo.getId());
         }
-        Long count = siteDao.findCount(where);
+        Long count = authorityDao.findCount(where);
         if (0 < count.intValue()) {
             msg = I18nKeyConstants.KEY_SAVE_CODE;
             rs = false;

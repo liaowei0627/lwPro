@@ -74,6 +74,7 @@
             <tx:method name="get*" propagation="REQUIRED" read-only="true" />
             <tx:method name="find*" propagation="REQUIRED" read-only="true" />
             <tx:method name="load*" propagation="REQUIRED" read-only="true" />
+            <tx:method name="valid*" propagation="REQUIRED" read-only="true" />
             <tx:method name="*" read-only="true" />
         </tx:attributes>
     </tx:advice>

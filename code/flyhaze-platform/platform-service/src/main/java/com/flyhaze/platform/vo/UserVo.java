@@ -48,13 +48,17 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
     private String password;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 分系统
      * 
      * @see com.flyhaze.platform.enums.SubSystemEnum
      */
     @Enumerated(value = EnumType.STRING)
     private SubSystemEnum subSystem;
-
 
     /**
      * 站点编号
@@ -92,25 +96,24 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
      */
     private Set<MenuVo> menus;
 
-    public UserVo(String id, String userName, String password, SubSystemEnum subSystem, String siteCode, Boolean builtIn, Boolean valid,
-            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public UserVo(String id, String userName, String password, String remark, SubSystemEnum subSystem, String siteCode,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
+        this.remark = remark;
         this.subSystem = subSystem;
         this.siteCode = siteCode;
-        this.builtIn = builtIn;
     }
 
-    public UserVo(String id, String userName, String password, SubSystemEnum subSystem, String siteCode, Boolean builtIn, List<RoleVo> roles,
-            List<AuthorityVo> authorities, List<AuthDataTypeVo> authDataTypes, Set<MenuVo> menus, Boolean valid, String creator,
-            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public UserVo(String id, String userName, String password, String remark, SubSystemEnum subSystem, String siteCode,
+            List<RoleVo> roles, List<AuthorityVo> authorities, List<AuthDataTypeVo> authDataTypes, Set<MenuVo> menus,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
         this.subSystem = subSystem;
         this.siteCode = siteCode;
-        this.builtIn = builtIn;
         this.roles = roles;
         this.authorities = authorities;
         this.authDataTypes = authDataTypes;
@@ -128,6 +131,7 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
 
         userName = temp.getUserName();
         password = temp.getPassword();
+        remark = temp.getRemark();
         subSystem = temp.getSubSystem();
         siteCode = temp.getSiteCode();
         builtIn = temp.getBuiltIn();
@@ -135,7 +139,7 @@ public class UserVo extends BaseVo<SysUser, UserVo> {
 
     @Override
     public SysUser copyToEntity() {
-        return new SysUser(id, userName, password, subSystem, siteCode, builtIn, valid, creator, createTime, reviser, modifyTime);
+        return new SysUser(id, userName, password, remark, subSystem, siteCode, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

@@ -1,6 +1,6 @@
 /**
  * platform-web
- * MenuView.java
+ * SiteView.java
  */
 package com.flyhaze.platform.view;
 
@@ -11,9 +11,9 @@ import lombok.AllArgsConstructor;
 import lombok.ToString;
 
 /**
- * MenuView
+ * SiteView
  *
- * 菜单表单View
+ * 站点表单View
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-26 09:17:39
@@ -53,7 +53,7 @@ public class SiteView implements IView {
     }
 
     /**
-     * 编号
+     * 站点编号
      */
     public void setSiteCode(String siteCode) {
         v.setSiteCode(siteCode);
@@ -67,10 +67,24 @@ public class SiteView implements IView {
     }
 
     /**
-     * 菜单文本
+     * 站点名称
      */
     public void setSiteName(String siteName) {
         v.setSiteName(siteName);
+    }
+
+    /**
+     * 备注
+     */
+    public String getRemark() {
+        return v.getRemark();
+    }
+
+    /**
+     * 备注
+     */
+    public void setRemark(String remark) {
+        v.setRemark(remark);
     }
 
     public SiteVo toVo() {

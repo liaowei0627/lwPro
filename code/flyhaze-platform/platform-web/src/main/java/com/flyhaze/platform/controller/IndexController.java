@@ -4,10 +4,6 @@
  */
 package com.flyhaze.platform.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
-
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
@@ -17,14 +13,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.flyhaze.framework.SessionUser;
+import com.flyhaze.framework.core.constants.I18nKeyConstants;
 import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.exception.LoginException;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
-import com.flyhaze.framework.mvc.view.TreeView;
 import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.service.ILoginService;
 import com.flyhaze.platform.vo.MenuVo;
+import com.google.common.base.Strings;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -65,9 +61,9 @@ public class IndexController extends BaseController {
         @SuppressWarnings("unchecked")
         SessionUser<SysMenu, MenuVo> sessionUser = getCurUser();
         if (null != sessionUser) {
-            return new ResponseData<SessionUser>(1, "已登录！", sessionUser);
+            return new ResponseData<SessionUser>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGINED), sessionUser);
         } else {
-            return new ResponseData<>(0, "未登录！");
+            return new ResponseData<>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_UNLOGIN));
         }
     }
 
@@ -80,50 +76,57 @@ public class IndexController extends BaseController {
     @ResponseBody
     public ResponseData<String> seed() {
         String seed = setPwdSeed();
-        return new ResponseData<String>(1, "seed生成成功", seed);
+        return new ResponseData<String>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_SEED), seed);
     }
 
     /**
-     * 登录 客户端密码的加密方式： 明文MD5编码转16进制字符串 String pwdCiphertext = CryptoUtils.toMD5(pwd);
-     * 加上seed再MD5编码转16进制字符串 pwdCiphertext = CryptoUtils.toMD5(pwdCiphertext + seed);
-     * MD5字符串BASE64编码转16进制字符串 pwdCiphertext =
-     * CryptoUtils.base64Encoder(pwdCiphertext); 服务端密码验证方式： 用户数据中的密码同上MD5编码两次
+     * 登录<br>
+     * 
+     * 客户端密码的加密方式： 明文MD5编码转16进制字符串<br>
+     * String pwdCiphertext = CryptoUtils.toMD5(pwd);<br>
+     * 加上seed再MD5编码转16进制字符串<br>
+     * pwdCiphertext = CryptoUtils.toMD5(pwdCiphertext + seed);<br>
+     * MD5字符串BASE64编码转16进制字符串<br>
+     * pwdCiphertext = CryptoUtils.base64Encoder(pwdCiphertext);<br>
+     * 服务端密码验证方式： 用户数据中的密码同上MD5编码两次<br>
      * 表单中的密码字段，BASE64解码后与之比较 一致就是密码正确
      * 
      * @param userName
      * @param password
      * @param request
      * @return
-     * @throws ApplicationException
-     * @throws UnsupportedEncodingException
-     * @throws NoSuchAlgorithmException
      */
     @RequestMapping(path = {"/login"}, method = RequestMethod.POST)
     @ResponseBody
     public ResponseData<SessionUser> doLogin(@RequestParam(name = "userName", required = true) String userName,
-            @RequestParam(name = "password", required = true) String password)
-            throws ApplicationException {
-
-        // 比较密码
-        String pwdSeed = getPwdSeed();
-        removePwdSeed();
-
-        // 用户登录对象
-        SessionUser<SysMenu, MenuVo> sessionUser;
+            @RequestParam(name = "password", required = true) String password) {
+        ResponseData<SessionUser> responseData;
         try {
-            sessionUser = loginService.login(userName, password, pwdSeed);
-            if (null == sessionUser) {
-                return new ResponseData<>(2, "用户不存在！");
-            }
-        } catch (LoginException e) {
-            String msg = e.getMessage();
-            log.error(msg, e);
-            return new ResponseData<>(3, msg);
-        }
+            // 比较密码
+            String pwdSeed = getPwdSeed();
+            removePwdSeed();
 
-        setCurUser(sessionUser);
-        log.debug("用户登录：用户名=" + userName + "，登录成功");
-        return new ResponseData<SessionUser>(1, "登录成功！", sessionUser);
+            // 用户登录对象
+            SessionUser<SysMenu, MenuVo> sessionUser;
+            sessionUser = loginService.login(userName, password, pwdSeed);
+            String msg;
+            if (null == sessionUser) {
+                msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_USERNAME);
+                responseData = new ResponseData<>(2, msg);
+            } else if (Strings.isNullOrEmpty(sessionUser.getId())) {
+                msg = getMessage(I18nKeyConstants.BASENAME, sessionUser.getMsg());
+                responseData = new ResponseData<>(3, msg);
+            } else {
+                setCurUser(sessionUser);
+                msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_SUCCESS);
+                responseData = new ResponseData<>(1, msg, sessionUser);
+            }
+            log.info(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN), userName, msg);
+        } catch (ApplicationException e) {
+            log.error(e.getMessage(), e);
+            responseData = new ResponseData<>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+        }
+        return responseData;
     }
 
     /**
@@ -134,22 +137,19 @@ public class IndexController extends BaseController {
     @RequestMapping(path = {"/logout"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<String> logout() {
-        removeCurUser();
-        return new ResponseData<String>(1, "登出成功");
-    }
-
-    /**
-     * 取得菜单列表
-     * 
-     * @return
-     * @throws ApplicationException
-     */
-    @RequestMapping(path = {"/loadMenus"}, method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseData<List<TreeView<SysMenu, MenuVo>>> loadMenus() throws ApplicationException {
         @SuppressWarnings("unchecked")
         SessionUser<SysMenu, MenuVo> sessionUser = getCurUser();
-        List<TreeView<SysMenu, MenuVo>> list = sessionUser.getMenuList();
-        return new ResponseData<List<TreeView<SysMenu, MenuVo>>>(1, "登出成功", list);
+        String userName;
+        String msg;
+        if (null != sessionUser) {
+            userName = sessionUser.getUserName();
+            msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGOUT_SUCCESS);
+            removeCurUser();
+        } else {
+            msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGOUT_USERNAME);
+            userName = "";
+        }
+        log.info(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGOUT), userName, msg);
+        return new ResponseData<String>(1, msg);
     }
 }

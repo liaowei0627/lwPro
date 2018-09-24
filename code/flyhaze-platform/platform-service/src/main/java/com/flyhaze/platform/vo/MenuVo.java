@@ -40,6 +40,11 @@ import lombok.ToString;
 public class MenuVo extends BaseTreeVo<SysMenu, MenuVo> {
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 菜单地址
      */
     private String menuUrl;
@@ -58,11 +63,12 @@ public class MenuVo extends BaseTreeVo<SysMenu, MenuVo> {
     @Enumerated(value = EnumType.STRING)
     private SubSystemEnum subSystem;
 
-    public MenuVo(String id, String menuUrl, MenuTypeEnum menuType, SubSystemEnum subSystem, String code, String text, String fullCode, String fullText,
-            MenuVo parent, List<MenuVo> children, Integer orderNum, Boolean hasChild, Boolean valid, String creator,
-            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public MenuVo(String id, String remark, String menuUrl, MenuTypeEnum menuType, SubSystemEnum subSystem, String code,
+            String text, String fullCode, String fullText, MenuVo parent, List<MenuVo> children, Integer orderNum,
+            Boolean hasChild, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, hasChild, valid, creator, createTime, reviser,
                 modifyTime);
+        this.remark = remark;
         this.menuUrl = menuUrl;
         this.menuType = menuType;
         this.subSystem = subSystem;
@@ -89,6 +95,7 @@ public class MenuVo extends BaseTreeVo<SysMenu, MenuVo> {
             parent.copyForEntity(pMenu);
         }
 
+        remark = temp.getRemark();
         menuUrl = temp.getMenuUrl();
         menuType = temp.getMenuType();
         subSystem = temp.getSubSystem();
@@ -100,8 +107,8 @@ public class MenuVo extends BaseTreeVo<SysMenu, MenuVo> {
         if (null != parent) {
             parentEntity = copyToEntity(parent);
         }
-        return new SysMenu(id, menuUrl, menuType, subSystem, code, text, fullCode, fullText, parentEntity, null, orderNum, valid, creator,
-                createTime, reviser, modifyTime);
+        return new SysMenu(id, remark, menuUrl, menuType, subSystem, code, text, fullCode, fullText, parentEntity, null, orderNum,
+                valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override
@@ -111,9 +118,9 @@ public class MenuVo extends BaseTreeVo<SysMenu, MenuVo> {
         if (null != parent) {
             parentEntity = copyToEntity(parent);
         }
-        return new SysMenu(v.getId(), v.getMenuUrl(), v.getMenuType(), v.getSubSystem(), v.getCode(), v.getText(), v.getFullCode(), v.getFullText(),
-                parentEntity, null, v.getOrderNum(), v.getValid(), v.getCreator(), v.getCreateTime(), v.getReviser(),
-                v.getModifyTime());
+        return new SysMenu(v.getId(), v.getRemark(), v.getMenuUrl(), v.getMenuType(), v.getSubSystem(), v.getCode(), v.getText(),
+                v.getFullCode(), v.getFullText(), parentEntity, null, v.getOrderNum(), v.getValid(), v.getCreator(),
+                v.getCreateTime(), v.getReviser(), v.getModifyTime());
     }
 
     @Override

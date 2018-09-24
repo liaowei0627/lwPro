@@ -57,6 +57,11 @@ public class SysUser extends BaseEntity<SysUser> {
     private String password;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 分系统
      * 
      * @see com.flyhaze.platform.enums.SubSystemEnum
@@ -92,22 +97,34 @@ public class SysUser extends BaseEntity<SysUser> {
     @JoinColumn(name = "sysUserId")
     private Set<SysUserAuth> sysUserAuths = Sets.<SysUserAuth>newHashSet();
 
-    public SysUser(String id, String userName, String password, SubSystemEnum subSystem, String siteCode, Boolean builtIn,
+    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, String siteCode,
             Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
+        this.remark = remark;
+        this.subSystem = subSystem;
+        this.siteCode = siteCode;
+    }
+
+    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, String siteCode,
+            Boolean builtIn, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+        super(id, valid, creator, createTime, reviser, modifyTime);
+        this.userName = userName;
+        this.password = password;
+        this.remark = remark;
         this.subSystem = subSystem;
         this.siteCode = siteCode;
         this.builtIn = builtIn;
     }
 
-    public SysUser(String id, String userName, String password, SubSystemEnum subSystem, String siteCode, Boolean builtIn,
-            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime,
+    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, String siteCode,
+            Boolean builtIn, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime,
             Set<SysUserRole> sysUserRoles, Set<SysUserAuth> sysUserAuths) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
+        this.remark = remark;
         this.subSystem = subSystem;
         this.siteCode = siteCode;
         this.builtIn = builtIn;
@@ -128,6 +145,10 @@ public class SysUser extends BaseEntity<SysUser> {
         String password = e.getPassword();
         if (!Strings.isNullOrEmpty(password)) {
             this.password = password;
+        }
+        String remark = e.getRemark();
+        if (!Strings.isNullOrEmpty(remark)) {
+            this.remark = remark;
         }
         SubSystemEnum subSystem = e.getSubSystem();
         if (null != subSystem) {

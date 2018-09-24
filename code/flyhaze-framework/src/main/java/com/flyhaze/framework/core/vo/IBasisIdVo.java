@@ -41,4 +41,14 @@ public interface IBasisIdVo<E extends IBasisIdEntity<E>, V extends IBasisIdVo<E,
      * 主键
      */
     void setId(String id);
+
+    /**
+     * 消息
+     */
+    String getMsg();
+
+    /**
+     * 消息
+     */
+    void setMsg(String msg);
 }

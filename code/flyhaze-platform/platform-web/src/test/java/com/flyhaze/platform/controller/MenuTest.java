@@ -58,7 +58,7 @@ public class MenuTest extends TestController {
             result = response.getContentAsString();
             @SuppressWarnings("unchecked")
             Map<String, String> map = JSONUtils.JSONStringToObject(result, HashMap.class);
-            log.info("INFO：add is：" + map.get("msg"));
+            log.info("INFO：add is：{}", map.get("msg"));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }

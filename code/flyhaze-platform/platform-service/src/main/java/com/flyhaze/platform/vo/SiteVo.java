@@ -41,11 +41,17 @@ public class SiteVo extends BaseVo<SysSite, SiteVo> {
      */
     private String siteName;
 
-    public SiteVo(String id, String siteCode, String siteName, Boolean valid, String creator, LocalDateTime createTime,
-            String reviser, LocalDateTime modifyTime) {
+    /**
+     * 备注
+     */
+    private String remark;
+
+    public SiteVo(String id, String siteCode, String siteName, String remark, Boolean valid, String creator,
+            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.siteCode = siteCode;
         this.siteName = siteName;
+        this.remark = remark;
     }
 
     @Override
@@ -59,11 +65,12 @@ public class SiteVo extends BaseVo<SysSite, SiteVo> {
 
         siteCode = temp.getSiteCode();
         siteName = temp.getSiteName();
+        remark = temp.getRemark();
     }
 
     @Override
     public SysSite copyToEntity() {
-        return new SysSite(id, siteCode, siteName, valid, creator, createTime, reviser, modifyTime);
+        return new SysSite(id, siteCode, siteName, remark, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

@@ -37,10 +37,16 @@ import lombok.ToString;
 @Table(name = "SYS_DICTIONARIES")
 public class SysDictionary extends BaseTreeEntity<SysDictionary> {
 
-    public SysDictionary(String id, String code, String text, String fullCode, String fullText,
+    /**
+     * 备注
+     */
+    private String remark;
+
+    public SysDictionary(String id, String remark, String code, String text, String fullCode, String fullText,
             SysDictionary parent, Set<SysDictionary> children, Integer orderNum, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, valid, creator, createTime, reviser, modifyTime);
+        this.remark = remark;
     }
 
     @Override
@@ -48,6 +54,10 @@ public class SysDictionary extends BaseTreeEntity<SysDictionary> {
         String id = e.getId();
         if (!Strings.isNullOrEmpty(id)) {
             this.id = id;
+        }
+        String remark = e.getRemark();
+        if (!Strings.isNullOrEmpty(remark)) {
+            this.remark = remark;
         }
         String code = e.getCode();
         if (!Strings.isNullOrEmpty(code)) {

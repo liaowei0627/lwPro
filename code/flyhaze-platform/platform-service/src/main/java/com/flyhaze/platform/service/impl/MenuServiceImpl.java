@@ -88,4 +88,14 @@ public class MenuServiceImpl extends ServiceImpl<SysMenu, MenuVo> implements IMe
 
         return list;
     }
+
+    @Override
+    protected boolean validSave(MenuVo vo) throws ApplicationException {
+        return true;
+    }
+
+    @Override
+    protected boolean validDel(String[] ids) throws ApplicationException {
+        return true;
+    }
 }

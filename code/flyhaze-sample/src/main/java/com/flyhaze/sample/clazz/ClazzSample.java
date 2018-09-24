@@ -17,11 +17,11 @@ public class ClazzSample {
     @Test
     public void checkArray() {
         String[] strArray = new String[5];
-        log.info("String[] strArray = " + String.valueOf(strArray instanceof Object[]));
+        log.info("String[] strArray = {}", String.valueOf(strArray instanceof Object[]));
         Integer[] intArray = new Integer[5];
-        log.info("Integer[] intArray = " + String.valueOf(intArray instanceof Object[]));
+        log.info("Integer[] intArray = {}", String.valueOf(intArray instanceof Object[]));
         Date[] dateArray = new Date[5];
-        log.info("Date[] dateArray = " + String.valueOf(dateArray instanceof Object[]));
+        log.info("Date[] dateArray = {}", String.valueOf(dateArray instanceof Object[]));
     }
 
     @Test

@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.flyhaze.framework.core.exception.ApplicationException;
 import com.flyhaze.framework.service.impl.ServiceImpl;
 import com.flyhaze.platform.dao.IDictionaryDao;
 import com.flyhaze.platform.entity.SysDictionary;
@@ -38,10 +39,18 @@ public class DictionaryServiceImpl extends ServiceImpl<SysDictionary, Dictionary
 
     @Override
     protected DictionaryVo entityToVo(SysDictionary e) {
-
         DictionaryVo v = new DictionaryVo();
         v.copyForEntity(e);
-
         return v;
+    }
+
+    @Override
+    protected boolean validSave(DictionaryVo vo) throws ApplicationException {
+        return true;
+    }
+
+    @Override
+    protected boolean validDel(String[] ids) throws ApplicationException {
+        return true;
     }
 }

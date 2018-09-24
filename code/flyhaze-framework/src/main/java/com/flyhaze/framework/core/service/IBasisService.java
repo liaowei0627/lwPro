@@ -78,5 +78,5 @@ public interface IBasisService<E extends IBasisIdEntity<E>, V extends IBasisIdVo
      * @param pks
      * @throws ApplicationException
      */
-    void delList(PK[] id) throws ApplicationException;
+    void delList(PK[] ids) throws ApplicationException;
 }

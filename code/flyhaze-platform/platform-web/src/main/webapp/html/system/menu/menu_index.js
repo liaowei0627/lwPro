@@ -92,8 +92,8 @@ $(document).ready(function() {
             id: "menu_dialog",
             title: "编辑菜单",
             href: url,
-            width: 400,
-            height: 280,
+            width: 300,
+            height: 340,
             modal: true,
             buttons: [{
                 text: "保存",
@@ -121,13 +121,13 @@ $(document).ready(function() {
     var doEdit = function(id) {
         var parent = menuTree.tree("getSelected");
         
-        engine.setDialogParam({id: id, parent: parent});
+        engine.setDialogParam({id: id});
         showDetailDialog();
     };
 
     // 打开复制窗口
     var doCopy = function(id) {
-        engine.setDialogParam({id: id, parent: parent, opt: "copy"});
+        engine.setDialogParam({id: id, opt: "copy"});
         showDetailDialog();
     };
 

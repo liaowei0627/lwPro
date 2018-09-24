@@ -18,6 +18,7 @@
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
     </context:component-scan>
     <mvc:annotation-driven  />
+
     <!-- 请求拦截器配置 -->
     <mvc:interceptors>
         <mvc:interceptor>
@@ -28,9 +29,6 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
-    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
-        <property name="defaultLocale" value="zh_CN" />
-    </bean>
     <mvc:default-servlet-handler />
     <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager">
         <mvc:message-converters>

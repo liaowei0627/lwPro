@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.flyhaze.study.SessionUser;
+import com.flyhaze.framework.SessionUser;
 
 /**
  * EventController
@@ -48,6 +48,7 @@ public class EventController {
         ServletOutputStream out = null;
         try {
             out = response.getOutputStream();
+            @SuppressWarnings("rawtypes")
             SessionUser sessionUser = (SessionUser) request.getSession().getAttribute("sessionUser");
             if (null == sessionUser) {
                 out.println("data: " + false);

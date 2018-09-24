@@ -118,7 +118,7 @@ public class MenuDaoImpl extends DaoImpl<SysMenu> implements IMenuDao {
                 } else {
                     children = null;
                 }
-                list.add(new SysMenu(sysMenu.getId(), sysMenu.getMenuUrl(), sysMenu.getMenuType(), sysMenu.getSubSystem(),
+                list.add(new SysMenu(sysMenu.getId(), sysMenu.getRemark(), sysMenu.getMenuUrl(), sysMenu.getMenuType(), sysMenu.getSubSystem(),
                         sysMenu.getCode(), sysMenu.getText(), sysMenu.getFullCode(), sysMenu.getFullText(), null, children,
                         sysMenu.getOrderNum(), sysMenu.getValid(), sysMenu.getCreator(), sysMenu.getCreateTime(),
                         sysMenu.getReviser(), sysMenu.getModifyTime()));
@@ -151,7 +151,7 @@ public class MenuDaoImpl extends DaoImpl<SysMenu> implements IMenuDao {
                 } else {
                     children = null;
                 }
-                list.add(new SysMenu(sysMenu.getId(), sysMenu.getMenuUrl(), sysMenu.getMenuType(), sysMenu.getSubSystem(),
+                list.add(new SysMenu(sysMenu.getId(), sysMenu.getRemark(), sysMenu.getMenuUrl(), sysMenu.getMenuType(), sysMenu.getSubSystem(),
                         sysMenu.getCode(), sysMenu.getText(), sysMenu.getFullCode(), sysMenu.getFullText(), null, children,
                         sysMenu.getOrderNum(), sysMenu.getValid(), sysMenu.getCreator(), sysMenu.getCreateTime(),
                         sysMenu.getReviser(), sysMenu.getModifyTime()));

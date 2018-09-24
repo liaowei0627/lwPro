@@ -47,6 +47,20 @@ public class DictionaryView implements IView {
     }
 
     /**
+     * 备注
+     */
+    public String getRemark() {
+        return v.getRemark();
+    }
+
+    /**
+     * 备注
+     */
+    public void setRemark(String remark) {
+        v.setRemark(remark);
+    }
+
+    /**
      * 编号
      */
     public String getCode() {

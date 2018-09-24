@@ -9,12 +9,16 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.framework.core.query.Where;
+import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.framework.service.impl.ServiceImpl;
+import com.flyhaze.platform.constants.SysI18nKeyConstants;
 import com.flyhaze.platform.dao.IUserDao;
 import com.flyhaze.platform.entity.SysUser;
 import com.flyhaze.platform.service.IUserService;
 import com.flyhaze.platform.vo.UserVo;
+import com.google.common.base.Strings;
 
 /**
  * UseServiceImpl
@@ -46,7 +50,7 @@ public class UseServiceImpl extends ServiceImpl<SysUser, UserVo> implements IUse
     }
 
     @Override
-    public UserVo findUserByUserName(String userName) throws ApplicationException {
+    public UserVo findUserByUserName(String userName) {
         SysUser sysUser = userDao.findByUserName(userName);
         UserVo userVo = null;
         if (null != sysUser) {
@@ -54,5 +58,25 @@ public class UseServiceImpl extends ServiceImpl<SysUser, UserVo> implements IUse
             userVo.copyForEntity(sysUser);
         }
         return userVo;
+    }
+
+    @Override
+    protected boolean validSave(UserVo vo) throws ApplicationException {
+        boolean rs = true;
+        Where where = Where.rootWhere("userName", OneValueComparisonOperator.EQ, vo.getUserName());
+        if (!Strings.isNullOrEmpty(vo.getId())) {
+            where.andWhere("id", OneValueComparisonOperator.UE, vo.getId());
+        }
+        Long count = userDao.findCount(where);
+        if (0 < count.intValue()) {
+            msg = SysI18nKeyConstants.KEY_SAVE_USERNAME;
+            rs = false;
+        }
+        return rs;
+    }
+
+    @Override
+    protected boolean validDel(String[] ids) throws ApplicationException {
+        return true;
     }
 }

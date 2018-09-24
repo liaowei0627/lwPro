@@ -13,8 +13,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.flyhaze.framework.SessionUser;
+import com.flyhaze.framework.core.constants.I18nKeyConstants;
 import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.exception.LoginException;
 import com.flyhaze.framework.mvc.view.TreeView;
 import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.service.ILoginService;
@@ -49,13 +49,13 @@ public class LoginServiceImpl implements ILoginService {
 
     @Override
     public SessionUser<SysMenu, MenuVo> login(String userName, String password, String pwdSeed) throws ApplicationException {
-
         // 查询用户对象
         UserVo user = userService.findUserByUserName(userName);
         if (null == user) {
-            log.info("用户登录：用户名=" + userName + "，用户不存在");
             return null;
         }
+
+        SessionUser<SysMenu, MenuVo> sessionUser = new SessionUser<SysMenu, MenuVo>();
 
         // 比较密码
         String serverCiphertext = user.getPassword();
@@ -67,14 +67,13 @@ public class LoginServiceImpl implements ILoginService {
         }
         String clientCiphertext = CryptoUtils.base64Deconder(password);
         if (!Objects.equal(serverCiphertext, clientCiphertext)) {
-            log.info("用户登录：用户名=" + userName + "，" + LoginException.PASSWORD_WRONG);
-            throw new LoginException(LoginException.PASSWORD_WRONG);
+            sessionUser.setMsg(I18nKeyConstants.KEY_LOGIN_PWD);
+            return sessionUser;
         }
 
         // 用户信息
         String userId = user.getId();
         String siteCode = user.getSiteCode();
-        SessionUser<SysMenu, MenuVo> sessionUser = new SessionUser<SysMenu, MenuVo>();
         sessionUser.setId(userId);
         sessionUser.setUserName(user.getUserName());
         sessionUser.setSiteCode(siteCode);

@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.flyhaze.framework.SessionUser;
 import com.flyhaze.framework.mvc.response.ResponseData;
-import com.flyhaze.study.SessionUser;
 import com.flyhaze.study.service.ILoginService;
-import com.flyhaze.study.util.SeedUtils;
 import com.flyhaze.study.vo.UserVo;
 import com.flyhaze.utils.CryptoUtils;
+import com.flyhaze.utils.SeedUtils;
 import com.google.common.base.Objects;
 
 /**
@@ -151,7 +151,8 @@ public class IndexController {
                 return new ResponseData<>(3, "密码错误！");
             }
             
-            SessionUser sessionUser = new SessionUser(user.getId(), user.getUserName());
+            @SuppressWarnings("rawtypes")
+            SessionUser sessionUser = new SessionUser(user.getId(), user.getUserName(), "");
             request.getSession().setAttribute("sessionUser", sessionUser);
             return new ResponseData<String>(1, "登录成功！");
         } catch (Exception e) {

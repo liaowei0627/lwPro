@@ -5,14 +5,44 @@ $(document).ready(function() {
     "use strict";
 
     var id = engine.getDialogParam("id");
-    var curParent = engine.getDialogParam("parent");
     var opt = engine.getDialogParam("opt");
 
     // 编辑表单
-    var dictionaryForm = $("#dictionaryForm");
+    var dictionaryForm = $("#dictionaryForm").form({
+        onBeforeLoad: function(param) {
+            param["id"] = id;
+            if (opt) {
+                param["opt"] = opt;
+            };
+            param["_"] = new Date().getTime();
+        },
+        onLoadSuccess: function(data) {
+            if (data) {
+                if (1 == data.stat) {
+                    engine.messager("消息", data.msg);
+                    var view = data.data;
+                    dictionaryForm.find(":hidden[name=id]").val(view.id);
+                    dictionaryForm.find("input#code").textbox("setValue", view.code);
+                    dictionaryForm.find("input#text").textbox("setValue", view.text);
+                    var parent = view.parent;
+                    if (parent) {
+                        parentIdComboTree.combotree("setValue", {id: parent.id, text: parent.text});
+                    } else {
+                        parentIdComboTree.combotree("setValue", {id: "", text: "上级字典"});
+                    };
+                    dictionaryForm.find("input#orderNum").numberbox("setValue", view.orderNum);
+                    dictionaryForm.find("input#remark").textbox("setValue", view.remark);
+                } else if (0 == data.stat){
+                    engine.alert("操作失败", data.msg, "error");
+                } else {
+                    engine.messager("警告", data.msg);
+                };
+            };
+        }
+    });
 
     // 字典编辑表单中的上级字典下拉树
-    var parentIdComboTree = dictionaryForm.find("input[name=parentId]");
+    var parentIdComboTree = dictionaryForm.find("select[name=parentId]");
     parentIdComboTree.combotree({
         required: true,
         editable: false,
@@ -34,19 +64,10 @@ $(document).ready(function() {
                     return [{id: "", text: "上级字典", state: "open", checked: true, children: result.data}];
                 };
             };
-        },
-        onLoadSuccess: function(node, data) {
-            if (id && id.length == 32 && curParent) {
-                parentIdComboTree.combotree("setValue", {id: curParent.id, text: curParent.text});
-            } else {
-                parentIdComboTree.combotree("setValue", {id: "", text: "上级字典"});
-            };
         }
     });
 
-    if (id && id.length == 32 && opt) {
-        dictionaryForm.form("load", "./system/dict/load?id=" + id + "&opt=" + opt);
-    } else if (id && id.length == 32) {
-        dictionaryForm.form("load", "./system/dict/load?id=" + id);
+    if (id && id.length == 32) {
+        dictionaryForm.form("load", "./system/dict/load");
     };
 });

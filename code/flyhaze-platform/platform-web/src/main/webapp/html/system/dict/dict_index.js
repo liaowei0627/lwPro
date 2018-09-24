@@ -92,8 +92,8 @@ $(document).ready(function() {
             id: "dictionary_dialog",
             title: "编辑字典",
             href: url,
-            width: 380,
-            height: 200,
+            width: 300,
+            height: 260,
             modal: true,
             buttons: [{
                 text: "保存",
@@ -121,13 +121,13 @@ $(document).ready(function() {
     var doEdit = function(id) {
         var parent = dictionaryTree.tree("getSelected");
         
-        engine.setDialogParam({id: id, parent: parent});
+        engine.setDialogParam({id: id});
         showDetailDialog();
     };
 
     // 打开复制窗口
     var doCopy = function(id) {
-        engine.setDialogParam({id: id, parent: parent, opt: "copy"});
+        engine.setDialogParam({id: id, opt: "copy"});
         showDetailDialog();
     };
 

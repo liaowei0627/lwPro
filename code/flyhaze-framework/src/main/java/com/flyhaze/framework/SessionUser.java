@@ -39,4 +39,12 @@ public class SessionUser<E extends BaseTreeEntity<E>, V extends BaseTreeVo<E, V>
     private String userName;
     private String siteCode;
     private List<TreeView<E, V>> menuList;
+
+    private String msg;
+
+    public SessionUser(String id, String userName, String siteCode) {
+        this.id = id;
+        this.userName = userName;
+        this.siteCode = siteCode;
+    }
 }

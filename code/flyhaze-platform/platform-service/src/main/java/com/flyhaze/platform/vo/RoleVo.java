@@ -4,6 +4,7 @@
  */
 package com.flyhaze.platform.vo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EnumType;
@@ -46,6 +47,11 @@ public class RoleVo extends BaseVo<SysRole, RoleVo> {
     private String roleName;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 角色类型
      * 
      * @see com.flyhaze.platform.enums.RoleTypeEnum
@@ -63,6 +69,26 @@ public class RoleVo extends BaseVo<SysRole, RoleVo> {
      */
     private List<AuthorityVo> authorities;
 
+    public RoleVo(String id, String roleCode, String roleName, String remark, RoleTypeEnum roleType, Boolean valid,
+            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+        super(id, valid, creator, createTime, reviser, modifyTime);
+        this.roleCode = roleCode;
+        this.roleName = roleName;
+        this.remark = remark;
+        this.roleType = roleType;
+    }
+
+    public RoleVo(String id, String roleCode, String roleName, String remark, RoleTypeEnum roleType,
+            List<AuthorityVo> authorities, Boolean valid, String creator, LocalDateTime createTime, String reviser,
+            LocalDateTime modifyTime) {
+        super(id, valid, creator, createTime, reviser, modifyTime);
+        this.roleCode = roleCode;
+        this.roleName = roleName;
+        this.remark = remark;
+        this.roleType = roleType;
+        this.authorities = authorities;
+    }
+
     @Override
     public void copyForEntity(SysRole temp) {
         id = temp.getId();
@@ -74,13 +100,14 @@ public class RoleVo extends BaseVo<SysRole, RoleVo> {
 
         roleCode = temp.getRoleCode();
         roleName = temp.getRoleName();
+        remark = temp.getRemark();
         roleType = temp.getRoleType();
         builtIn = temp.getBuiltIn();
     }
 
     @Override
     public SysRole copyToEntity() {
-        return new SysRole(id, roleCode, roleName, roleType, builtIn, valid, creator, createTime, reviser, modifyTime);
+        return new SysRole(id, roleCode, roleName, remark, roleType, valid, creator, createTime, reviser, modifyTime);
     }
 
     @Override

@@ -1,6 +1,6 @@
 /**
  * platform-web
- * SiteController.java
+ * AuthorityController.java
  */
 package com.flyhaze.platform.controller.system;
 
@@ -23,33 +23,33 @@ import com.flyhaze.framework.core.query.order.OrderEnum;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
 import com.flyhaze.platform.constants.SysI18nKeyConstants;
-import com.flyhaze.platform.entity.SysSite;
-import com.flyhaze.platform.service.ISiteService;
-import com.flyhaze.platform.view.SiteListView;
-import com.flyhaze.platform.view.SiteView;
-import com.flyhaze.platform.vo.SiteVo;
+import com.flyhaze.platform.entity.SysAuthority;
+import com.flyhaze.platform.service.IAuthorityService;
+import com.flyhaze.platform.view.AuthorityListView;
+import com.flyhaze.platform.view.AuthorityView;
+import com.flyhaze.platform.vo.AuthorityVo;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * SiteController
+ * AuthorityController
  *
- * 站点管理Controller
+ * 权限管理Controller
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
- * @date 2018-09-14 23:35:53
- * @see com.flyhaze.framework.mvc.controller.BaseController<SysSite, SiteVo>
+ * @date 2018-09-24 03:32:04
+ * @see com.flyhaze.framework.mvc.controller.BaseController<SysAuthority, AuthorityVo>
  * @since jdk1.8
  */
 @Controller
-@RequestMapping(path = {"/system/site"})
+@RequestMapping(path = {"/system/auth"})
 @Slf4j
-public class SiteController extends BaseController<SysSite, SiteVo> {
+public class AuthorityController extends BaseController<SysAuthority, AuthorityVo> {
 
-    @Resource(name = "siteService")
-    private ISiteService siteService;
+    @Resource(name = "authorityService")
+    private IAuthorityService authorityService;
 
     /**
      * 取得列表
@@ -61,28 +61,28 @@ public class SiteController extends BaseController<SysSite, SiteVo> {
      */
     @RequestMapping(path = {"/list"}, method = RequestMethod.GET)
     @ResponseBody
-    public Pagination<SiteListView> list() {
-        Pagination<SiteListView> responsePagination;
+    public Pagination<AuthorityListView> list() {
+        Pagination<AuthorityListView> responsePagination;
         try {
             List<OrderBy> orderBy = Lists.<OrderBy>newArrayList();
-            orderBy.add(new OrderBy("siteCode", OrderEnum.ASC));
+            orderBy.add(new OrderBy("authCode", OrderEnum.ASC));
             Where where = null;
-            String[] keywords = new String[] {"siteName"};
+            String[] keywords = new String[] {"authName"};
             where = configWhere(where, keywords);
             Pagination<?> p = configPagination();
-            Pagination<SiteVo> pagination = siteService.findList(new Pagination<SiteVo>(p.getRows(), p.getPage(), orderBy),
-                    where);
-            List<SiteVo> data = pagination.getData();
-            List<SiteListView> list = Lists.<SiteListView>newArrayList();
-            for (SiteVo siteVo : data) {
-                list.add(new SiteListView(siteVo));
+            Pagination<AuthorityVo> pagination = authorityService
+                    .findList(new Pagination<AuthorityVo>(p.getRows(), p.getPage(), orderBy), where);
+            List<AuthorityVo> data = pagination.getData();
+            List<AuthorityListView> list = Lists.<AuthorityListView>newArrayList();
+            for (AuthorityVo authorityVo : data) {
+                list.add(new AuthorityListView(authorityVo));
             }
-            responsePagination = new Pagination<SiteListView>(pagination.getTotal(), pagination.getRows(), pagination.getPage(),
-                    list);
+            responsePagination = new Pagination<AuthorityListView>(pagination.getTotal(), pagination.getRows(),
+                    pagination.getPage(), list);
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
             responsePagination = new Pagination<>();
-            responsePagination.setData(Lists.<SiteListView>newArrayList());
+            responsePagination.setData(Lists.<AuthorityListView>newArrayList());
         }
         return responsePagination;
     }
@@ -95,23 +95,25 @@ public class SiteController extends BaseController<SysSite, SiteVo> {
      */
     @RequestMapping(path = {"/load"}, method = RequestMethod.GET)
     @ResponseBody
-    public ResponseData<SiteView> load(@RequestParam(name = "id", required = true) String id,
+    public ResponseData<AuthorityView> load(@RequestParam(name = "id", required = true) String id,
             @RequestParam(name = "opt", required = false) String opt) {
-        ResponseData<SiteView> responseData;
+        ResponseData<AuthorityView> responseData;
         try {
-            SiteVo vo = siteService.findVo(id);
+            AuthorityVo vo = authorityService.findVo(id);
             if (null != vo) {
                 if (OPT_COPY.equals(opt)) {
                     vo.setId(null);
                 }
-                SiteView view = new SiteView(vo);
-                responseData = new ResponseData<SiteView>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOAD_SUCCESS), view);
+                AuthorityView view = new AuthorityView(vo);
+                responseData = new ResponseData<AuthorityView>(1,
+                        getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOAD_SUCCESS), view);
             } else {
-                responseData = new ResponseData<SiteView>(2, getMessage(SysI18nKeyConstants.BASENAME, SysI18nKeyConstants.KEY_LOAD_SITE));
+                responseData = new ResponseData<AuthorityView>(2,
+                        getMessage(SysI18nKeyConstants.BASENAME, SysI18nKeyConstants.KEY_LOAD_AUTH));
             }
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<SiteView>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+            responseData = new ResponseData<AuthorityView>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
         return responseData;
     }
@@ -123,22 +125,23 @@ public class SiteController extends BaseController<SysSite, SiteVo> {
      */
     @RequestMapping(path = {"/save"}, method = RequestMethod.POST)
     @ResponseBody
-    public ResponseData<String> save(SiteView siteView) {
+    public ResponseData<String> save(AuthorityView authorityView) {
         ResponseData<String> responseData;
 
-        SiteVo vo = siteView.toVo();
+        AuthorityVo vo = authorityView.toVo();
         configVo(vo);
         try {
-            SiteVo siteVo;
+            AuthorityVo authVo;
             if (Strings.isNullOrEmpty(vo.getId())) {
-                siteVo = siteService.addVo(vo);
+                authVo = authorityService.addVo(vo);
             } else {
-                siteVo = siteService.updateVo(vo);
+                authVo = authorityService.updateVo(vo);
             }
-            if (Strings.isNullOrEmpty(siteVo.getMsg())) {
-                responseData = new ResponseData<String>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_SAVE_SUCCESS));
+            if (Strings.isNullOrEmpty(authVo.getMsg())) {
+                responseData = new ResponseData<String>(1,
+                        getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_SAVE_SUCCESS));
             } else {
-                responseData = new ResponseData<String>(2, getMessage(SysI18nKeyConstants.BASENAME, siteVo.getMsg()));
+                responseData = new ResponseData<String>(2, getMessage(SysI18nKeyConstants.BASENAME, authVo.getMsg()));
             }
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
@@ -159,8 +162,8 @@ public class SiteController extends BaseController<SysSite, SiteVo> {
     public ResponseData<String> del(@RequestParam(name = "ids[]", required = true) String[] id) {
         ResponseData<String> responseData;
         try {
-            siteService.delList(id);
-            responseData = new ResponseData<String>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_DEL_SUCCESS));
+            authorityService.delList(id);
+            return new ResponseData<String>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_DEL_SUCCESS));
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
             responseData = new ResponseData<String>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));

@@ -1,11 +1,11 @@
 /**
  * platform-web
- * SiteListView.java
+ * AuthorityListView.java
  */
 package com.flyhaze.platform.view;
 
 import com.flyhaze.framework.core.view.IView;
-import com.flyhaze.platform.vo.SiteVo;
+import com.flyhaze.platform.vo.AuthorityVo;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -13,9 +13,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 /**
- * SiteListView
+ * AuthorityListView
  *
- * 站点列表View
+ * 菜单列表View
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-22 00:57:23
@@ -26,9 +26,9 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @ToString
-public class SiteListView implements IView {
+public class AuthorityListView implements IView {
 
-    private SiteVo v;
+    private AuthorityVo v;
 
     /**
      * 主键
@@ -38,17 +38,17 @@ public class SiteListView implements IView {
     }
 
     /**
-     * 站点编号
+     * 权限编号
      */
-    public String getSiteCode() {
-        return v.getSiteCode();
+    public String getAuthCode() {
+        return v.getAuthCode();
     }
 
     /**
-     * 站点名称
+     * 权限名称
      */
-    public String getSiteName() {
-        return v.getSiteName();
+    public String getAuthName() {
+        return v.getAuthName();
     }
 
     /**
@@ -56,5 +56,19 @@ public class SiteListView implements IView {
      */
     public String getRemark() {
         return v.getRemark();
+    }
+
+    /**
+     * 权限类型
+     */
+    public String getAuthType() {
+        return v.getAuthType().getText();
+    }
+
+    /**
+     * 是否内置
+     */
+    public Boolean getBuiltIn() {
+        return v.getBuiltIn();
     }
 }

@@ -13,14 +13,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
+import com.flyhaze.platform.constants.SysI18nKeyConstants;
 import com.flyhaze.platform.enums.MenuTypeEnum;
 import com.flyhaze.platform.enums.SubSystemEnum;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * CategoryController
@@ -31,16 +30,17 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2018-04-23 13:20:32
  * @since jdk1.8
  */
+@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping(path = {"/category"})
-@Slf4j
-public class CategoryController {
+public class CategoryController extends BaseController {
 
     /**
      * 请求分类信息，一般用于下拉框
      * 
-     * 参数category值： 菜单分类：menu
-     * 
+     * 参数category值：<br>
+     * 菜单分类枚举：menu<br>
+     * 分系统枚举：system
      * 
      * @param category 指名请求的是哪种分类信息
      * @return
@@ -48,10 +48,6 @@ public class CategoryController {
     @RequestMapping(path = {"/map_list"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<List<Map<String, String>>> mapList(@RequestParam(name = "category", required = true) String category) {
-        if (Strings.isNullOrEmpty(category)) {
-            log.error("ERROR：参数为空");
-            return new ResponseData<>(0, "参数为空");
-        }
         List<Map<String, String>> list = Lists.newArrayList();
         Map<String, String> map;
         if ("menu".equals(category)) {
@@ -71,6 +67,7 @@ public class CategoryController {
                 list.add(map);
             }
         }
-        return new ResponseData<List<Map<String, String>>>(1, "取得菜单类型列表成功", list);
+        return new ResponseData<List<Map<String, String>>>(1,
+                getMessage(SysI18nKeyConstants.BASENAME, SysI18nKeyConstants.KEY_CATEGORY), list);
     }
 }

@@ -4,6 +4,7 @@
  */
 package com.flyhaze.platform.vo;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.EnumType;
@@ -48,6 +49,11 @@ public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
     private String authName;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 权限类型
      * 
      * @see com.flyhaze.platform.enums.AuthTypeEnum
@@ -72,6 +78,27 @@ public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
      */
     private List<MenuVo> menus;
 
+    public AuthorityVo(String id, String authCode, String authName, String remark, AuthTypeEnum authType, Boolean valid,
+            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+        super(id, valid, creator, createTime, reviser, modifyTime);
+        this.authCode = authCode;
+        this.authName = authName;
+        this.remark = remark;
+        this.authType = authType;
+    }
+
+    public AuthorityVo(String id, String authCode, String authName, String remark, AuthTypeEnum authType,
+            List<AuthDataTypeVo> authDataTypes, List<MenuVo> menus, Boolean valid, String creator, LocalDateTime createTime,
+            String reviser, LocalDateTime modifyTime) {
+        super(id, valid, creator, createTime, reviser, modifyTime);
+        this.authCode = authCode;
+        this.authName = authName;
+        this.remark = remark;
+        this.authType = authType;
+        this.authDataTypes = authDataTypes;
+        this.menus = menus;
+    }
+
     @Override
     public void copyForEntity(SysAuthority temp) {
         id = temp.getId();
@@ -83,13 +110,15 @@ public class AuthorityVo extends BaseVo<SysAuthority, AuthorityVo> {
 
         authCode = temp.getAuthCode();
         authName = temp.getAuthName();
+        remark = temp.getRemark();
         authType = temp.getAuthType();
         builtIn = temp.getBuiltIn();
     }
 
     @Override
     public SysAuthority copyToEntity() {
-        return new SysAuthority(id, authCode, authName, authType, builtIn, valid, creator, createTime, reviser, modifyTime);
+        return new SysAuthority(id, authCode, authName, remark, authType, builtIn, valid, creator, createTime, reviser,
+                modifyTime);
     }
 
     @Override

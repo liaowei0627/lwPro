@@ -66,7 +66,7 @@ public class QueryUtils {
             hql.append(whereClause.getWhereClause());
         }
 
-        log.info("DEBUG：HQL：" + hql.toString());
+        log.info("DEBUG：HQL：{}", hql.toString());
         Query<Long> query = session.createQuery(hql.toString(), Long.class);
         if (null != param && !param.isEmpty()) {
             Set<String> paramKeySet = param.keySet();
@@ -106,7 +106,7 @@ public class QueryUtils {
             hql.append(whereClause.getWhereClause());
         }
 
-        log.info("DEBUG：HQL：" + hql.toString());
+        log.info("DEBUG：HQL：{}", hql.toString());
         Query<C> query = session.createQuery(hql.toString(), cls);
 
         if (null != param && !param.isEmpty()) {
@@ -170,7 +170,7 @@ public class QueryUtils {
             hql.append(orderbyClause);
         }
 
-        log.info("DEBUG：HQL：" + hql.toString());
+        log.info("DEBUG：HQL：{}", hql.toString());
         Query<C> query = session.createQuery(hql.toString(), cls);
 
         if (null != param && !param.isEmpty()) {
@@ -235,7 +235,7 @@ public class QueryUtils {
             hql.append(orderbyClause);
         }
 
-        log.info("DEBUG：HQL：" + hql.toString());
+        log.info("DEBUG：HQL：{}", hql.toString());
         Query<E> query = session.createQuery(hql.toString(), entityClass);
 
         if (null != param && !param.isEmpty()) {
@@ -303,7 +303,7 @@ public class QueryUtils {
             }
         }
 
-        log.info("DEBUG：HQL：" + hql.toString());
+        log.info("DEBUG：HQL：{}", hql.toString());
         Query<E> query = session.createQuery(hql.toString(), entityClass);
 
         if (null != param && !param.isEmpty()) {

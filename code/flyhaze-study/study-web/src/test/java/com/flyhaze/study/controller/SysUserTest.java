@@ -77,12 +77,12 @@ public class SysUserTest {
             result = response.getContentAsString();
             map = JSONUtils.JSONStringToObject(result, HashMap.class);
             String seed = map.get("data");
-            log.info("INFO：seed is：" + seed);
+            log.info("INFO：seed is：{}", seed);
 
             String pwdCiphertext = CryptoUtils.toMD5(password);
             pwdCiphertext = CryptoUtils.toMD5(pwdCiphertext.concat(seed));
             pwdCiphertext = CryptoUtils.base64Encoder(pwdCiphertext);
-            log.info("INFO：pwdCiphertext is：" + pwdCiphertext);
+            log.info("INFO：pwdCiphertext is：{}", pwdCiphertext);
 
             MockHttpServletRequestBuilder loginPost = MockMvcRequestBuilders.post("/login");
             loginPost.param("userName", userName);
@@ -93,7 +93,7 @@ public class SysUserTest {
             response = loginResult.getResponse();
             result = response.getContentAsString();
             map = JSONUtils.JSONStringToObject(result, HashMap.class);
-            log.info("INFO：login is：" + map.get("msg"));
+            log.info("INFO：login is：{}", map.get("msg"));
             
         } catch (Exception e) {
             log.error(e.getMessage(), e);

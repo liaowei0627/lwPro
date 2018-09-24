@@ -57,6 +57,11 @@ public class SysRole extends BaseEntity<SysRole> {
     private String roleName;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 角色类型
      * 
      * @see com.flyhaze.platform.enums.RoleTypeEnum
@@ -87,21 +92,32 @@ public class SysRole extends BaseEntity<SysRole> {
     @JoinColumn(name = "sysRoleId")
     private Set<SysUserRole> sysUserRoles = Sets.<SysUserRole>newHashSet();
 
-    public SysRole(String id, String roleCode, String roleName, RoleTypeEnum roleType, Boolean builtIn, Boolean valid, String creator,
-            LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+    public SysRole(String id, String roleCode, String roleName, String remark, RoleTypeEnum roleType, Boolean valid,
+            String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.roleCode = roleCode;
         this.roleName = roleName;
+        this.remark = remark;
+        this.roleType = roleType;
+    }
+
+    public SysRole(String id, String roleCode, String roleName, String remark, RoleTypeEnum roleType, Boolean builtIn,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
+        super(id, valid, creator, createTime, reviser, modifyTime);
+        this.roleCode = roleCode;
+        this.roleName = roleName;
+        this.remark = remark;
         this.roleType = roleType;
         this.builtIn = builtIn;
     }
 
-    public SysRole(String id, String roleCode, String roleName, RoleTypeEnum roleType, Boolean builtIn, Boolean valid, String creator,
-            LocalDateTime createTime, String reviser, LocalDateTime modifyTime, Set<SysRoleAuth> sysRoleAuths,
-            Set<SysUserRole> sysUserRoles) {
+    public SysRole(String id, String roleCode, String roleName, String remark, RoleTypeEnum roleType, Boolean builtIn,
+            Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime,
+            Set<SysRoleAuth> sysRoleAuths, Set<SysUserRole> sysUserRoles) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.roleCode = roleCode;
         this.roleName = roleName;
+        this.remark = remark;
         this.roleType = roleType;
         this.builtIn = builtIn;
         this.sysRoleAuths = sysRoleAuths;
@@ -121,6 +137,10 @@ public class SysRole extends BaseEntity<SysRole> {
         String roleName = e.getRoleName();
         if (!Strings.isNullOrEmpty(roleName)) {
             this.roleName = roleName;
+        }
+        String remark = e.getRemark();
+        if (!Strings.isNullOrEmpty(remark)) {
+            this.remark = remark;
         }
         RoleTypeEnum roleType = e.getRoleType();
         if (null != roleType) {

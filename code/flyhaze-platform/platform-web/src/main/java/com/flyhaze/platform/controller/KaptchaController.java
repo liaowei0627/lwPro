@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.flyhaze.framework.core.constants.I18nKeyConstants;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
@@ -42,7 +43,9 @@ public class KaptchaController extends BaseController {
     private Producer kaptchaProducer;
 
     /**
-     * 取得验证码图片 输出图片输出流
+     * 取得验证码图片<br>
+     * 
+     * 输出图片输出流
      * 
      * @param response
      */
@@ -51,14 +54,16 @@ public class KaptchaController extends BaseController {
         // 生成验证码文本
         String kapText = kaptchaProducer.createText();
         setSessionAttr(Constants.KAPTCHA_SESSION_KEY, kapText);
-        log.debug("DEBUG：生成验证码文本====" + kapText);
+        log.debug("DEBUG：生成验证码文本===={}", kapText);
         // 利用生成的字符串构建图片
         BufferedImage bi = kaptchaProducer.createImage(kapText);
         responseJPEG(bi, response);
     }
 
     /**
-     * Easyui validation组建远程验证方法 检查验证码是否正确
+     * Easyui validation组件远程验证方法 <br>
+     * 
+     * 检查验证码是否正确
      * 
      * @param kaptchaCode
      * @param request
@@ -72,7 +77,7 @@ public class KaptchaController extends BaseController {
         }
         String generateCode = (String) getSessionAttr(Constants.KAPTCHA_SESSION_KEY);
         if (generateCode.equals(kaptchaCode)) {
-            log.debug("DEBUG：验证成功");
+            log.info(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_KAPTCHA));
             return true;
         } else {
             return false;

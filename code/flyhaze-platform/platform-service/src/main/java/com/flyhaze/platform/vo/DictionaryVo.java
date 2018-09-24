@@ -32,11 +32,17 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
 
-    public DictionaryVo(String id, String code, String text, String fullCode, String fullText,
-            DictionaryVo parent, List<DictionaryVo> children, Integer orderNum, Boolean hasChild, Boolean valid, String creator,
+    /**
+     * 备注
+     */
+    private String remark;
+
+    public DictionaryVo(String id, String remark, String code, String text, String fullCode, String fullText, DictionaryVo parent,
+            List<DictionaryVo> children, Integer orderNum, Boolean hasChild, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, code, text, fullCode, fullText, parent, children, orderNum, hasChild, valid, creator, createTime, reviser,
                 modifyTime);
+        this.remark = remark;
     }
 
     @Override
@@ -59,6 +65,8 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
             parent = new DictionaryVo();
             parent.copyForEntity(pDic);
         }
+
+        remark = temp.getRemark();
     }
 
     @Override
@@ -67,7 +75,7 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
         if (null != parent) {
             parentEntity = copyToEntity(parent);
         }
-        return new SysDictionary(id, code, text, fullCode, fullText, parentEntity, null, orderNum, valid, creator,
+        return new SysDictionary(id, remark, code, text, fullCode, fullText, parentEntity, null, orderNum, valid, creator,
                 createTime, reviser, modifyTime);
     }
 
@@ -78,7 +86,7 @@ public class DictionaryVo extends BaseTreeVo<SysDictionary, DictionaryVo> {
         if (null != parent) {
             parentEntity = copyToEntity(parent);
         }
-        return new SysDictionary(v.getId(), v.getCode(), v.getText(), v.getFullCode(), v.getFullText(),
+        return new SysDictionary(v.getId(), v.getRemark(), v.getCode(), v.getText(), v.getFullCode(), v.getFullText(),
                 parentEntity, null, v.getOrderNum(), v.getValid(), v.getCreator(), v.getCreateTime(), v.getReviser(),
                 v.getModifyTime());
     }

@@ -4,7 +4,6 @@
  */
 package com.flyhaze.platform.service;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
 import com.flyhaze.framework.service.IService;
 import com.flyhaze.platform.entity.SysSite;
 import com.flyhaze.platform.vo.SiteVo;
@@ -20,30 +19,4 @@ import com.flyhaze.platform.vo.SiteVo;
  * @since jdk1.8
  */
 public interface ISiteService extends IService<SysSite, SiteVo> {
-
-    /**
-     * 新增数据
-     * 
-     * @param vo
-     * @return
-     * @throws ApplicationException
-     */
-    SiteVo addVo(SiteVo vo) throws ApplicationException;
-
-    /**
-     * 修改数据
-     * 
-     * @param vo
-     * @return
-     * @throws ApplicationException
-     */
-    SiteVo updateVo(SiteVo vo) throws ApplicationException;
-
-    /**
-     * 批量删除数据
-     * 
-     * @param pks
-     * @throws ApplicationException
-     */
-    void delList(String[] id) throws ApplicationException;
 }

@@ -8,12 +8,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.annotation.Resource;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.flyhaze.framework.SessionUser;
 import com.flyhaze.framework.core.controller.BasisController;
@@ -48,6 +52,19 @@ public abstract class BaseController<E extends BaseIdEntity<E>, V extends BaseId
 
     @Resource
     protected HttpServletRequest request;
+
+    /**
+     * 从国际化资源配置文件中根据key获取value
+     * 
+     * @param request
+     * @param key
+     * @return
+     */
+    protected String getMessage(String basename, String key) {
+        Locale currentLocale = RequestContextUtils.getLocale(request);
+        ResourceBundle bundle = ResourceBundle.getBundle(basename, currentLocale);
+        return bundle.getString(key);
+    }
 
     /**
      * 配置Model对象，添加当前用户信息

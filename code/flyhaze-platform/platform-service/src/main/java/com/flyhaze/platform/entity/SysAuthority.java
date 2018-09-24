@@ -7,6 +7,7 @@ package com.flyhaze.platform.entity;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -57,6 +58,11 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
     private String authName;
 
     /**
+     * 备注
+     */
+    private String remark;
+
+    /**
      * 权限类型
      * 
      * @see com.flyhaze.platform.enums.AuthTypeEnum
@@ -67,6 +73,7 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
     /**
      * 是否内置
      */
+    @Column(insertable = false, updatable = false)
     protected Boolean builtIn;
 
     /**
@@ -105,21 +112,23 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
     @JoinColumn(name = "sysAuthId")
     private Set<SysUserAuth> sysUserAuths = Sets.<SysUserAuth>newHashSet();
 
-    public SysAuthority(String id, String authCode, String authName, AuthTypeEnum authType, Boolean builtIn, Boolean valid, String creator,
+    public SysAuthority(String id, String authCode, String authName, String remark, AuthTypeEnum authType, Boolean builtIn, Boolean valid, String creator,
             LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.authCode = authCode;
         this.authName = authName;
+        this.remark = remark;
         this.authType = authType;
         this.builtIn = builtIn;
     }
 
-    public SysAuthority(String id, String authCode, String authName, AuthTypeEnum authType, Boolean builtIn, Set<SysAuthMenu> sysAuthMenus,
+    public SysAuthority(String id, String authCode, String authName, String remark, AuthTypeEnum authType, Boolean builtIn, Set<SysAuthMenu> sysAuthMenus,
             Set<SysAuthDataType> sysAuthDataTypes, Set<SysRoleAuth> sysRoleAuths, Set<SysUserAuth> sysUserAuths, Boolean valid,
             String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.authCode = authCode;
         this.authName = authName;
+        this.remark = remark;
         this.authType = authType;
         this.builtIn = builtIn;
         this.sysAuthMenus = sysAuthMenus;
@@ -141,6 +150,10 @@ public class SysAuthority extends BaseEntity<SysAuthority> {
         String authName = e.getAuthName();
         if (!Strings.isNullOrEmpty(authName)) {
             this.authName = authName;
+        }
+        String remark = e.getRemark();
+        if (!Strings.isNullOrEmpty(remark)) {
+            this.remark = remark;
         }
         AuthTypeEnum authType = e.getAuthType();
         if (null != authType) {
