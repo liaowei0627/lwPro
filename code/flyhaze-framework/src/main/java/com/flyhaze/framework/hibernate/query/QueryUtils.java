@@ -13,16 +13,16 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 
-import com.flyhaze.framework.core.entity.IBasisIdEntity;
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.WhereClause;
-import com.flyhaze.framework.core.query.operator.CollectionValueComparisonOperator;
-import com.flyhaze.framework.core.query.operator.NoValueComparisonOperator;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
-import com.flyhaze.framework.core.query.operator.PredicateOperator;
-import com.flyhaze.framework.core.query.operator.TwoValueComparisonOperator;
-import com.flyhaze.framework.core.query.order.OrderBy;
+import com.flyhaze.core.entity.IBasisIdEntity;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.WhereClause;
+import com.flyhaze.core.query.operator.CollectionValueComparisonOperator;
+import com.flyhaze.core.query.operator.NoValueComparisonOperator;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.query.operator.PredicateOperator;
+import com.flyhaze.core.query.operator.TwoValueComparisonOperator;
+import com.flyhaze.core.query.order.OrderBy;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

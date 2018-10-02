@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.flyhaze.framework.core.constants.I18nKeyConstants;
-import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.order.OrderBy;
-import com.flyhaze.framework.core.query.order.OrderEnum;
+import com.flyhaze.core.constants.I18nKeyConstants;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.order.OrderBy;
+import com.flyhaze.core.query.order.OrderEnum;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
 import com.flyhaze.platform.constants.SysI18nKeyConstants;
@@ -105,15 +105,15 @@ public class AuthorityController extends BaseController<SysAuthority, AuthorityV
                     vo.setId(null);
                 }
                 AuthorityView view = new AuthorityView(vo);
-                responseData = new ResponseData<AuthorityView>(1,
-                        getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOAD_SUCCESS), view);
+                responseData = ResponseData
+                        .<AuthorityView>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOAD_SUCCESS), view);
             } else {
-                responseData = new ResponseData<AuthorityView>(2,
+                responseData = ResponseData.<AuthorityView>otherFailure(2,
                         getMessage(SysI18nKeyConstants.BASENAME, SysI18nKeyConstants.KEY_LOAD_AUTH));
             }
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<AuthorityView>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+            responseData = ResponseData.<AuthorityView>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
         return responseData;
     }
@@ -138,14 +138,14 @@ public class AuthorityController extends BaseController<SysAuthority, AuthorityV
                 authVo = authorityService.updateVo(vo);
             }
             if (Strings.isNullOrEmpty(authVo.getMsg())) {
-                responseData = new ResponseData<String>(1,
-                        getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_SAVE_SUCCESS));
+                responseData = ResponseData
+                        .<String>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_SAVE_SUCCESS));
             } else {
-                responseData = new ResponseData<String>(2, getMessage(SysI18nKeyConstants.BASENAME, authVo.getMsg()));
+                responseData = ResponseData.<String>otherFailure(2, getMessage(SysI18nKeyConstants.BASENAME, authVo.getMsg()));
             }
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<String>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+            responseData = ResponseData.<String>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
 
         return responseData;
@@ -162,11 +162,16 @@ public class AuthorityController extends BaseController<SysAuthority, AuthorityV
     public ResponseData<String> del(@RequestParam(name = "ids[]", required = true) String[] id) {
         ResponseData<String> responseData;
         try {
-            authorityService.delList(id);
-            return new ResponseData<String>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_DEL_SUCCESS));
+            String rs = authorityService.delList(id);
+            if (Strings.isNullOrEmpty(rs)) {
+                responseData = ResponseData
+                        .<String>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_DEL_SUCCESS));
+            } else {
+                responseData = ResponseData.<String>failure(rs);
+            }
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<String>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+            responseData = ResponseData.<String>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
         return responseData;
     }

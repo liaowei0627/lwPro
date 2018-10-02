@@ -6,7 +6,7 @@ package com.flyhaze.framework.vo;
 
 import java.time.LocalDateTime;
 
-import com.flyhaze.framework.core.vo.IBasisVo;
+import com.flyhaze.core.vo.IBasisVo;
 import com.flyhaze.framework.hibernate.entity.BaseEntity;
 
 import lombok.AccessLevel;
@@ -22,7 +22,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:40:39
- * @see com.flyhaze.framework.core.vo.IBasisVo<E, V>
+ * @see com.flyhaze.core.vo.IBasisVo<E, V>
  * @see com.flyhaze.framework.vo.BaseIdVo<E, V>
  * @since jdk1.8
  */

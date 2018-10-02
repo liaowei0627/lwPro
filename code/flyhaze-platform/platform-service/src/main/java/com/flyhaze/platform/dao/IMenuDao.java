@@ -6,7 +6,7 @@ package com.flyhaze.platform.dao;
 
 import java.util.List;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.platform.entity.SysMenu;
 

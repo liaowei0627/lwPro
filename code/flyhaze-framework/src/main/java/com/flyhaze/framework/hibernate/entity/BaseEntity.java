@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import com.flyhaze.framework.core.entity.IBasisEntity;
+import com.flyhaze.core.entity.IBasisEntity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -24,7 +24,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:33:14
- * @see com.flyhaze.framework.core.entity.IBasisEntity<E>
+ * @see com.flyhaze.core.entity.IBasisEntity<E>
  * @see com.flyhaze.framework.hibernate.entity.BaseIdEntity<E>
  * @since jdk1.8
  */

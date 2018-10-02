@@ -6,6 +6,7 @@ package com.flyhaze.framework.mvc.response;
 
 import java.io.Serializable;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,8 +24,8 @@ import lombok.ToString;
  * @since jdk1.8
  */
 @SuppressWarnings("serial")
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Setter
 @ToString
@@ -37,8 +38,28 @@ public class ResponseData<View> implements Serializable {
     // 返回数据
     private View data;
 
-    public ResponseData(int stat, String msg) {
+    private ResponseData(int stat, String msg) {
         this.stat = stat;
         this.msg = msg;
+    }
+
+    public static <View> ResponseData<View> success(String msg) {
+        return new ResponseData<View>(1, msg);
+    }
+
+    public static <View> ResponseData<View> success(String msg, View data) {
+        return new ResponseData<View>(1, msg, data);
+    }
+
+    public static <View> ResponseData<View> failure(String msg) {
+        return new ResponseData<View>(0, msg);
+    }
+
+    public static <View> ResponseData<View> failure(String msg, View data) {
+        return new ResponseData<View>(0, msg, data);
+    }
+
+    public static <View> ResponseData<View> otherFailure(int stat, String msg) {
+        return new ResponseData<View>(stat, msg);
     }
 }

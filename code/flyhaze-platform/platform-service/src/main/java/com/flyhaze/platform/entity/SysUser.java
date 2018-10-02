@@ -12,6 +12,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -70,9 +71,13 @@ public class SysUser extends BaseEntity<SysUser> {
     private SubSystemEnum subSystem;
 
     /**
-     * 站点编号
+     * 站点
      */
-    private String siteCode;
+    @Getter
+    @Setter
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "SITE_CODE")
+    private SysSite site;
 
     /**
      * 是否内置
@@ -97,28 +102,28 @@ public class SysUser extends BaseEntity<SysUser> {
     @JoinColumn(name = "sysUserId")
     private Set<SysUserAuth> sysUserAuths = Sets.<SysUserAuth>newHashSet();
 
-    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, String siteCode,
+    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, SysSite site,
             Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
         this.remark = remark;
         this.subSystem = subSystem;
-        this.siteCode = siteCode;
+        this.site = site;
     }
 
-    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, String siteCode,
+    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, SysSite site,
             Boolean builtIn, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime) {
         super(id, valid, creator, createTime, reviser, modifyTime);
         this.userName = userName;
         this.password = password;
         this.remark = remark;
         this.subSystem = subSystem;
-        this.siteCode = siteCode;
+        this.site = site;
         this.builtIn = builtIn;
     }
 
-    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, String siteCode,
+    public SysUser(String id, String userName, String password, String remark, SubSystemEnum subSystem, SysSite site,
             Boolean builtIn, Boolean valid, String creator, LocalDateTime createTime, String reviser, LocalDateTime modifyTime,
             Set<SysUserRole> sysUserRoles, Set<SysUserAuth> sysUserAuths) {
         super(id, valid, creator, createTime, reviser, modifyTime);
@@ -126,7 +131,7 @@ public class SysUser extends BaseEntity<SysUser> {
         this.password = password;
         this.remark = remark;
         this.subSystem = subSystem;
-        this.siteCode = siteCode;
+        this.site = site;
         this.builtIn = builtIn;
         this.sysUserRoles = sysUserRoles;
         this.sysUserAuths = sysUserAuths;
@@ -154,9 +159,9 @@ public class SysUser extends BaseEntity<SysUser> {
         if (null != subSystem) {
             this.subSystem = subSystem;
         }
-        String siteCode = e.getSiteCode();
-        if (!Strings.isNullOrEmpty(siteCode)) {
-            this.siteCode = siteCode;
+        SysSite site = e.getSite();
+        if (null != site) {
+            this.site = site;
         }
         Boolean builtIn = e.getBuiltIn();
         if (null != builtIn) {

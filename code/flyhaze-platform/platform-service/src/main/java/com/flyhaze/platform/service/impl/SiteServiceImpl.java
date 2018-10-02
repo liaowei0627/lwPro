@@ -8,10 +8,10 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.flyhaze.framework.core.constants.I18nKeyConstants;
-import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.constants.I18nKeyConstants;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.framework.service.impl.ServiceImpl;
 import com.flyhaze.platform.dao.ISiteDao;

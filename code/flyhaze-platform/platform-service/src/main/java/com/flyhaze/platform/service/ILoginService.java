@@ -4,8 +4,8 @@
  */
 package com.flyhaze.platform.service;
 
-import com.flyhaze.framework.SessionUser;
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.SessionUser;
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.vo.MenuVo;
 

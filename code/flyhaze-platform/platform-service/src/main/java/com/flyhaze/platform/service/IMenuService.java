@@ -6,7 +6,7 @@ package com.flyhaze.platform.service;
 
 import java.util.List;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.framework.service.IService;
 import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.vo.MenuVo;

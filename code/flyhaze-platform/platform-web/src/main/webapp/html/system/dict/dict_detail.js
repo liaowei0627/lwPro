@@ -31,7 +31,7 @@ $(document).ready(function() {
                         parentIdComboTree.combotree("setValue", {id: "", text: "上级字典"});
                     };
                     dictionaryForm.find("input#orderNum").numberbox("setValue", view.orderNum);
-                    dictionaryForm.find("input#remark").textbox("setValue", view.remark);
+                    dictionaryForm.find("textarea#remark").textbox("setValue", view.remark);
                 } else if (0 == data.stat){
                     engine.alert("操作失败", data.msg, "error");
                 } else {

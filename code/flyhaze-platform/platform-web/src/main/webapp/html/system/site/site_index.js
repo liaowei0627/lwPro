@@ -68,8 +68,8 @@ $(document).ready(function() {
             id: "site_dialog",
             title: "编辑站点",
             href: url,
-            width: 400,
-            height: 150,
+            width: 300,
+            height: 210,
             modal: true,
             buttons: [{
                 text: "保存",
@@ -226,7 +226,7 @@ $(document).ready(function() {
     // 查询条件站点文本输入框
     var siteSearchbox = $("#siteSearchbox");
     siteSearchbox.searchbox({
-        prompt: "站点文本",
+        prompt: "站点名称",
         searcher: function(value, name) {
             doQuery();
         }

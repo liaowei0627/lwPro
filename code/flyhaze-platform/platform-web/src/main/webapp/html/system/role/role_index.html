@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north',title:'高级查询',split:true,collapsed:true" style="height:100px;"></div>
+    <div data-options="region:'center'">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'north'">
+                <div id="roleGridToolbar">
+                    <a id="btnRoleAdd" class="easyui-linkbutton" data-options="iconCls:'icon-add',plain:true" href="javascript: void(0);">新增</a>
+                    <a id="btnRoleDel" class="easyui-linkbutton" data-options="iconCls:'icon-remove',plain:true" href="javascript: void(0);">删除</a>
+                    <div style="float: right;">
+                        <input id="roleSearchbox" style="width: 200px;" />
+                    </div>
+                </div>
+            </div>
+            <div data-options="region:'center'">
+                <table id="roleGrid" ></table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="./html/system/role/role_index.js"></script>

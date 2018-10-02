@@ -14,11 +14,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import com.flyhaze.framework.core.dao.impl.BasisDaoImpl;
-import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.order.OrderBy;
+import com.flyhaze.core.dao.impl.BasisDaoImpl;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.order.OrderBy;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.framework.hibernate.entity.BaseIdEntity;
 import com.flyhaze.framework.hibernate.query.QueryUtils;
@@ -31,7 +31,7 @@ import com.flyhaze.framework.hibernate.query.QueryUtils;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:33:14
  * @see com.flyhaze.framework.hibernate.dao.IDao<E>
- * @see com.flyhaze.framework.core.dao.impl.BasisDaoImpl<E, String>
+ * @see com.flyhaze.core.dao.impl.BasisDaoImpl<E, String>
  * @since jdk1.8
  */
 public abstract class DaoImpl<E extends BaseIdEntity<E>> extends BasisDaoImpl<E, String> implements IDao<E> {

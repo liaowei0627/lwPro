@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.flyhaze.framework.core.constants.I18nKeyConstants;
+import com.flyhaze.core.constants.I18nKeyConstants;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;

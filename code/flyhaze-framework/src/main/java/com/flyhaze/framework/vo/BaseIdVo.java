@@ -4,7 +4,7 @@
  */
 package com.flyhaze.framework.vo;
 
-import com.flyhaze.framework.core.vo.IBasisIdVo;
+import com.flyhaze.core.vo.IBasisIdVo;
 import com.flyhaze.framework.hibernate.entity.BaseIdEntity;
 
 import lombok.AccessLevel;
@@ -20,7 +20,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-21 00:57:58
- * @see com.flyhaze.framework.core.vo.IBasisIdVo<E, V>
+ * @see com.flyhaze.core.vo.IBasisIdVo<E, V>
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

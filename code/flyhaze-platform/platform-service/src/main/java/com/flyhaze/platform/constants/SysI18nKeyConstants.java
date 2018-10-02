@@ -35,6 +35,16 @@ public class SysI18nKeyConstants {
     public static final String KEY_LOAD_AUTH = "message.load.auth";
 
     /**
+     * 角色不存在!
+     */
+    public static final String KEY_LOAD_ROLE = "message.load.role";
+
+    /**
+     * 用户不存在!
+     */
+    public static final String KEY_LOAD_USER = "message.load.user";
+
+    /**
      * 字典不存在!
      */
     public static final String KEY_LOAD_DICT = "message.load.dict";

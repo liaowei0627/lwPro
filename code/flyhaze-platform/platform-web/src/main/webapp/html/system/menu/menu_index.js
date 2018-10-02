@@ -228,6 +228,42 @@ $(document).ready(function() {
             field: "id",
             checkbox: true
         },{
+            field: "fullCode",
+            title: "全路径编号",
+            width: 200,
+            halign: "center",
+            align: "left"
+        },{
+            field: "fullText",
+            title: "全路径文本",
+            width: 200,
+            halign: "center",
+            align: "left"
+        },{
+            field: "menuUrl",
+            title: "链接地址",
+            width: 300,
+            halign: "center",
+            align: "left"
+        },{
+            field: "subSystem",
+            title: "分系统",
+            width: 100,
+            halign: "center",
+            align: "center"
+        },{
+            field: "menuType",
+            title: "菜单类型",
+            width: 100,
+            halign: "center",
+            align: "center"
+        },{
+            field: "orderNum",
+            title: "排序号",
+            width: 100,
+            halign: "center",
+            align: "center"
+        },{
             field: "code",
             title: "菜单编号",
             width: 100,
@@ -239,44 +275,8 @@ $(document).ready(function() {
             width: 100,
             halign: "center",
             align: "center"
-        },{
-            field: "menuType",
-            title: "菜单类型",
-            width: 100,
-            halign: "center",
-            align: "center"
-        },{
-            field: "subSystem",
-            title: "分系统",
-            width: 100,
-            halign: "center",
-            align: "center"
-        },{
-            field: "menuUrl",
-            title: "链接地址",
-            width: 100,
-            halign: "center",
-            align: "left"
-        },{
-            field: "fullCode",
-            title: "全路径编号",
-            width: 100,
-            halign: "center",
-            align: "center"
-        },{
-            field: "fullText",
-            title: "全路径文本",
-            width: 100,
-            halign: "center",
-            align: "center"
-        },{
-            field: "orderNum",
-            title: "排序号",
-            width: 100,
-            halign: "center",
-            align: "center"
         }]],
-        fitColumns: true,
+        fitColumns: false,
         pagination: true,
         pagePosition: "bottom",
         pageNumber: 1,

@@ -17,12 +17,12 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
-import com.flyhaze.framework.core.query.order.OrderBy;
-import com.flyhaze.framework.core.query.order.OrderEnum;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.query.order.OrderBy;
+import com.flyhaze.core.query.order.OrderEnum;
 import com.flyhaze.study.vo.UserVo;
 import com.flyhaze.utils.CryptoUtils;
 import com.flyhaze.utils.JSONUtils;

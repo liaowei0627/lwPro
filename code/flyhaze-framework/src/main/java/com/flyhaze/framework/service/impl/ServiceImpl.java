@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.flyhaze.framework.core.constants.I18nKeyConstants;
-import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.operator.CollectionValueComparisonOperator;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
-import com.flyhaze.framework.core.query.order.OrderBy;
-import com.flyhaze.framework.core.service.impl.BasisServiceImpl;
+import com.flyhaze.core.constants.I18nKeyConstants;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.operator.CollectionValueComparisonOperator;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.query.order.OrderBy;
+import com.flyhaze.core.service.impl.BasisServiceImpl;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.framework.hibernate.entity.BaseIdEntity;
 import com.flyhaze.framework.hibernate.entity.BaseTreeEntity;
@@ -34,7 +34,7 @@ import com.google.common.collect.Maps;
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-08 21:40:39
  * @see com.flyhaze.framework.service.IService<V, E>
- * @see com.flyhaze.framework.core.service.impl.BasisServiceImpl<E, V, String>
+ * @see com.flyhaze.core.service.impl.BasisServiceImpl<E, V, String>
  * @since jdk1.8
  */
 public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<E, V>> extends BasisServiceImpl<E, V, String>
@@ -133,7 +133,7 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
     }
 
     @Override
-    public void delList(String[] ids) throws ApplicationException {
+    public String delList(String[] ids) throws ApplicationException {
 
         if (validDel(ids)) {
             Where where = Where.rootWhere("id", CollectionValueComparisonOperator.IN, ids);
@@ -152,6 +152,9 @@ public abstract class ServiceImpl<E extends BaseIdEntity<E>, V extends BaseIdVo<
 
                 getDao().delList(ids);
             }
+            return null;
+        } else {
+            return msg;
         }
     }
 

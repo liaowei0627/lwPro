@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.flyhaze.framework.SessionUser;
-import com.flyhaze.framework.core.constants.I18nKeyConstants;
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.SessionUser;
+import com.flyhaze.core.constants.I18nKeyConstants;
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
 import com.flyhaze.platform.entity.SysMenu;
@@ -58,13 +58,16 @@ public class IndexController extends BaseController {
     @RequestMapping(path = {"/checkLogged"}, method = RequestMethod.GET)
     @ResponseBody
     public ResponseData<SessionUser> checkLogged() {
+        ResponseData<SessionUser> responseData;
         @SuppressWarnings("unchecked")
         SessionUser<SysMenu, MenuVo> sessionUser = getCurUser();
         if (null != sessionUser) {
-            return new ResponseData<SessionUser>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGINED), sessionUser);
+            responseData = ResponseData.<SessionUser>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGINED),
+                    sessionUser);
         } else {
-            return new ResponseData<>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_UNLOGIN));
+            responseData = ResponseData.<SessionUser>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_UNLOGIN));
         }
+        return responseData;
     }
 
     /**
@@ -76,7 +79,7 @@ public class IndexController extends BaseController {
     @ResponseBody
     public ResponseData<String> seed() {
         String seed = setPwdSeed();
-        return new ResponseData<String>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_SEED), seed);
+        return ResponseData.<String>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_SEED), seed);
     }
 
     /**
@@ -88,8 +91,8 @@ public class IndexController extends BaseController {
      * pwdCiphertext = CryptoUtils.toMD5(pwdCiphertext + seed);<br>
      * MD5字符串BASE64编码转16进制字符串<br>
      * pwdCiphertext = CryptoUtils.base64Encoder(pwdCiphertext);<br>
-     * 服务端密码验证方式： 用户数据中的密码同上MD5编码两次<br>
-     * 表单中的密码字段，BASE64解码后与之比较 一致就是密码正确
+     * 服务端密码验证方式：<br>
+     * 用户数据中的密码即为明文MD5值，加上seed再MD5编码， 表单中的密码字段，BASE64解码后与之比较 一致就是密码正确
      * 
      * @param userName
      * @param password
@@ -112,19 +115,19 @@ public class IndexController extends BaseController {
             String msg;
             if (null == sessionUser) {
                 msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_USERNAME);
-                responseData = new ResponseData<>(2, msg);
+                responseData = ResponseData.<SessionUser>otherFailure(2, msg);
             } else if (Strings.isNullOrEmpty(sessionUser.getId())) {
                 msg = getMessage(I18nKeyConstants.BASENAME, sessionUser.getMsg());
-                responseData = new ResponseData<>(3, msg);
+                responseData = ResponseData.<SessionUser>otherFailure(3, msg);
             } else {
                 setCurUser(sessionUser);
                 msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_SUCCESS);
-                responseData = new ResponseData<>(1, msg, sessionUser);
+                responseData = ResponseData.<SessionUser>success(msg, sessionUser);
             }
             log.info(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN), userName, msg);
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+            responseData = ResponseData.<SessionUser>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
         return responseData;
     }
@@ -150,6 +153,6 @@ public class IndexController extends BaseController {
             userName = "";
         }
         log.info(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGOUT), userName, msg);
-        return new ResponseData<String>(1, msg);
+        return ResponseData.<String>success(msg);
     }
 }

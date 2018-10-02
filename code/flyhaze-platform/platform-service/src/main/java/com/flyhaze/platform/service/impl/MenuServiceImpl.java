@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.framework.service.impl.ServiceImpl;
 import com.flyhaze.platform.dao.IMenuDao;
 import com.flyhaze.platform.entity.SysMenu;

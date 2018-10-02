@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.framework.service.impl.ServiceImpl;
 import com.flyhaze.study.dao.ISysUserDao;
@@ -29,5 +30,15 @@ public class UserServiceImpl extends ServiceImpl<SysUser, UserVo> implements IUs
         v.copyForEntity(e);
 
         return v;
+    }
+
+    @Override
+    protected boolean validSave(UserVo vo) throws ApplicationException {
+        return true;
+    }
+
+    @Override
+    protected boolean validDel(String[] ids) throws ApplicationException {
+        return true;
     }
 }

@@ -11,13 +11,13 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.operator.NoValueComparisonOperator;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
-import com.flyhaze.framework.core.query.order.OrderBy;
-import com.flyhaze.framework.core.query.order.OrderEnum;
-import com.flyhaze.framework.test.TestService;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.operator.NoValueComparisonOperator;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.query.order.OrderBy;
+import com.flyhaze.core.query.order.OrderEnum;
+import com.flyhaze.test.TestService;
 import com.flyhaze.platform.enums.MenuTypeEnum;
 import com.flyhaze.platform.vo.MenuVo;
 import com.google.common.collect.Lists;

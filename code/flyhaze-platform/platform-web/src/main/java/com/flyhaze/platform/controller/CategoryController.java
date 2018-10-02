@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
 import com.flyhaze.platform.constants.SysI18nKeyConstants;
+import com.flyhaze.platform.enums.AuthTypeEnum;
 import com.flyhaze.platform.enums.MenuTypeEnum;
+import com.flyhaze.platform.enums.RoleTypeEnum;
 import com.flyhaze.platform.enums.SubSystemEnum;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -39,8 +41,9 @@ public class CategoryController extends BaseController {
      * 请求分类信息，一般用于下拉框
      * 
      * 参数category值：<br>
-     * 菜单分类枚举：menu<br>
-     * 分系统枚举：system
+     * 分系统枚举：subSystem<br>
+     * 菜单分类枚举：menuType<br>
+     * 权限分类枚举：authType<br>
      * 
      * @param category 指名请求的是哪种分类信息
      * @return
@@ -50,15 +53,7 @@ public class CategoryController extends BaseController {
     public ResponseData<List<Map<String, String>>> mapList(@RequestParam(name = "category", required = true) String category) {
         List<Map<String, String>> list = Lists.newArrayList();
         Map<String, String> map;
-        if ("menu".equals(category)) {
-            MenuTypeEnum[] types = MenuTypeEnum.values();
-            for (MenuTypeEnum type : types) {
-                map = Maps.newHashMap();
-                map.put("name", type.name());
-                map.put("text", type.getText());
-                list.add(map);
-            }
-        } else if ("system".equals(category)) {
+        if ("subSystem".equals(category)) {
             SubSystemEnum[] systems = SubSystemEnum.values();
             for (SubSystemEnum system : systems) {
                 map = Maps.newHashMap();
@@ -66,8 +61,32 @@ public class CategoryController extends BaseController {
                 map.put("text", system.getText());
                 list.add(map);
             }
+        } else if ("menuType".equals(category)) {
+            MenuTypeEnum[] types = MenuTypeEnum.values();
+            for (MenuTypeEnum type : types) {
+                map = Maps.newHashMap();
+                map.put("name", type.name());
+                map.put("text", type.getText());
+                list.add(map);
+            }
+        } else if ("authType".equals(category)) {
+            AuthTypeEnum[] types = AuthTypeEnum.values();
+            for (AuthTypeEnum type : types) {
+                map = Maps.newHashMap();
+                map.put("name", type.name());
+                map.put("text", type.getText());
+                list.add(map);
+            }
+        } else if ("roleType".equals(category)) {
+            RoleTypeEnum[] types = RoleTypeEnum.values();
+            for (RoleTypeEnum type : types) {
+                map = Maps.newHashMap();
+                map.put("name", type.name());
+                map.put("text", type.getText());
+                list.add(map);
+            }
         }
-        return new ResponseData<List<Map<String, String>>>(1,
+        return ResponseData.<List<Map<String, String>>>success(
                 getMessage(SysI18nKeyConstants.BASENAME, SysI18nKeyConstants.KEY_CATEGORY), list);
     }
 }

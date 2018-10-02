@@ -33,7 +33,7 @@ $(document).ready(function() {
                         parentIdComboTree.combotree("setValue", {id: "", text: "上级字典"});
                     };
                     menuForm.find("input#orderNum").numberbox("setValue", view.orderNum);
-                    menuForm.find("input#remark").textbox("setValue", view.remark);
+                    menuForm.find("textarea#remark").textbox("setValue", view.remark);
                 } else if (0 == data.stat){
                     engine.alert("操作失败", data.msg, "error");
                 } else {
@@ -54,7 +54,7 @@ $(document).ready(function() {
         textField: "text",
         method: "get",
         url: "./category/map_list",
-        queryParams: {category: "menu", "_": new Date().getTime()},
+        queryParams: {category: "menuType", "_": new Date().getTime()},
         loadFilter: function(result) {
             if (1 == result.stat) {
                 return result.data;
@@ -73,7 +73,7 @@ $(document).ready(function() {
         textField: "text",
         method: "get",
         url: "./category/map_list",
-        queryParams: {category: "system", "_": new Date().getTime()},
+        queryParams: {category: "subSystem", "_": new Date().getTime()},
         loadFilter: function(result) {
             if (1 == result.stat) {
                 return result.data;

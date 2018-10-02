@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.flyhaze.framework.core.constants.I18nKeyConstants;
-import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.operator.NoValueComparisonOperator;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
-import com.flyhaze.framework.core.query.order.OrderBy;
-import com.flyhaze.framework.core.query.order.OrderEnum;
+import com.flyhaze.core.constants.I18nKeyConstants;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.operator.NoValueComparisonOperator;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.query.order.OrderBy;
+import com.flyhaze.core.query.order.OrderEnum;
 import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
 import com.flyhaze.framework.mvc.view.TreeView;
@@ -119,15 +119,16 @@ public class DictionaryController extends BaseController<SysDictionary, Dictiona
                     vo.setId(null);
                 }
                 DictionaryView view = new DictionaryView(vo);
-                responseData = new ResponseData<DictionaryView>(1,
-                        getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOAD_SUCCESS), view);
+                responseData = ResponseData
+                        .<DictionaryView>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOAD_SUCCESS), view);
             } else {
-                responseData = new ResponseData<DictionaryView>(2,
+                responseData = ResponseData.<DictionaryView>otherFailure(2,
                         getMessage(SysI18nKeyConstants.BASENAME, SysI18nKeyConstants.KEY_LOAD_DICT));
             }
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<DictionaryView>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+            responseData = ResponseData
+                    .<DictionaryView>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
         return responseData;
     }
@@ -152,14 +153,14 @@ public class DictionaryController extends BaseController<SysDictionary, Dictiona
                 dictVo = dictionaryService.updateVo(vo);
             }
             if (Strings.isNullOrEmpty(dictVo.getMsg())) {
-                responseData = new ResponseData<String>(1,
-                        getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_SAVE_SUCCESS));
+                responseData = ResponseData
+                        .<String>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_SAVE_SUCCESS));
             } else {
-                responseData = new ResponseData<String>(2, getMessage(SysI18nKeyConstants.BASENAME, dictVo.getMsg()));
+                responseData = ResponseData.<String>otherFailure(2, getMessage(SysI18nKeyConstants.BASENAME, dictVo.getMsg()));
             }
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<String>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+            responseData = ResponseData.<String>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
 
         return responseData;
@@ -176,11 +177,16 @@ public class DictionaryController extends BaseController<SysDictionary, Dictiona
     public ResponseData<String> del(@RequestParam(name = "ids[]", required = true) String[] id) {
         ResponseData<String> responseData;
         try {
-            dictionaryService.delList(id);
-            return new ResponseData<String>(1, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_DEL_SUCCESS));
+            String rs = dictionaryService.delList(id);
+            if (Strings.isNullOrEmpty(rs)) {
+                responseData = ResponseData
+                        .<String>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_DEL_SUCCESS));
+            } else {
+                responseData = ResponseData.<String>failure(rs);
+            }
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<String>(0, getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
+            responseData = ResponseData.<String>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
         return responseData;
     }
@@ -216,11 +222,11 @@ public class DictionaryController extends BaseController<SysDictionary, Dictiona
             for (DictionaryVo dictionaryVo : data) {
                 list.add(new TreeView<SysDictionary, DictionaryVo>(dictionaryVo));
             }
-            responseData = new ResponseData<List<TreeView<SysDictionary, DictionaryVo>>>(1,
+            responseData = ResponseData.<List<TreeView<SysDictionary, DictionaryVo>>>success(
                     getMessage(SysI18nKeyConstants.BASENAME, SysI18nKeyConstants.KEY_TREE_DICT), list);
         } catch (ApplicationException e) {
             log.error(e.getMessage(), e);
-            responseData = new ResponseData<List<TreeView<SysDictionary, DictionaryVo>>>(0,
+            responseData = ResponseData.<List<TreeView<SysDictionary, DictionaryVo>>>failure(
                     getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR),
                     Lists.<TreeView<SysDictionary, DictionaryVo>>newArrayList());
         }

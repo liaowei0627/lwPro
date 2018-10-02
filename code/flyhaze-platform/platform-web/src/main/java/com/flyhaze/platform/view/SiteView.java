@@ -4,7 +4,7 @@
  */
 package com.flyhaze.platform.view;
 
-import com.flyhaze.framework.core.view.IView;
+import com.flyhaze.core.view.IView;
 import com.flyhaze.platform.vo.SiteVo;
 
 import lombok.AllArgsConstructor;
@@ -17,7 +17,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-26 09:17:39
- * @see com.flyhaze.framework.core.view.IView
+ * @see com.flyhaze.core.view.IView
  * @since jdk1.8
  */
 @SuppressWarnings("serial")

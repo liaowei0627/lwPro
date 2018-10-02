@@ -4,7 +4,7 @@
  */
 package com.flyhaze.platform.service;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.framework.service.IService;
 import com.flyhaze.platform.entity.SysUser;
 import com.flyhaze.platform.vo.UserVo;

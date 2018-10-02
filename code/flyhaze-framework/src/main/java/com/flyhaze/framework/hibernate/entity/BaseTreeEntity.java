@@ -16,7 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
-import com.flyhaze.framework.core.entity.IBasisTreeEntity;
+import com.flyhaze.core.entity.IBasisTreeEntity;
 import com.google.common.collect.Sets;
 
 import lombok.AccessLevel;
@@ -32,7 +32,7 @@ import lombok.ToString;
  *
  * @author 廖维(EmailTo：liaowei-0627@163.com)
  * @date 2018-04-17 03:44:16
- * @see com.flyhaze.framework.core.entity.IBasisTreeEntity<E>
+ * @see com.flyhaze.core.entity.IBasisTreeEntity<E>
  * @see com.flyhaze.framework.hibernate.entity.BaseEntity<E>
  * @since jdk1.8
  */

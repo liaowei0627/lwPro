@@ -17,7 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.result.StatusResultMatchers;
 
-import com.flyhaze.framework.test.TestController;
+import com.flyhaze.test.TestController;
 import com.flyhaze.utils.JSONUtils;
 
 import lombok.extern.slf4j.Slf4j;

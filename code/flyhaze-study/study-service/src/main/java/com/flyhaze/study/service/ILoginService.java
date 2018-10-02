@@ -4,7 +4,7 @@
  */
 package com.flyhaze.study.service;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.study.vo.UserVo;
 
 /**

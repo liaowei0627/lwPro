@@ -2,9 +2,9 @@ package com.flyhaze.platform.test.query;
 
 import org.junit.Test;
 
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
-import com.flyhaze.framework.core.query.operator.TwoValueComparisonOperator;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.query.operator.TwoValueComparisonOperator;
 import com.flyhaze.framework.hibernate.query.QueryUtils;
 
 import lombok.extern.slf4j.Slf4j;

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<div data-options="region:'center',fit:true">
+    <form id="authForm" method="post">
+        <input type="hidden" name="id" />
+        <table align="center">
+            <tr>
+                <th align="right">权限编号：</th>
+                <td align="left">
+                    <input class="easyui-textbox" id="authCode" name="authCode" data-options="required:true,validType:['length[1,20]','illeChar'],validateOnCreate:false,validateOnBlur:true" style="width: 200px;" />
+                </td>
+            </tr>
+            <tr>
+                <th align="right">权限名称：</th>
+                <td align="left">
+                    <input class="easyui-textbox" id="authName" name="authName" data-options="required:true,validType:['length[1,20]','illeChar'],validateOnCreate:false,validateOnBlur:true" style="width: 200px;" />
+                </td>
+            </tr>
+            <tr>
+                <th align="right">权限类型：</th>
+                <td align="left"><select name="authType" style="width: 200px;"></select></td>
+            </tr>
+            <tr>
+                <th align="right">备注：</th>
+                <td align="left">
+                    <textarea class="easyui-textbox" id="remark" name="remark" data-options="multiline:true,validType:['length[1,200]','illeChar'],validateOnCreate:false,validateOnBlur:true" style="width: 200px;"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<script type="text/javascript" src="./html/system/auth/auth_detail.js"></script>

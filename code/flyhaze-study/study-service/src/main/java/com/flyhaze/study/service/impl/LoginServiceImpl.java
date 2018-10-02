@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.core.exception.ApplicationException;
 import com.flyhaze.study.dao.ISysUserDao;
 import com.flyhaze.study.entity.SysUser;
 import com.flyhaze.study.service.ILoginService;

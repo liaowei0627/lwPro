@@ -4,13 +4,17 @@
  */
 package com.flyhaze.platform.service.impl;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.constants.I18nKeyConstants;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.operator.CollectionValueComparisonOperator;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
 import com.flyhaze.framework.hibernate.dao.IDao;
 import com.flyhaze.framework.service.impl.ServiceImpl;
 import com.flyhaze.platform.constants.SysI18nKeyConstants;
@@ -77,6 +81,20 @@ public class UseServiceImpl extends ServiceImpl<SysUser, UserVo> implements IUse
 
     @Override
     protected boolean validDel(String[] ids) throws ApplicationException {
-        return true;
+        boolean rs = true;
+        Where where = Where.rootWhere("id", CollectionValueComparisonOperator.IN, ids);
+        List<SysUser> list = userDao.findList(where, null);
+        if (null != list && !list.isEmpty()) {
+            for (SysUser user : list) {
+                if (user.getBuiltIn().booleanValue()) {
+                    msg = I18nKeyConstants.KEY_DEL_BUILTIN;
+                    rs = false;
+                }
+            }
+        } else {
+            msg = I18nKeyConstants.KEY_DEL_DATA;
+            rs = false;
+        }
+        return rs;
     }
 }

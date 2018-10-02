@@ -7,14 +7,14 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 
-import com.flyhaze.framework.core.exception.ApplicationException;
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
-import com.flyhaze.framework.core.query.order.OrderBy;
-import com.flyhaze.framework.core.query.order.OrderEnum;
-import com.flyhaze.framework.test.TestService;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.core.query.order.OrderBy;
+import com.flyhaze.core.query.order.OrderEnum;
 import com.flyhaze.platform.vo.UserVo;
+import com.flyhaze.test.TestService;
 import com.flyhaze.utils.CryptoUtils;
 import com.flyhaze.utils.JSONUtils;
 import com.google.common.collect.Lists;

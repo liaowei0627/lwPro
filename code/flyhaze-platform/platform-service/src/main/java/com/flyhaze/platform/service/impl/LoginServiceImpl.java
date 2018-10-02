@@ -12,15 +12,17 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.flyhaze.framework.SessionUser;
-import com.flyhaze.framework.core.constants.I18nKeyConstants;
-import com.flyhaze.framework.core.exception.ApplicationException;
+import com.flyhaze.SessionUser;
+import com.flyhaze.core.constants.I18nKeyConstants;
+import com.flyhaze.core.exception.ApplicationException;
+import com.flyhaze.core.view.ITreeView;
 import com.flyhaze.framework.mvc.view.TreeView;
 import com.flyhaze.platform.entity.SysMenu;
 import com.flyhaze.platform.service.ILoginService;
 import com.flyhaze.platform.service.IMenuService;
 import com.flyhaze.platform.service.IUserService;
 import com.flyhaze.platform.vo.MenuVo;
+import com.flyhaze.platform.vo.SiteVo;
 import com.flyhaze.platform.vo.UserVo;
 import com.flyhaze.utils.CryptoUtils;
 import com.google.common.base.Objects;
@@ -73,14 +75,18 @@ public class LoginServiceImpl implements ILoginService {
 
         // 用户信息
         String userId = user.getId();
-        String siteCode = user.getSiteCode();
+        String siteCode = null;
+        SiteVo site = user.getSite();
+        if (null != site) {
+            siteCode = site.getSiteCode();
+        }
         sessionUser.setId(userId);
         sessionUser.setUserName(user.getUserName());
         sessionUser.setSiteCode(siteCode);
 
         List<MenuVo> menus = menuService.findSysMenusByUserId(userId, siteCode, true);
         if (null != menus && !menus.isEmpty()) {
-            List<TreeView<SysMenu, MenuVo>> list = Lists.<TreeView<SysMenu, MenuVo>>newArrayList();
+            List<ITreeView<SysMenu, MenuVo>> list = Lists.<ITreeView<SysMenu, MenuVo>>newArrayList();
             for (MenuVo vo : menus) {
                 list.add(new TreeView<SysMenu, MenuVo>(vo));
             }

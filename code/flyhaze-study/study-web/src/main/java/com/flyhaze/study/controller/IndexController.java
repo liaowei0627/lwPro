@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.flyhaze.framework.SessionUser;
+import com.flyhaze.SessionUser;
+import com.flyhaze.core.constants.I18nKeyConstants;
+import com.flyhaze.framework.mvc.controller.BaseController;
 import com.flyhaze.framework.mvc.response.ResponseData;
 import com.flyhaze.study.service.ILoginService;
 import com.flyhaze.study.vo.UserVo;
 import com.flyhaze.utils.CryptoUtils;
-import com.flyhaze.utils.SeedUtils;
 import com.google.common.base.Objects;
 
 /**
@@ -31,9 +32,10 @@ import com.google.common.base.Objects;
  * @date 创建时间：2018年4月6日 下午10:18:45 
  * @since jdk1.8
  */
+@SuppressWarnings("rawtypes")
 @Controller
 @RequestMapping()
-public class IndexController {
+public class IndexController extends BaseController {
 
     protected final Logger LOGGER = LoggerFactory.getLogger(IndexController.class);
 
@@ -104,9 +106,8 @@ public class IndexController {
     @RequestMapping(path = {"/seed"})
     @ResponseBody
     public ResponseData<String> seed(HttpServletRequest request) {
-        String seed = SeedUtils.getRandomString(6);
-        request.getSession().setAttribute("pwdSeed", seed);
-        return new ResponseData<String>(1, "seed生成成功", seed);
+        String seed = setPwdSeed();
+        return ResponseData.<String>success(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_SEED), seed);
     }
 
     /**
@@ -130,35 +131,41 @@ public class IndexController {
      */
     @RequestMapping(path = {"/login"})
     @ResponseBody
-    public ResponseData<String> doLogin(
+    public ResponseData<SessionUser> doLogin(
             @RequestParam(name = "userName", required = true) String userName,
             @RequestParam(name = "password", required = true) String password,
             HttpServletRequest request) {
+        ResponseData<SessionUser> responseData;
         try {
+            String msg;
             // 查询用户对象
             UserVo user = loginService.findByUserName(userName);
             if (null == user) {
-                return new ResponseData<>(2, "用户不存在！");
-            }
+                msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_USERNAME);
+                responseData = ResponseData.<SessionUser>otherFailure(2, msg);
+            } else {
+                String pwdSeed = getPwdSeed();
+                removePwdSeed();
 
-            String pwdSeed = (String) request.getSession().getAttribute("pwdSeed");
-
-            // 比较密码
-            String serverCiphertext = user.getPassword();
-            serverCiphertext = CryptoUtils.toMD5(serverCiphertext + pwdSeed);
-            String clientCiphertext = CryptoUtils.base64Deconder(password);
-            if (!Objects.equal(serverCiphertext, clientCiphertext)) {
-                return new ResponseData<>(3, "密码错误！");
+                // 比较密码
+                String serverCiphertext = user.getPassword();
+                serverCiphertext = CryptoUtils.toMD5(serverCiphertext + pwdSeed);
+                String clientCiphertext = CryptoUtils.base64Deconder(password);
+                if (!Objects.equal(serverCiphertext, clientCiphertext)) {
+                    msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_PWD);
+                    responseData = ResponseData.<SessionUser>otherFailure(3, msg);
+                } else {
+                    SessionUser sessionUser = new SessionUser(user.getId(), user.getUserName(), "");
+                    request.getSession().setAttribute("sessionUser", sessionUser);
+                    msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGIN_SUCCESS);
+                    responseData = ResponseData.<SessionUser>success(msg, sessionUser);
+                }
             }
-            
-            @SuppressWarnings("rawtypes")
-            SessionUser sessionUser = new SessionUser(user.getId(), user.getUserName(), "");
-            request.getSession().setAttribute("sessionUser", sessionUser);
-            return new ResponseData<String>(1, "登录成功！");
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-            return new ResponseData<>(0, "登录失败！");
+            responseData = ResponseData.<SessionUser>failure(getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_ERROR));
         }
+        return responseData;
     }
 
     /**
@@ -169,7 +176,14 @@ public class IndexController {
     @RequestMapping(path = {"/logout"})
     @ResponseBody
     public ResponseData<String> logout(HttpServletRequest request) {
-        request.getSession().removeAttribute("sessionUser");
-        return new ResponseData<String>(1, "登出成功");
+        SessionUser sessionUser = getCurUser();
+        String msg;
+        if (null != sessionUser) {
+            msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGOUT_SUCCESS);
+            removeCurUser();
+        } else {
+            msg = getMessage(I18nKeyConstants.BASENAME, I18nKeyConstants.KEY_LOGOUT_USERNAME);
+        }
+        return ResponseData.<String>success(msg);
     }
 }

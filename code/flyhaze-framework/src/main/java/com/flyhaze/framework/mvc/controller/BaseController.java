@@ -19,12 +19,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.flyhaze.framework.SessionUser;
-import com.flyhaze.framework.core.controller.BasisController;
-import com.flyhaze.framework.core.page.Pagination;
-import com.flyhaze.framework.core.query.Where;
-import com.flyhaze.framework.core.query.exception.WhereClauseException;
-import com.flyhaze.framework.core.query.operator.OneValueComparisonOperator;
+import com.flyhaze.SessionUser;
+import com.flyhaze.core.controller.BasisController;
+import com.flyhaze.core.page.Pagination;
+import com.flyhaze.core.query.Where;
+import com.flyhaze.core.query.exception.WhereClauseException;
+import com.flyhaze.core.query.operator.OneValueComparisonOperator;
 import com.flyhaze.framework.hibernate.entity.BaseIdEntity;
 import com.flyhaze.framework.vo.BaseIdVo;
 import com.flyhaze.framework.vo.BaseVo;
@@ -42,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @author liaowei
  * @date 创建时间：2018年4月3日 下午10:42:34
- * @see com.flyhaze.framework.core.controller.BasisController<E, V>
+ * @see com.flyhaze.core.controller.BasisController<E, V>
  * @since jdk1.8
  */
 @Slf4j
